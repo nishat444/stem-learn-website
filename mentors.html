@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Experts – STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0b0c1a;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #1f1f3f;
+    }
+
+    header .logo {
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #1f1f3f;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border: 1px solid #00fff7;
+      border-radius: 5px;
+      top: 100%;
+      left: 0;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-weight: bold;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: #00fff7;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1f1f3f 100%);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-block;
+      margin: 2rem 0;
+      border: 1px solid #00fff7;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: #00fff7;
+      transition: 0.3s;
+    }
+
+    .back:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .mentors-section {
+      padding: 5rem 0;
+      background-color: #101128;
+    }
+
+    .mentors-section h2 {
+      font-size: 2.5rem;
+      color: #00d9ff;
+      margin-bottom: 3rem;
+      text-align: center;
+      text-shadow: 0 0 10px #00bfff;
+    }
+
+    .mentors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .mentor-card {
+      background-color: #1f1f3f;
+      border: 1px solid #00fff7;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .mentor-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px #00fff7;
+    }
+
+    .mentor-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #00fff7, #ff00ff);
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: #0b0c1a;
+    }
+
+    .mentor-name {
+      font-size: 1.5rem;
+      color: #00fff7;
+      margin-bottom: 0.5rem;
+    }
+
+    .mentor-title {
+      font-size: 1.1rem;
+      color: #ff00ff;
+      margin-bottom: 1rem;
+    }
+
+    .mentor-expertise {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+
+    .mentor-bio {
+      font-size: 0.9rem;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .mentor-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .mentor-initials {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0b0c1a;
+    }
+
+    .founder-message {
+      padding: 5rem 0;
+      background-color: #0b0c1a;
+    }
+
+    .founder-card {
+      background-color: #1f1f3f;
+      border: 2px solid #ff00ff;
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .founder-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0, 255, 247, 0.1), rgba(255, 0, 255, 0.1));
+      z-index: 1;
+    }
+
+    .founder-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .founder-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff00ff, #00fff7);
+      margin: 0 auto 2rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: bold;
+      color: #0b0c1a;
+      box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+      overflow: hidden;
+      border: 4px solid #0b0c1a;
+    }
+
+    .founder-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .founder-initials {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: bold;
+      color: #0b0c1a;
+    }
+
+    .founder-card h2 {
+      font-size: 2.5rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .founder-name {
+      font-size: 2rem;
+      color: #ff00ff;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px #ff00ff;
+    }
+
+    .founder-title {
+      font-size: 1.2rem;
+      color: #00d9ff;
+      margin-bottom: 2rem;
+    }
+
+    .founder-message-text {
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .founder-message-text p {
+      font-size: 1.1rem;
+      color: #ccc;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .founder-message-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid #1f1f3f;
+      background-color: #101128;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .mentors-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="logo">STEM Learn</div>
+    <nav>
+      <ul>
+        <li class="dropdown">
+          <a href="index.html#about">About Us</a>
+          <div class="dropdown-content">
+            <a href="index.html#about">About Us</a>
+            <a href="mentors.html">Our Experts</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="index.html#courses">Programs</a>
+          <div class="dropdown-content">
+            <a href="index.html#courses">STEM Programs</a>
+            <a href="career-counselling.html">Career Counselling</a>
+            <a href="online-assessment.html">Online Assessment</a>
+          </div>
+        </li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <a class="back" href="index.html">← Back to Home</a>
+      <h1>Our Experts</h1>
+      <p>Meet our world-class team of AI experts, programming specialists, and education leaders who guide students on their journey to technological excellence.</p>
+    </div>
+  </section>
+
+  <section class="founder-message">
+    <div class="container">
+      <div class="founder-card">
+        <div class="founder-avatar">
+          <img src="founder-photo.jpg" alt="Nishat Akhter, Founder & CEO" class="founder-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="founder-initials" style="display: none;">NA</div>
+        </div>
+        <h2>Message from Founder</h2>
+        <h3 class="founder-name">Nishat Akhter</h3>
+        <p class="founder-title">Founder,  STEMLearn</p>
+        <div class="founder-message-text">
+          <p>"As a passionate advocate for STEM education and AI innovation, I founded STEM Learn with a vision to democratize access to cutting-edge technology education. Our mission is to empower the next generation of innovators, researchers, and technology leaders through comprehensive, project-based learning experiences."</p>
+          
+          <p>"Having witnessed the transformative power of AI and programming in solving real-world challenges, I believe every student deserves the opportunity to master these essential skills. Our expert team of mentors brings together decades of industry experience and academic excellence to guide students from their first lines of code to advanced AI implementations."</p>
+          
+          <p>"At STEM Learn, we don't just teach programming – we cultivate critical thinking, creativity, and problem-solving abilities that prepare students for success in an AI-driven future. Join us on this exciting journey of discovery, innovation, and limitless possibilities."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mentors-section">
+    <div class="container">
+      <h2>Our Expert Team</h2>
+      <div class="mentors-grid">
+        <div class="mentor-card">
+          <div class="mentor-avatar">
+            <img src="nikhil.jpg" alt="Nikhil Parmar" class="mentor-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="mentor-initials" style="display: none;">NP</div>
+          </div>
+          <h3 class="mentor-name">Nikhil Parmar</h3>
+          <p class="mentor-title">Founding Engineer at Sqwish AI MPhil Cambridge University</p>
+          <p class="mentor-expertise">AI Coding • Next.js • Kubernetes • Docker • React • Cambridge MPhil</p>
+          <p class="mentor-bio">Founding Engineer at Sqwish AI and a self-taught Full-stack Engineer. He holds a Master's of Philosophy in Biological Sciences from the University of Cambridge. Nikhil has expertise in AI coding, and experience in technologies including Next.js, Kubernetes, Docker and React.</p>
+        </div>
+
+        <div class="mentor-card">
+          <div class="mentor-avatar">
+            <img src="imran.jpg" alt="Imran Jafri" class="mentor-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="mentor-initials" style="display: none;">IJ</div>
+          </div>
+          <h3 class="mentor-name">Imran Jafri</h3>
+          <p class="mentor-title">Android Developer & Digital Marketing Expert</p>
+          <p class="mentor-expertise">Android Development • Kotlin • Java • Digital Marketing • App Store Optimization</p>
+          <p class="mentor-bio">Experienced Android developer with expertise in Kotlin, Java, and mobile app development. Specializes in digital marketing strategies and app store optimization. Has launched multiple successful mobile applications and helped businesses grow through effective digital marketing campaigns.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 STEM Learn | All Rights Reserved
+  </footer>
+</body>
+</html>

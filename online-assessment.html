@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Assessment – STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0b0c1a;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #1f1f3f;
+    }
+
+    header .logo {
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #1f1f3f;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border: 1px solid #00fff7;
+      border-radius: 5px;
+      top: 100%;
+      left: 0;
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s;
+      border-bottom: 1px solid #333;
+    }
+
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-weight: bold;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: #00fff7;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1f1f3f 100%);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-block;
+      margin: 2rem 0;
+      border: 1px solid #00fff7;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: #00fff7;
+      transition: 0.3s;
+    }
+
+    .back:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .tests-section {
+      padding: 5rem 0;
+      background-color: #101128;
+    }
+
+    .tests-section h2 {
+      font-size: 2.5rem;
+      color: #00d9ff;
+      margin-bottom: 3rem;
+      text-align: center;
+      text-shadow: 0 0 10px #00bfff;
+    }
+
+    .tests-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .test-card {
+      background-color: #1f1f3f;
+      border: 2px solid #00fff7;
+      border-radius: 20px;
+      padding: 3rem;
+      text-align: center;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .test-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0, 255, 247, 0.1), rgba(107, 114, 128, 0.1));
+      z-index: 1;
+    }
+
+    .test-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .test-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px #00fff7;
+    }
+
+    .test-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #00fff7, #6b7280);
+      margin: 0 auto 2rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: bold;
+      color: #0b0c1a;
+      box-shadow: 0 0 30px rgba(0, 255, 247, 0.5);
+    }
+
+    .test-title {
+      font-size: 2rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .test-subtitle {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+
+    .test-description {
+      font-size: 1rem;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .test-features {
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .test-features h4 {
+      color: #00fff7;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .test-features ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .test-features li {
+      color: #ccc;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .test-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #00fff7;
+      font-weight: bold;
+    }
+
+    .test-btn {
+      background: linear-gradient(45deg, #00fff7, #6b7280);
+      border: none;
+      padding: 1rem 2rem;
+      color: #0b0c1a;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .test-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 247, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid #1f1f3f;
+      background-color: #101128;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .tests-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="logo">STEM Learn</div>
+    <nav>
+      <ul>
+        <li class="dropdown">
+          <a href="index.html#about">About Us</a>
+          <div class="dropdown-content">
+            <a href="index.html#about">About Us</a>
+            <a href="mentors.html">Our Experts</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="index.html#courses">Programs</a>
+          <div class="dropdown-content">
+            <a href="index.html#courses">STEM Programs</a>
+            <a href="career-counselling.html">Career Counselling</a>
+            <a href="online-assessment.html">Online Assessment</a>
+          </div>
+        </li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <a class="back" href="index.html">← Back to Home</a>
+      <h1>Online Assessment</h1>
+      <p>Test your programming knowledge and skills with our comprehensive online assessments designed for different skill levels.</p>
+    </div>
+  </section>
+
+  <section class="tests-section">
+    <div class="container">
+      <h2>Assessment Tests</h2>
+      <div class="tests-grid">
+        <div class="test-card">
+          <div class="test-icon">🎮</div>
+          <h3 class="test-title">Scratch Juniors Test</h3>
+          <p class="test-subtitle">Ages 6-10 • Visual Programming Assessment</p>
+          <p class="test-description">
+            Designed for young learners to assess their understanding of basic programming concepts, 
+            Scratch interface, and creative problem-solving abilities.
+          </p>
+          <div class="test-features">
+            <h4>Test Covers:</h4>
+            <ul>
+              <li>Scratch interface and blocks</li>
+              <li>Basic programming concepts</li>
+              <li>Creative problem-solving</li>
+              <li>Variable assignments</li>
+              <li>Conditional logic</li>
+              <li>Project planning skills</li>
+            </ul>
+          </div>
+          <button class="test-btn" onclick="startScratchTest()">Start Test</button>
+        </div>
+
+        <div class="test-card">
+          <div class="test-icon">💻</div>
+          <h3 class="test-title">Young Coders Test</h3>
+          <p class="test-subtitle">Ages 11-18 • Python Programming Assessment</p>
+          <p class="test-description">
+            Comprehensive assessment for intermediate to advanced students covering Python programming, 
+            web development, AI concepts, and real-world project skills.
+          </p>
+          <div class="test-features">
+            <h4>Test Covers:</h4>
+            <ul>
+              <li>Python programming fundamentals</li>
+              <li>Web development (HTML, CSS, JavaScript)</li>
+              <li>AI and machine learning concepts</li>
+              <li>App development principles</li>
+              <li>Problem-solving algorithms</li>
+              <li>Project management skills</li>
+            </ul>
+          </div>
+          <button class="test-btn" onclick="startYoungCoderTest()">Start Test</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 STEM Learn | All Rights Reserved
+  </footer>
+
+  <script>
+    // Dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.dropdown');
+      
+      dropdowns.forEach(function(dropdown) {
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        
+        if (dropdownContent) {
+          // Show dropdown on hover
+          dropdown.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves
+          dropdown.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+          
+          // Keep dropdown open when hovering over content
+          dropdownContent.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves content
+          dropdownContent.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+        }
+      });
+    });
+
+    function startScratchTest() {
+      window.open('scratch-test.html', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+    }
+
+    function startYoungCoderTest() {
+      window.open('young-coder-test.html', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+    }
+  </script>
+</body>
+</html>

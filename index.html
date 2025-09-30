@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0b0c1a;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #1f1f3f;
+    }
+
+    header .logo {
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #1f1f3f;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border: 1px solid #00fff7;
+      border-radius: 5px;
+      top: 100%;
+      left: 0;
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s;
+      border-bottom: 1px solid #333;
+    }
+
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-weight: bold;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: #00fff7;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 90vh;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1f1f3f 100%);
+      position: relative;
+      padding: 0 1rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300fff7" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      animation: gridMove 20s linear infinite;
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(0, 255, 247, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+      animation: pulse 4s ease-in-out infinite alternate;
+      z-index: 2;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(10px, 10px); }
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+
+    .floating-code {
+      position: absolute;
+      color: #00fff7;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-code:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-code:nth-child(2) {
+      top: 40%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    .floating-code:nth-child(3) {
+      bottom: 30%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+
+    .floating-code:nth-child(4) {
+      top: 60%;
+      right: 25%;
+      animation-delay: 1s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-20px) rotate(5deg); opacity: 0.6; }
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ccc;
+    }
+
+    .hero .btn {
+      background: transparent;
+      border: 2px solid #00fff7;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      color: #00fff7;
+      transition: 0.3s;
+      border-radius: 5px;
+    }
+
+    .hero .btn:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+      box-shadow: 0 0 10px #00fff7;
+    }
+
+    .about {
+      padding: 5rem 0;
+      text-align: center;
+      background-color: #101128;
+    }
+
+    .about h2 {
+      font-size: 2.5rem;
+      color: #00d9ff;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00bfff;
+    }
+
+    .about p {
+      max-width: 800px;
+      margin: 0 auto 1.5rem auto;
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .courses {
+      padding: 5rem 0;
+      background-color: #0b0c1a;
+      text-align: center;
+    }
+
+    .courses h2 {
+      font-size: 2.5rem;
+      color: #00fff7;
+      margin-bottom: 3rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .course-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background-color: #1f1f3f;
+      border: 1px solid #00fff7;
+      border-radius: 10px;
+      padding: 2rem;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 30px #00fff7, 0 0 60px rgba(0, 255, 247, 0.3);
+      border-color: #ff00ff;
+    }
+
+    .card h3:hover {
+      color: #00fff7;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .card .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #ff00ff;
+    }
+
+    .contact {
+      padding: 5rem 0;
+      background-color: #101128;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: 2.5rem;
+      color: #00d9ff;
+      margin-bottom: 3rem;
+      text-shadow: 0 0 10px #00bfff;
+    }
+
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-info {
+      text-align: left;
+    }
+
+    .contact-info h3 {
+      color: #00fff7;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .contact-info p {
+      color: #ccc;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .contact-info .email {
+      color: #ff00ff;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .contact-form {
+      background-color: #1f1f3f;
+      padding: 2rem;
+      border-radius: 10px;
+      border: 1px solid #00fff7;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      color: #00fff7;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #00fff7;
+      border-radius: 5px;
+      background-color: #0b0c1a;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #ff00ff;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    }
+
+    .form-group textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background: linear-gradient(45deg, #00fff7, #ff00ff);
+      border: none;
+      padding: 0.75rem 2rem;
+      color: #0b0c1a;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+    }
+
+    .submit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 247, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .contact .container > div {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+      }
+    }
+
+    .card h3 {
+      color: #ff00ff;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      color: #ccc;
+      margin-bottom: 1.5rem;
+    }
+
+    .card .btn {
+      border: 2px solid #ff00ff;
+      color: #ff00ff;
+      padding: 0.5rem 1.5rem;
+      transition: 0.3s;
+    }
+
+    .card .btn:hover {
+      background-color: #ff00ff;
+      color: #0b0c1a;
+      box-shadow: 0 0 10px #ff00ff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid #1f1f3f;
+      background-color: #101128;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+  
+  <script>
+    // Dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.dropdown');
+      
+      dropdowns.forEach(function(dropdown) {
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        
+        if (dropdownContent) {
+          // Show dropdown on hover
+          dropdown.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves
+          dropdown.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+          
+          // Keep dropdown open when hovering over content
+          dropdownContent.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves content
+          dropdownContent.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+        }
+      });
+    });
+
+    function sendEmail(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const form = document.getElementById('contactForm');
+      const formData = new FormData(form);
+      
+      // Create email content
+      const studentName = formData.get('studentName');
+      const grade = formData.get('grade');
+      const city = formData.get('city');
+      const country = formData.get('country');
+      const parentName = formData.get('parentName');
+      const email = formData.get('email');
+      const phone = formData.get('phone');
+      const hearAbout = formData.get('hearAbout');
+      const message = formData.get('message');
+      
+      // Create email subject and body
+      const subject = `New Student Registration - ${studentName}`;
+      const body = `
+New Student Registration for STEM Learn
+
+Student Information:
+- Name: ${studentName}
+- Grade: ${grade}
+- City: ${city}
+- Country: ${country}
+
+Parent/Guardian Information:
+- Name: ${parentName}
+- Email: ${email}
+- Phone: ${phone || 'Not provided'}
+
+Additional Information:
+- How did you hear about us: ${hearAbout || 'Not provided'}
+- Message: ${message || 'No additional message'}
+
+This email was sent from the STEM Learn website contact form.
+      `;
+      
+      // Create mailto link
+      const mailtoLink = `mailto:stemlearn.co.uk@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      showMessage('Thank you! Your email client should open with a pre-filled message. Please send the email to complete your registration.', 'success');
+      
+      // Reset form
+      form.reset();
+    }
+    
+    function showMessage(text, type) {
+      // Remove existing message if any
+      const existingMessage = document.getElementById('formMessage');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+      
+      // Create message element
+      const message = document.createElement('div');
+      message.id = 'formMessage';
+      message.style.cssText = `
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        background-color: ${type === 'success' ? '#00ff7f' : '#ff4444'};
+        color: #0b0c1a;
+        border: 1px solid ${type === 'success' ? '#00ff7f' : '#ff4444'};
+      `;
+      message.textContent = text;
+      
+      // Insert message after form
+      const form = document.getElementById('contactForm');
+      form.parentNode.insertBefore(message, form.nextSibling);
+      
+      // Auto-remove message after 5 seconds
+      setTimeout(() => {
+        if (message.parentNode) {
+          message.remove();
+        }
+      }, 5000);
+    }
+  </script>
+</head>
+<body>
+  <header class="container">
+    <div class="logo">STEM Learn</div>
+    <nav>
+      <ul>
+        <li class="dropdown">
+          <a href="#about">About Us</a>
+          <div class="dropdown-content">
+            <a href="#about">About Us</a>
+            <a href="mentors.html">Our Experts</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#courses">Programs</a>
+          <div class="dropdown-content">
+            <a href="#courses">STEM Programs</a>
+            <a href="career-counselling.html">Career Counselling</a>
+            <a href="online-assessment.html">Online Assessment</a>
+          </div>
+        </li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="floating-elements">
+      <div class="floating-code">&lt;div&gt;AI&lt;/div&gt;</div>
+      <div class="floating-code">print("Hello World")</div>
+      <div class="floating-code">if (learn) { excel(); }</div>
+      <div class="floating-code">&lt;script&gt;&lt;/script&gt;</div>
+    </div>
+    <div class="hero-content">
+      <h1>Learn. Innovate. Excel.</h1>
+      <p>Excellence in programming education: from visual coding to advanced AI development.</p>
+      <a href="#courses" class="btn">See Programs</a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About STEM Learn</h2>
+    <p>Embark on an extraordinary journey from fundamental programming principles to cutting-edge artificial intelligence mastery. Our meticulously designed curriculum transforms students into confident technologists through immersive, project-based learning experiences. Master the art of computational thinking, algorithmic problem-solving, and creative coding while building a robust foundation in Python, web technologies, and advanced AI frameworks.</p>
+    <p>From intuitive visual programming with Scratch to sophisticated machine learning implementations, students craft everything from intelligent chatbots and predictive models to dynamic web applications and mobile solutions. Each carefully crafted project builds essential skills in software engineering, AI development, and digital innovation. Graduate with an impressive portfolio of AI-powered solutions that demonstrate both technical excellence and creative vision, perfectly positioning you for academic excellence and leadership in tomorrow's technology landscape.</p>
+  </section>
+
+  <section class="courses" id="courses">
+    <h2>Our Programs</h2>
+    <div class="container course-cards">
+      <div class="card">
+        <h3>Scratch Juniors</h3>
+        <p>Perfect introduction to programming through visual Scratch coding, hands-on micro:bit projects, 
+           and beginner-friendly AI concepts. Young learners build games, animations, and interactive 
+           projects while developing computational thinking skills.</p>
+        <a class="btn" href="courses/scratch-juniors.html">Learn More</a>
+      </div>
+      <div class="card">
+        <h3>Young Coders</h3>
+        <p>A comprehensive project‑driven pathway covering core programming concepts, problem solving, 
+           and introduction to AI. Students master Python, web development, app creation, and AI projects 
+           while preparing for GCSE and A-Level Computer Science success.</p>
+        <a class="btn" href="courses/young-coders.html">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p style="color: #ccc; margin-bottom: 3rem; font-size: 1.1rem;">Get Started on Your Journey to Become a Future Technology Leader</p>
+    
+    <div class="container">
+      <!-- Ready to Transform Section - Top -->
+      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #ff00ff; text-align: center; margin-bottom: 3rem;">
+        <h3 style="color: #ff00ff; font-size: 2rem; margin-bottom: 1.5rem;">Ready to Transform Your Future?</h3>
+        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1rem; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+          Be among the first to experience our innovative AI and programming education platform. Master cutting-edge technology through our comprehensive, project-based learning approach.
+        </p>
+        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+          Our expert instructors guide you from visual programming basics to advanced AI development, preparing you for GCSE/A-Level success and future tech careers.
+        </p>
+        <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Email us directly:</p>
+        <p class="email" style="color: #ff00ff; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem;">stemlearn.co.uk@gmail.com</p>
+        <p style="color: #ccc; font-size: 1rem; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;">
+          We typically respond within 24 hours and are here to answer all your questions about our programs.
+        </p>
+      </div>
+      
+      <!-- Bottom Row - Side by Side -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+        <!-- Information Session Section -->
+        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: left;">
+          <h3 style="color: #00fff7; font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center;">What happens in an Information Session?</h3>
+          <p style="color: #ccc; font-size: 1rem; margin-bottom: 1.5rem; text-align: center;">
+            STEM Learn Information Session is the first opportunity to explore more about our programs and discover a clear pathway to help children become future technology leaders, AI innovators, and programming experts.
+          </p>
+          
+          <p style="color: #ccc; margin-bottom: 1rem; font-size: 1rem;">During the session, you will learn about:</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;">
+            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00fff7;">
+              <h4 style="color: #00fff7; margin-bottom: 0.5rem; font-size: 1.1rem;">About STEM Learn</h4>
+              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Understand our mission and what makes us the leading platform for future AI developers and programmers.</p>
+            </div>
+            
+            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #ff00ff;">
+              <h4 style="color: #ff00ff; margin-bottom: 0.5rem; font-size: 1.1rem;">Programs</h4>
+              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Explore our comprehensive programs for AI-powered solutions and programming mastery.</p>
+            </div>
+            
+            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00d9ff;">
+              <h4 style="color: #00d9ff; margin-bottom: 0.5rem; font-size: 1.1rem;">Accomplishments</h4>
+              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Get inspired by our students' achievements and success stories.</p>
+            </div>
+            
+            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00fff7;">
+              <h4 style="color: #00fff7; margin-bottom: 0.5rem; font-size: 1.1rem;">Enrollment</h4>
+              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Get clarity on how to join STEM Learn and our program pathways.</p>
+            </div>
+          </div>
+          
+          <p style="color: #aaa; font-style: italic; text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+            The information session is followed by a demonstration of our AI and programming projects.
+          </p>
+        </div>
+        
+        <!-- Student Details Form Section -->
+        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
+          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Get Started Today</h3>
+          <div class="contact-form">
+          <form id="contactForm" onsubmit="sendEmail(event)">
+            <div class="form-group">
+              <label for="studentName">Student's Name *</label>
+              <input type="text" id="studentName" name="studentName" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="grade">Enter your Grade *</label>
+              <select id="grade" name="grade" required style="width: 100%; padding: 0.75rem; border: 1px solid #00fff7; border-radius: 5px; background-color: #0b0c1a; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1rem;">
+                <option value="">Select Your Grade</option>
+                <option value="K">K</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="Undergraduate">Undergraduate</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="city">Which city do you live in? *</label>
+              <input type="text" id="city" name="city" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="country">Which country do you live in? *</label>
+              <input type="text" id="country" name="country" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="parentName">Parent's/Guardian's Name *</label>
+              <input type="text" id="parentName" name="parentName" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+            
+            <div class="form-group">
+              <label for="hearAbout">How did you hear about us?</label>
+              <input type="text" id="hearAbout" name="hearAbout">
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your interest in our programs..."></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
+          
+          <p style="color: #aaa; font-size: 0.9rem; margin-top: 1rem; text-align: center;">
+            <strong>Privacy Note:</strong> We do not sell or share your contact details with anyone, EVER.
+          </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 STEM Learn | All Rights Reserved
+  </footer>
+</body>
+</html>

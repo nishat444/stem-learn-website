@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Counselling – STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0b0c1a;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #1f1f3f;
+    }
+
+    header .logo {
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #1f1f3f;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border: 1px solid #00fff7;
+      border-radius: 5px;
+      top: 100%;
+      left: 0;
+      padding: 0.5rem 0;
+    }
+
+    .dropdown-content a {
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s;
+      border-bottom: 1px solid #333;
+    }
+
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-weight: bold;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: #00fff7;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 4rem 0;
+      text-align: center;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1f1f3f 100%);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-block;
+      margin: 2rem 0;
+      border: 1px solid #00fff7;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: #00fff7;
+      transition: 0.3s;
+    }
+
+    .back:hover {
+      background-color: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .services-section {
+      padding: 5rem 0;
+      background-color: #101128;
+    }
+
+    .services-section h2 {
+      font-size: 2.5rem;
+      color: #00d9ff;
+      margin-bottom: 3rem;
+      text-align: center;
+      text-shadow: 0 0 10px #00bfff;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .service-card {
+      background-color: #1f1f3f;
+      border: 1px solid #00fff7;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px #00fff7;
+    }
+
+    .service-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #00fff7, #ff00ff);
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .service-title {
+      font-size: 1.5rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+    }
+
+    .service-description {
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-features {
+      list-style: none;
+      text-align: left;
+      color: #aaa;
+    }
+
+    .service-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .service-features li:last-child {
+      border-bottom: none;
+    }
+
+    .service-features li:before {
+      content: "✓ ";
+      color: #00fff7;
+      font-weight: bold;
+    }
+
+    .cta-section {
+      padding: 5rem 0;
+      background-color: #0b0c1a;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      color: #ff00ff;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(45deg, #00fff7, #ff00ff);
+      color: #0b0c1a;
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: 0.3s;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 247, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid #1f1f3f;
+      background-color: #101128;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="logo">STEM Learn</div>
+    <nav>
+      <ul>
+        <li class="dropdown">
+          <a href="index.html#about">About Us</a>
+          <div class="dropdown-content">
+            <a href="index.html#about">About Us</a>
+            <a href="mentors.html">Mentors</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="index.html#courses">Programs</a>
+          <div class="dropdown-content">
+            <a href="index.html#courses">STEM Programs</a>
+            <a href="career-counselling.html">Career Counselling</a>
+          </div>
+        </li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <a class="back" href="index.html">← Back to Home</a>
+      <h1>Career Counselling</h1>
+      <p>Navigate your path to success in STEM careers with personalized guidance from industry experts across science, technology, engineering, and medicine fields.</p>
+    </div>
+  </section>
+
+  <section class="services-section">
+    <div class="container">
+      <h2>Our Career Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🎯</div>
+          <h3 class="service-title">Career Assessment</h3>
+          <p class="service-description">Discover your strengths, interests, and aptitudes to identify the perfect career path in technology and AI.</p>
+          <ul class="service-features">
+            <li>Skills evaluation and analysis</li>
+            <li>Interest profiling and matching</li>
+            <li>Personality assessment for tech roles</li>
+            <li>Detailed career recommendations</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">📚</div>
+          <h3 class="service-title">Educational Planning</h3>
+          <p class="service-description">Create a personalized roadmap for your educational journey from GCSE to university and beyond.</p>
+          <ul class="service-features">
+            <li>GCSE/A-Level subject selection</li>
+            <li>University course recommendations</li>
+            <li>Scholarship and funding guidance</li>
+            <li>Timeline and milestone planning</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">💼</div>
+          <h3 class="service-title">Industry Insights</h3>
+          <p class="service-description">Get insider knowledge about tech careers, job markets, and emerging opportunities in AI and programming.</p>
+          <ul class="service-features">
+            <li>Industry trend analysis</li>
+            <li>Job market insights</li>
+            <li>Salary expectations and growth</li>
+            <li>Future career opportunities</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🤝</div>
+          <h3 class="service-title">Mentorship Program</h3>
+          <p class="service-description">Connect with industry professionals for ongoing guidance and support throughout your career journey.</p>
+          <ul class="service-features">
+            <li>One-on-one mentoring sessions</li>
+            <li>Industry professional connections</li>
+            <li>Portfolio and project guidance</li>
+            <li>Networking opportunities</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">📝</div>
+          <h3 class="service-title">Application Support</h3>
+          <p class="service-description">Get expert help with university applications, CV writing, and interview preparation for tech roles.</p>
+          <ul class="service-features">
+            <li>University application assistance</li>
+            <li>CV and cover letter writing</li>
+            <li>Interview preparation and practice</li>
+            <li>Portfolio development guidance</li>
+          </ul>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🚀</div>
+          <h3 class="service-title">Startup Guidance</h3>
+          <p class="service-description">For aspiring entrepreneurs, get guidance on starting your own tech company or AI startup.</p>
+          <ul class="service-features">
+            <li>Business plan development</li>
+            <li>Funding and investment guidance</li>
+            <li>Legal and regulatory advice</li>
+            <li>Marketing and growth strategies</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Plan Your Future?</h2>
+      <p>Book a free consultation with our career counsellors to start your journey towards a successful career in technology and AI.</p>
+      <a href="index.html#contact" class="cta-button">Get Started Today</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 STEM Learn | All Rights Reserved
+  </footer>
+
+  <script>
+    // Dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.dropdown');
+      
+      dropdowns.forEach(function(dropdown) {
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        
+        if (dropdownContent) {
+          // Show dropdown on hover
+          dropdown.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves
+          dropdown.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+          
+          // Keep dropdown open when hovering over content
+          dropdownContent.addEventListener('mouseenter', function() {
+            dropdownContent.style.display = 'block';
+          });
+          
+          // Hide dropdown when mouse leaves content
+          dropdownContent.addEventListener('mouseleave', function() {
+            dropdownContent.style.display = 'none';
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
