@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test - STEM Learn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #0b0c1a;
+            color: #fff;
+        }
+        .test-section {
+            background-color: #1f1f3f;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #00fff7;
+        }
+        .success { color: #00ff7f; }
+        .error { color: #ff4444; }
+        .warning { color: #ffaa00; }
+        button {
+            background: linear-gradient(45deg, #00fff7, #ff00ff);
+            border: none;
+            padding: 10px 20px;
+            color: #0b0c1a;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #0b0c1a;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Firebase Configuration Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Firebase SDK Loading</h2>
+        <div id="sdk-status">Checking...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Firebase Configuration</h2>
+        <div id="config-status">Checking...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Firestore Connection Test</h2>
+        <button onclick="testFirestore()">Test Firestore Connection</button>
+        <div id="firestore-status">Click button to test</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Registration Test</h2>
+        <button onclick="testRegistration()">Test User Registration</button>
+        <div id="registration-status">Click button to test</div>
+    </div>
+    
+    <div id="results"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            results.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        // Test 1: Firebase SDK Loading
+        function checkSDK() {
+            const sdkStatus = document.getElementById('sdk-status');
+            
+            if (typeof firebase !== 'undefined') {
+                sdkStatus.innerHTML = '<span class="success">✅ Firebase SDK loaded successfully</span>';
+                log('Firebase SDK loaded successfully', 'success');
+            } else {
+                sdkStatus.innerHTML = '<span class="error">❌ Firebase SDK not loaded</span>';
+                log('Firebase SDK not loaded', 'error');
+            }
+        }
+
+        // Test 2: Firebase Configuration
+        function checkConfig() {
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                const app = firebase.app();
+                const config = app.options;
+                
+                if (config.apiKey && config.apiKey !== 'YOUR_API_KEY') {
+                    configStatus.innerHTML = '<span class="success">✅ Firebase configured with real credentials</span>';
+                    log('Firebase configured with real credentials', 'success');
+                    log(`Project ID: ${config.projectId}`, 'info');
+                } else {
+                    configStatus.innerHTML = '<span class="warning">⚠️ Firebase configured but using placeholder credentials</span>';
+                    log('Firebase configured but using placeholder credentials', 'warning');
+                    log('Please update firebase-config.js with your actual Firebase configuration', 'warning');
+                }
+            } else {
+                configStatus.innerHTML = '<span class="error">❌ Firebase not initialized</span>';
+                log('Firebase not initialized', 'error');
+            }
+        }
+
+        // Test 3: Firestore Connection
+        async function testFirestore() {
+            const firestoreStatus = document.getElementById('firestore-status');
+            firestoreStatus.innerHTML = 'Testing...';
+            
+            try {
+                if (typeof db === 'undefined') {
+                    throw new Error('Firestore not initialized');
+                }
+                
+                // Try to write a test document
+                const testDoc = await db.collection('test').add({
+                    message: 'Firebase test',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                firestoreStatus.innerHTML = '<span class="success">✅ Firestore connection successful</span>';
+                log('Firestore connection successful', 'success');
+                log(`Test document created with ID: ${testDoc.id}`, 'success');
+                
+                // Clean up test document
+                await testDoc.delete();
+                log('Test document cleaned up', 'info');
+                
+            } catch (error) {
+                firestoreStatus.innerHTML = '<span class="error">❌ Firestore connection failed</span>';
+                log(`Firestore connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 4: Registration Test
+        async function testRegistration() {
+            const registrationStatus = document.getElementById('registration-status');
+            registrationStatus.innerHTML = 'Testing...';
+            
+            try {
+                if (typeof db === 'undefined') {
+                    throw new Error('Firestore not initialized');
+                }
+                
+                const testUserData = {
+                    studentName: 'Test User',
+                    grade: '10',
+                    city: 'Test City',
+                    country: 'Test Country',
+                    parentName: 'Test Parent',
+                    email: 'test@example.com',
+                    phone: '1234567890',
+                    hearAbout: 'Test',
+                    message: 'This is a test registration',
+                    registrationDate: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'test',
+                    userAgent: navigator.userAgent,
+                    ipAddress: '',
+                    assessments: [],
+                    courses: []
+                };
+                
+                const docRef = await db.collection('users').add(testUserData);
+                
+                registrationStatus.innerHTML = '<span class="success">✅ Registration test successful</span>';
+                log('Registration test successful', 'success');
+                log(`Test user created with ID: ${docRef.id}`, 'success');
+                
+                // Clean up test user
+                await docRef.delete();
+                log('Test user cleaned up', 'info');
+                
+            } catch (error) {
+                registrationStatus.innerHTML = '<span class="error">❌ Registration test failed</span>';
+                log(`Registration test failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Run initial tests when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Starting Firebase tests...', 'info');
+            checkSDK();
+            checkConfig();
+        });
+    </script>
+</body>
+</html>

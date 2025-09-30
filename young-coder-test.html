@@ -214,7 +214,37 @@
     <div id="results" style="display: none;"></div>
   </div>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
   <script>
+    // Check if user is registered
+    function checkRegistration() {
+      const userId = sessionStorage.getItem('userId');
+      const studentName = sessionStorage.getItem('studentName');
+      
+      if (!userId || !studentName) {
+        document.getElementById('testContent').innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: #fff;">
+            <h2 style="color: #ff4444; margin-bottom: 1rem;">⚠️ Registration Required</h2>
+            <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">
+              You must register with STEM Learn before taking assessments.
+            </p>
+            <p style="margin-bottom: 2rem; color: #ccc;">
+              Please close this window and complete the registration form on the main page.
+            </p>
+            <button class="btn" onclick="window.close()">Close Window</button>
+          </div>
+        `;
+        return false;
+      }
+      return true;
+    }
+
     let currentQuestion = 0;
     let score = 0;
     let userAnswers = [];
@@ -382,6 +412,71 @@
       }
     }
 
+    // Save assessment results to Firebase
+    async function saveAssessmentResults() {
+      const userId = sessionStorage.getItem('userId');
+      const studentName = sessionStorage.getItem('studentName');
+      const grade = sessionStorage.getItem('grade');
+      
+      if (!userId) {
+        console.log('No user ID found, cannot save assessment');
+        return;
+      }
+
+      const timeTaken = endTime - startTime;
+      const minutes = Math.floor(timeTaken / 60000);
+      const seconds = Math.floor((timeTaken % 60000) / 1000);
+      const timeString = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+      
+      const percentage = Math.round((score / questions.length) * 100);
+      
+      const assessmentData = {
+        testType: 'young-coders',
+        studentName: studentName,
+        grade: grade,
+        score: score,
+        totalQuestions: questions.length,
+        percentage: percentage,
+        timeTaken: timeString,
+        timeTakenMs: timeTaken,
+        answers: userAnswers,
+        correctAnswers: questions.map(q => q.correct),
+        completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        userId: userId
+      };
+
+      try {
+        // Save assessment to assessments collection
+        const docRef = await db.collection('assessments').add(assessmentData);
+        console.log('Assessment saved with ID:', docRef.id);
+        
+        // Update user document with assessment reference
+        await db.collection('users').doc(userId).update({
+          assessments: firebase.firestore.FieldValue.arrayUnion({
+            testType: 'young-coders',
+            score: score,
+            percentage: percentage,
+            completedAt: new Date(),
+            assessmentId: docRef.id
+          })
+        });
+        
+        // Track with analytics
+        if (typeof analytics !== 'undefined') {
+          analytics.logEvent('assessment_completed', {
+            test_type: 'young-coders',
+            score: score,
+            percentage: percentage,
+            time_taken: timeString
+          });
+        }
+        
+        console.log('Assessment results saved successfully');
+      } catch (error) {
+        console.error('Error saving assessment:', error);
+      }
+    }
+
     function showResults() {
       const timeTaken = endTime - startTime;
       const minutes = Math.floor(timeTaken / 60000);
@@ -405,6 +500,9 @@
         grade = 'Needs Improvement';
         message = 'Consider taking our Young Coders course to learn more!';
       }
+
+      // Save assessment results to Firebase
+      saveAssessmentResults();
 
       let answerReport = '';
       questions.forEach((question, index) => {
@@ -440,8 +538,12 @@
       document.getElementById('results').style.display = 'block';
     }
 
-    // Start the test
-    displayQuestion();
+    // Check registration and start the test
+    document.addEventListener('DOMContentLoaded', function() {
+      if (checkRegistration()) {
+        displayQuestion();
+      }
+    });
   </script>
 </body>
 </html>
