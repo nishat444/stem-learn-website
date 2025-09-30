@@ -139,7 +139,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300fff7" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300fff7" stroke-width="0.3" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
       animation: gridMove 20s linear infinite;
       z-index: 1;
     }
@@ -217,6 +217,17 @@
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
       50% { transform: translateY(-20px) rotate(5deg); opacity: 0.6; }
+    }
+
+    @keyframes glow {
+      0% { 
+        filter: brightness(1) drop-shadow(0 0 20px #00fff7);
+        transform: scale(1);
+      }
+      100% { 
+        filter: brightness(1.2) drop-shadow(0 0 40px #ff00ff);
+        transform: scale(1.02);
+      }
     }
 
     .hero h1 {
@@ -470,6 +481,13 @@
     }
   </style>
   
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  
   <script>
     // Dropdown functionality
     document.addEventListener('DOMContentLoaded', function() {
@@ -502,14 +520,153 @@
       });
     });
 
-    function sendEmail(event) {
-      event.preventDefault();
-      
-      // Get form data
+    function registerUser(event) {
+      try {
+        event.preventDefault();
+        
+        // Get form data
+        const form = document.getElementById('contactForm');
+        
+        if (!form) {
+          console.error('Form not found!');
+          showMessage('Form not found. Please refresh the page and try again.', 'error');
+          return;
+        }
+        
+        const formData = new FormData(form);
+        
+        // Validate required fields
+        const studentName = formData.get('studentName');
+        const grade = formData.get('grade');
+        const parentName = formData.get('parentName');
+        const email = formData.get('email');
+        
+        if (!studentName || !grade || !parentName || !email) {
+          console.error('Missing required fields');
+          showMessage('Please fill in all required fields (marked with *)', 'error');
+          return;
+        }
+        
+        // Check if Firebase is loaded
+        if (typeof firebase === 'undefined') {
+          console.error('Firebase is not loaded');
+          showMessage('Firebase is not loaded. Please check your internet connection and try again.', 'error');
+          return;
+        }
+        
+        if (typeof db === 'undefined') {
+          console.error('Firestore database is not initialized');
+          showMessage('Database is not initialized. Please refresh the page and try again.', 'error');
+          return;
+        }
+        
+        // Check if Firebase is properly configured (not using placeholder values)
+        if (!firebase.firestore.FieldValue || !firebase.firestore.FieldValue.serverTimestamp) {
+          sendEmailFallback(formData);
+          return;
+        }
+
+        // Check if user is already registered by email
+        db.collection('users').where('email', '==', email).get()
+          .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+              // User already exists
+              const existingUser = querySnapshot.docs[0];
+              const existingData = existingUser.data();
+              
+              // Store existing user ID in session storage
+              sessionStorage.setItem('userId', existingUser.id);
+              sessionStorage.setItem('studentName', existingData.studentName);
+              sessionStorage.setItem('grade', existingData.grade);
+              
+              // Show logout button
+              document.getElementById('logoutBtn').style.display = 'block';
+              
+              showMessage(`Welcome back, ${existingData.studentName}! You are already registered. You can now take assessments.`, 'success');
+              form.reset();
+            } else {
+              // User doesn't exist, proceed with registration
+              saveNewUser(formData);
+            }
+          })
+          .catch((error) => {
+            console.error('Error checking existing user:', error);
+            showMessage('Error checking registration. Please try again.', 'error');
+          });
+        
+      } catch (error) {
+        console.error('Unexpected error in registerUser function:', error);
+        showMessage('An unexpected error occurred. Please try again. Error: ' + error.message, 'error');
+      }
+    }
+
+    // Save new user to Firebase
+    function saveNewUser(formData) {
       const form = document.getElementById('contactForm');
-      const formData = new FormData(form);
       
-      // Create email content
+      // Create user registration data
+      const userData = {
+        studentName: formData.get('studentName'),
+        grade: formData.get('grade'),
+        city: formData.get('city'),
+        country: formData.get('country'),
+        parentName: formData.get('parentName'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        hearAbout: formData.get('hearAbout'),
+        message: formData.get('message'),
+        registrationDate: firebase.firestore.FieldValue ? firebase.firestore.FieldValue.serverTimestamp() : new Date(),
+        status: 'pending',
+        userAgent: navigator.userAgent,
+        ipAddress: '', // Will be filled by server
+        assessments: [], // Will store assessment results
+        courses: [] // Will store enrolled courses
+      };
+
+      // Save user registration to Firestore
+      db.collection('users').add(userData)
+        .then((docRef) => {
+          console.log('User registered with ID: ', docRef.id);
+          
+          // Store user ID in session storage for assessments
+          sessionStorage.setItem('userId', docRef.id);
+          sessionStorage.setItem('studentName', userData.studentName);
+          sessionStorage.setItem('grade', userData.grade);
+          
+          // Track registration event
+          if (typeof analytics !== 'undefined') {
+            analytics.logEvent('user_registration', {
+              student_name: userData.studentName,
+              grade: userData.grade,
+              city: userData.city,
+              country: userData.country
+            });
+          }
+          
+          // Show success message
+          showMessage('Registration successful! You are now registered in our Firebase database. You can now take assessments.', 'success');
+          
+          // Show logout button
+          document.getElementById('logoutBtn').style.display = 'block';
+          
+          // Reset form
+          form.reset();
+        })
+        .catch((error) => {
+          console.error('Error registering user: ', error);
+          
+          // Fallback to email if Firebase fails
+          if (error.message.includes('Firebase not configured') || error.message.includes('permission-denied')) {
+            console.log('Firebase not configured, falling back to email');
+            sendEmailFallback(formData);
+          } else {
+            showMessage('There was an error registering. Please check your Firebase configuration and try again. Error: ' + error.message, 'error');
+          }
+        });
+    }
+
+    // Email fallback function
+    function sendEmailFallback(formData) {
       const studentName = formData.get('studentName');
       const grade = formData.get('grade');
       const city = formData.get('city');
@@ -520,7 +677,6 @@
       const hearAbout = formData.get('hearAbout');
       const message = formData.get('message');
       
-      // Create email subject and body
       const subject = `New Student Registration - ${studentName}`;
       const body = `
 New Student Registration for STEM Learn
@@ -543,18 +699,53 @@ Additional Information:
 This email was sent from the STEM Learn website contact form.
       `;
       
-      // Create mailto link
       const mailtoLink = `mailto:stemlearn.co.uk@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      
-      // Open email client
       window.location.href = mailtoLink;
       
-      // Show success message
-      showMessage('Thank you! Your email client should open with a pre-filled message. Please send the email to complete your registration.', 'success');
-      
-      // Reset form
-      form.reset();
+      showMessage('Firebase not configured. Your email client should open with a pre-filled message. Please send the email to complete your registration.', 'warning');
     }
+
+    // Track page views
+    if (typeof analytics !== 'undefined') {
+      analytics.logEvent('page_view', {
+        page_title: 'STEM Learn Home',
+        page_location: window.location.href
+      });
+    }
+
+    // Logout function
+    function logoutUser() {
+      if (confirm('Are you sure you want to logout? You will need to register again to take assessments.')) {
+        // Clear session storage
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('studentName');
+        sessionStorage.removeItem('grade');
+        
+        // Hide logout button
+        document.getElementById('logoutBtn').style.display = 'none';
+        
+        // Show success message
+        showMessage('You have been logged out successfully.', 'success');
+      }
+    }
+
+    // Check if user is logged in and show logout button
+    function checkLoginStatus() {
+      const userId = sessionStorage.getItem('userId');
+      const studentName = sessionStorage.getItem('studentName');
+      
+      if (userId && studentName) {
+        document.getElementById('logoutBtn').style.display = 'block';
+      } else {
+        document.getElementById('logoutBtn').style.display = 'none';
+      }
+    }
+
+    // Check login status when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      checkLoginStatus();
+    });
+
     
     function showMessage(text, type) {
       // Remove existing message if any
@@ -612,6 +803,9 @@ This email was sent from the STEM Learn website contact form.
           </div>
         </li>
         <li><a href="#contact">Contact Us</a></li>
+        <li id="logoutBtn" style="display: none;">
+          <a href="#" onclick="logoutUser(); return false;" style="color: #ff4444;">Logout</a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -622,9 +816,23 @@ This email was sent from the STEM Learn website contact form.
       <div class="floating-code">print("Hello World")</div>
       <div class="floating-code">if (learn) { excel(); }</div>
       <div class="floating-code">&lt;script&gt;&lt;/script&gt;</div>
+      
+      <!-- Tech Icons/Logos -->
+      <div class="floating-icon" style="position: absolute; top: 15%; left: 10%; animation: float 6s ease-in-out infinite; font-size: 4rem;">
+        🤖
+      </div>
+      <div class="floating-icon" style="position: absolute; top: 70%; right: 10%; animation: float 7s ease-in-out infinite; animation-delay: 1s; font-size: 4rem;">
+        🧠
+      </div>
+      <div class="floating-icon" style="position: absolute; top: 30%; right: 15%; animation: float 8s ease-in-out infinite; animation-delay: 2s; font-size: 3.5rem;">
+        💻
+      </div>
+      <div class="floating-icon" style="position: absolute; bottom: 20%; left: 15%; animation: float 7s ease-in-out infinite; animation-delay: 1.5s; font-size: 3.5rem;">
+        🔬
+      </div>
     </div>
     <div class="hero-content">
-      <h1>Learn. Innovate. Excel.</h1>
+      <h1 style="font-size: 5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5rem; color: #ffffff; text-shadow: 0 0 40px #00fff7, 0 0 80px #00fff7, 0 5px 10px rgba(0, 0, 0, 0.8); animation: glow 2s ease-in-out infinite alternate;">LEARN. INNOVATE. EXCEL.</h1>
       <p>Excellence in programming education: from visual coding to advanced AI development.</p>
       <a href="#courses" class="btn">See Programs</a>
     </div>
@@ -661,75 +869,32 @@ This email was sent from the STEM Learn website contact form.
     <p style="color: #ccc; margin-bottom: 3rem; font-size: 1.1rem;">Get Started on Your Journey to Become a Future Technology Leader</p>
     
     <div class="container">
-      <!-- Ready to Transform Section - Top -->
+      <!-- Ready to Transform Your Future Section - Top -->
       <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #ff00ff; text-align: center; margin-bottom: 3rem;">
         <h3 style="color: #ff00ff; font-size: 2rem; margin-bottom: 1.5rem;">Ready to Transform Your Future?</h3>
-        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1rem; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1rem; line-height: 1.6;">
           Be among the first to experience our innovative AI and programming education platform. Master cutting-edge technology through our comprehensive, project-based learning approach.
         </p>
-        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 0; line-height: 1.6;">
           Our expert instructors guide you from visual programming basics to advanced AI development, preparing you for GCSE/A-Level success and future tech careers.
-        </p>
-        <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Email us directly:</p>
-        <p class="email" style="color: #ff00ff; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem;">stemlearn.co.uk@gmail.com</p>
-        <p style="color: #ccc; font-size: 1rem; line-height: 1.5; max-width: 600px; margin-left: auto; margin-right: auto;">
-          We typically respond within 24 hours and are here to answer all your questions about our programs.
         </p>
       </div>
       
-      <!-- Bottom Row - Side by Side -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
-        <!-- Information Session Section -->
-        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: left;">
-          <h3 style="color: #00fff7; font-size: 1.8rem; margin-bottom: 1.5rem; text-align: center;">What happens in an Information Session?</h3>
-          <p style="color: #ccc; font-size: 1rem; margin-bottom: 1.5rem; text-align: center;">
-            STEM Learn Information Session is the first opportunity to explore more about our programs and discover a clear pathway to help children become future technology leaders, AI innovators, and programming experts.
-          </p>
-          
-          <p style="color: #ccc; margin-bottom: 1rem; font-size: 1rem;">During the session, you will learn about:</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;">
-            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00fff7;">
-              <h4 style="color: #00fff7; margin-bottom: 0.5rem; font-size: 1.1rem;">About STEM Learn</h4>
-              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Understand our mission and what makes us the leading platform for future AI developers and programmers.</p>
-            </div>
-            
-            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #ff00ff;">
-              <h4 style="color: #ff00ff; margin-bottom: 0.5rem; font-size: 1.1rem;">Programs</h4>
-              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Explore our comprehensive programs for AI-powered solutions and programming mastery.</p>
-            </div>
-            
-            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00d9ff;">
-              <h4 style="color: #00d9ff; margin-bottom: 0.5rem; font-size: 1.1rem;">Accomplishments</h4>
-              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Get inspired by our students' achievements and success stories.</p>
-            </div>
-            
-            <div style="background-color: #0b0c1a; padding: 1rem; border-radius: 8px; border-left: 3px solid #00fff7;">
-              <h4 style="color: #00fff7; margin-bottom: 0.5rem; font-size: 1.1rem;">Enrollment</h4>
-              <p style="color: #ccc; line-height: 1.5; font-size: 0.9rem;">Get clarity on how to join STEM Learn and our program pathways.</p>
-            </div>
-          </div>
-          
-          <p style="color: #aaa; font-style: italic; text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-            The information session is followed by a demonstration of our AI and programming projects.
-          </p>
-        </div>
-        
-        <!-- Student Details Form Section -->
+      <!-- Registration Form Section - Middle -->
+      <div style="max-width: 800px; margin: 0 auto 3rem auto;">
         <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
-          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Get Started Today</h3>
+          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Registration</h3>
           <div class="contact-form">
-          <form id="contactForm" onsubmit="sendEmail(event)">
+           <form id="contactForm" onsubmit="registerUser(event); return false;">
             <div class="form-group">
               <label for="studentName">Student's Name *</label>
               <input type="text" id="studentName" name="studentName" required>
             </div>
             
             <div class="form-group">
-              <label for="grade">Enter your Grade *</label>
+              <label for="grade">Grade *</label>
               <select id="grade" name="grade" required style="width: 100%; padding: 0.75rem; border: 1px solid #00fff7; border-radius: 5px; background-color: #0b0c1a; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1rem;">
                 <option value="">Select Your Grade</option>
-                <option value="K">K</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -742,6 +907,7 @@ This email was sent from the STEM Learn website contact form.
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
+                <option value="13">13</option>
                 <option value="Undergraduate">Undergraduate</option>
               </select>
             </div>
@@ -781,7 +947,7 @@ This email was sent from the STEM Learn website contact form.
               <textarea id="message" name="message" placeholder="Tell us about your interest in our programs..."></textarea>
             </div>
             
-            <button type="submit" class="submit-btn">Send Message</button>
+             <button type="submit" class="submit-btn">Submit</button>
           </form>
           
           <p style="color: #aaa; font-size: 0.9rem; margin-top: 1rem; text-align: center;">
@@ -789,6 +955,15 @@ This email was sent from the STEM Learn website contact form.
           </p>
           </div>
         </div>
+      </div>
+      
+      <!-- Email Contact Box -->
+      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center; margin-top: 3rem;">
+        <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Contact Us</p>
+        <p class="email" style="color: #ff00ff; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem;">stemlearn.co.uk@gmail.com</p>
+        <p style="color: #ccc; font-size: 1rem; line-height: 1.5;">
+          We typically respond within 24 hours and are here to answer all your questions about our programs.
+        </p>
       </div>
     </div>
   </section>
