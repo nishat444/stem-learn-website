@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Course Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #selectedCourse {
+            display: none;
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #007bff;
+        }
+        #paymentSection {
+            display: none;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Selection Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Buttons</h2>
+        <button onclick="selectCourse('scratch-juniors', 25)">Select Scratch Juniors (£25)</button>
+        <button onclick="selectCourse('young-coders', 45)">Select Young Coders (£45)</button>
+        <button onclick="testFunction()">Test Function Call</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Selected Course Display</h2>
+        <div id="selectedCourse">
+            <h4>Selected Course</h4>
+            <p id="courseInfo">No course selected</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Payment Section</h2>
+        <div id="paymentSection">
+            <h4>Payment Information</h4>
+            <p>Total Amount: £<span id="totalAmount">0</span></p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Console Logs</h2>
+        <p>Open browser console (F12) to see debug messages</p>
+    </div>
+
+    <script>
+        // Course selection and payment variables
+        let selectedCourse = null;
+        let selectedPrice = 0;
+
+        // Course selection function
+        function selectCourse(course, price) {
+            console.log('selectCourse called with:', course, price);
+            
+            selectedCourse = course;
+            selectedPrice = price;
+            
+            // Show selected course info
+            const courseInfo = document.getElementById('courseInfo');
+            const selectedCourseDiv = document.getElementById('selectedCourse');
+            const paymentSection = document.getElementById('paymentSection');
+            const totalAmount = document.getElementById('totalAmount');
+            
+            console.log('Elements found:', {courseInfo, selectedCourseDiv, paymentSection, totalAmount});
+            
+            if (courseInfo && selectedCourseDiv && paymentSection && totalAmount) {
+                courseInfo.textContent = `${course.charAt(0).toUpperCase() + course.slice(1).replace('-', ' ')} - £${price}/month`;
+                selectedCourseDiv.style.display = 'block';
+                paymentSection.style.display = 'block';
+                totalAmount.textContent = `£${price}`;
+                
+                console.log('Course selection successful!');
+            } else {
+                console.error('Required elements not found!');
+                alert('Error: Required form elements not found.');
+            }
+        }
+
+        function testFunction() {
+            console.log('Test function called successfully!');
+            alert('Test function works!');
+        }
+
+        // Make functions globally accessible
+        window.selectCourse = selectCourse;
+        window.testFunction = testFunction;
+
+        // Test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded');
+            console.log('selectCourse function available:', typeof window.selectCourse);
+        });
+    </script>
+</body>
+</html>

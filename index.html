@@ -488,11 +488,15 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <!-- Stripe SDK -->
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
   <script src="firebase-config.js"></script>
   
   <script>
+    
     // Dropdown functionality
     document.addEventListener('DOMContentLoaded', function() {
       const dropdowns = document.querySelectorAll('.dropdown');
@@ -784,6 +788,200 @@ This email was sent from the STEM Learn website contact form.
         }
       }, 5000);
     }
+
+    // Course selection and payment variables
+    let selectedCourse = null;
+    let selectedPrice = 0;
+    let stripe = null;
+    let elements = null;
+
+    // Initialize Stripe when page loads
+    function initializeStripe() {
+      // Check if Stripe is loaded
+      if (typeof Stripe === 'undefined') {
+        console.error('Stripe is not loaded. Please check your internet connection.');
+        return false;
+      }
+
+      try {
+        // Your actual Stripe publishable key
+        stripe = Stripe('pk_test_51SECfERo1WoPgABEtOzmAhPrJlaCEmM4cX8updZEYSs1w8x6DrAZixHHBlx41Wqbgxx1ZtJmmrnXaL1wSTxxBcYk00GtS6MPzZ');
+        
+        elements = stripe.elements();
+        const cardElement = elements.create('card', {
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#ffffff',
+              '::placeholder': {
+                color: '#aab7c4',
+              },
+            },
+            invalid: {
+              color: '#ff4444',
+            },
+          },
+        });
+        cardElement.mount('#card-element');
+        
+        cardElement.on('change', function(event) {
+          const displayError = document.getElementById('card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = '';
+          }
+        });
+        return true;
+      } catch (error) {
+        console.error('Error initializing Stripe:', error);
+        return false;
+      }
+    }
+
+    // Course selection function
+    function selectCourse(course, price) {
+      
+      selectedCourse = course;
+      selectedPrice = price;
+      
+      // Show selected course info
+      const courseInfo = document.getElementById('courseInfo');
+      const selectedCourseDiv = document.getElementById('selectedCourse');
+      const paymentSection = document.getElementById('paymentSection');
+      const totalAmount = document.getElementById('totalAmount');
+      
+      
+      if (courseInfo && selectedCourseDiv && paymentSection && totalAmount) {
+        courseInfo.textContent = `${course.charAt(0).toUpperCase() + course.slice(1).replace('-', ' ')} - £${price}/month (after £10 registration)`;
+        
+        // Force display by removing the inline style and setting new one
+        selectedCourseDiv.removeAttribute('style');
+        paymentSection.removeAttribute('style');
+        
+        // Set new styles
+        selectedCourseDiv.style.display = 'block';
+        selectedCourseDiv.style.backgroundColor = '#0b0c1a';
+        selectedCourseDiv.style.padding = '1rem';
+        selectedCourseDiv.style.borderRadius = '10px';
+        selectedCourseDiv.style.marginBottom = '2rem';
+        selectedCourseDiv.style.border = '1px solid #3b82f6';
+        
+        paymentSection.style.display = 'block';
+        paymentSection.style.backgroundColor = '#0b0c1a';
+        paymentSection.style.padding = '1.5rem';
+        paymentSection.style.borderRadius = '10px';
+        paymentSection.style.margin = '2rem 0';
+        paymentSection.style.border = '1px solid #3b82f6';
+        totalAmount.textContent = `£10.00 (Registration Fee)`;
+        
+        // Scroll to the payment section
+        paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        
+        // Initialize Stripe if not already done
+        if (!elements) {
+          const success = initializeStripe();
+          if (!success) {
+            showMessage('Payment system is not available. Please contact us directly.', 'error');
+          }
+        }
+      } else {
+        console.error('Required elements not found!');
+        showMessage('Error: Required form elements not found. Please refresh the page.', 'error');
+      }
+    }
+
+    // Process payment function with real Stripe integration
+    async function processPayment(event) {
+      event.preventDefault();
+      
+      if (!selectedCourse || !selectedPrice) {
+        showMessage('Please select a course first.', 'error');
+        return;
+      }
+
+      const form = document.getElementById('contactForm');
+      const formData = new FormData(form);
+      
+      // Show loading state
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Processing Payment...';
+      submitBtn.disabled = true;
+
+      try {
+        // Create payment intent on your server
+        const response = await fetch('http://localhost:3000/create-payment-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: 1000, // £10 registration fee in pence
+            currency: 'gbp',
+            course: selectedCourse,
+            monthlyPrice: selectedPrice, // Store monthly price for later
+            studentName: formData.get('studentName'),
+            grade: formData.get('grade'),
+            parentEmail: formData.get('parentEmail'),
+            phone: formData.get('phone'),
+            message: formData.get('message')
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Server error: ' + response.status);
+        }
+
+        const { clientSecret } = await response.json();
+
+        // Confirm payment with Stripe
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement('card'),
+            billing_details: {
+              name: formData.get('studentName'),
+              email: formData.get('parentEmail'),
+            },
+          }
+        });
+
+        if (error) {
+          showMessage(`Payment failed: ${error.message}`, 'error');
+        } else if (paymentIntent.status === 'succeeded') {
+          // Save registration to Firebase
+          await saveNewUser(formData);
+          showMessage(`Registration successful! £10 registration fee paid. Monthly payment of £${selectedPrice} will be set up separately. Welcome to STEM Learn!`, 'success');
+          form.reset();
+          document.getElementById('selectedCourse').style.display = 'none';
+          document.getElementById('paymentSection').style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Payment error:', error);
+        if (error.message.includes('fetch')) {
+          showMessage('Payment server is not running. Please contact us directly to complete registration.', 'error');
+        } else {
+          showMessage('Payment processing failed. Please try again.', 'error');
+        }
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+
+    // Make selectCourse globally accessible
+    window.selectCourse = selectCourse;
+    window.processPayment = processPayment;
+
+    // Initialize Stripe when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Initialize Stripe after a short delay to ensure it's loaded
+      setTimeout(() => {
+        initializeStripe();
+      }, 1000);
+    });
   </script>
 </head>
 <body>
@@ -807,6 +1005,7 @@ This email was sent from the STEM Learn website contact form.
           </div>
         </li>
         <li><a href="#contact">Contact Us</a></li>
+        <li><a href="pay-registration.html" style="color: #00fff7;">Register Now</a></li>
         <li id="logoutBtn" style="display: none;">
           <a href="#" onclick="logoutUser(); return false;" style="color: #ff4444;">Logout</a>
         </li>
@@ -869,8 +1068,66 @@ This email was sent from the STEM Learn website contact form.
   </section>
 
   <section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <p style="color: #e2e8f0; margin-bottom: 3rem; font-size: 1.3rem; line-height: 1.7;">Get Started on Your Journey to Become a Future Technology Leader</p>
+    <h2>Pricing & Registration</h2>
+    <p style="color: #e2e8f0; margin-bottom: 2rem; font-size: 1.3rem; line-height: 1.7;">Choose Your Learning Path and Get Started Today</p>
+    
+    <!-- Registration Process Explanation -->
+    <div style="background-color: #1f1f3f; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6; text-align: center;">
+      <h4 style="color: #3b82f6; margin-bottom: 1rem;">Simple Registration Process</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; color: #ccc; margin-bottom: 2rem;">
+        <div>
+          <strong style="color: #00fff7;">Step 1: Register</strong><br>
+          Pay £10 registration fee to secure your spot
+        </div>
+        <div>
+          <strong style="color: #00fff7;">Step 2: Monthly Setup</strong><br>
+          Set up recurring monthly payment separately
+        </div>
+      </div>
+      
+      <!-- Separate Action Buttons -->
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="pay-registration.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+          Pay Registration Fee (£10)
+        </a>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+          Set Up Monthly Payment
+        </a>
+      </div>
+    </div>
+    
+    
+    <!-- Pricing Section -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <!-- Scratch Juniors Pricing -->
+      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center;">
+        <h3 style="color: #00fff7; font-size: 1.5rem; margin-bottom: 1rem;">Scratch Juniors</h3>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 6-10</p>
+        <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£19.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
+        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
+          <li>Project-based curriculum</li>
+          <li>Computer science fundamentals</li>
+          <li>Scratch programming & micro:bit</li>
+          <li>AI concepts for young learners</li>
+          <li>Weekly 1 hr session</li>
+        </ul>
+      </div>
+      
+      <!-- Young Coders Pricing -->
+      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center;">
+        <h3 style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 1rem;">Young Coders</h3>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 11-16</p>
+        <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£24.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
+        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
+          <li>Project based comprehensive curriculum</li>
+          <li>Python programming mastery</li>
+          <li>Web development & app creation</li>
+          <li>AI & machine learning projects</li>
+          <li>Weekly 1-hour sessions</li>
+        </ul>
+      </div>
+      
+    </div>
     
     <div class="container">
       <!-- Ready to Transform Your Future Section - Top -->
@@ -889,7 +1146,13 @@ This email was sent from the STEM Learn website contact form.
         <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
           <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Registration</h3>
           <div class="contact-form">
-           <form id="contactForm" onsubmit="registerUser(event); return false;">
+           <!-- Course Selection Display -->
+           <div id="selectedCourse" style="display: none; background-color: #0b0c1a; padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6;">
+             <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Selected Course</h4>
+             <p id="courseInfo" style="color: #ccc; margin: 0;"></p>
+           </div>
+
+           <form id="contactForm" onsubmit="processPayment(event); return false;">
             <div class="form-group">
               <label for="studentName">Student's Name *</label>
               <input type="text" id="studentName" name="studentName" required>
@@ -951,12 +1214,45 @@ This email was sent from the STEM Learn website contact form.
               <textarea id="message" name="message" placeholder="Tell us about your interest in our programs..."></textarea>
             </div>
             
-             <button type="submit" class="submit-btn">Submit</button>
+            <!-- Payment Section -->
+            <div id="paymentSection" style="display: none; background-color: #0b0c1a; padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border: 1px solid #3b82f6;">
+              <h4 style="color: #3b82f6; margin-bottom: 1rem;">Registration Payment</h4>
+              <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Pay the registration fee now. Monthly payments will be set up separately after registration.</p>
+              
+              <!-- Stripe Elements will be inserted here -->
+              <div id="card-element" style="background-color: #1f1f3f; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                <!-- Stripe Elements will create form elements here -->
+              </div>
+              
+              <!-- Display any errors -->
+              <div id="card-errors" role="alert" style="color: #ff4444; margin-bottom: 1rem;"></div>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span style="color: #ccc;">Total Amount:</span>
+                <span id="totalAmount" style="color: #3b82f6; font-size: 1.2rem; font-weight: bold;">£0</span>
+              </div>
+            </div>
+            
+             <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
           </form>
           
           <p style="color: #aaa; font-size: 0.9rem; margin-top: 1rem; text-align: center;">
             <strong>Privacy Note:</strong> We do not sell or share your contact details with anyone, EVER.
           </p>
+          
+          <!-- Registration CTA -->
+          <div style="background: linear-gradient(45deg, #3b82f6, #00fff7); padding: 2rem; border-radius: 15px; text-align: center; margin-top: 2rem;">
+            <h3 style="color: #0b0c1a; font-size: 1.5rem; margin-bottom: 1rem;">Ready to Start Your STEM Journey?</h3>
+            <p style="color: #0b0c1a; margin-bottom: 1.5rem; font-size: 1.1rem;">Join thousands of students learning the skills of the future</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+              <a href="pay-registration.html" style="background: #0b0c1a; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
+                Start Registration (£10)
+              </a>
+              <a href="monthly-payment.html" style="background: transparent; color: #0b0c1a; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
+                Set Up Monthly Payment
+              </a>
+            </div>
+          </div>
           </div>
         </div>
       </div>
