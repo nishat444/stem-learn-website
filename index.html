@@ -778,6 +778,7 @@
     // Save new user to Firebase
     function saveNewUser(formData) {
       const form = document.getElementById('contactForm');
+      const trialType = formData.get('trialType') || 'Regular Registration';
       
       // Create user registration data
       const userData = {
@@ -790,8 +791,9 @@
         phone: formData.get('phone'),
         hearAbout: formData.get('hearAbout'),
         message: formData.get('message'),
+        trialType: trialType,
         registrationDate: firebase.firestore.FieldValue ? firebase.firestore.FieldValue.serverTimestamp() : new Date(),
-        status: 'pending',
+        status: trialType === 'Free Trial' ? 'trial_pending' : 'pending',
         userAgent: navigator.userAgent,
         ipAddress: '', // Will be filled by server
         assessments: [], // Will store assessment results
@@ -814,18 +816,30 @@
               student_name: userData.studentName,
               grade: userData.grade,
               city: userData.city,
-              country: userData.country
+              country: userData.country,
+              trial_type: trialType
             });
           }
           
-          // Show success message
-          showMessage('Registration successful! You are now registered in our Firebase database. You can now take assessments.', 'success');
+          // Show success message based on trial type
+          let successMsg = trialType === 'Free Trial' 
+            ? '🎉 Free Trial Booked Successfully! We will contact you within 24 hours to schedule your trial session. You can now take assessments.' 
+            : 'Registration successful! You are now registered in our Firebase database. You can now take assessments.';
+          
+          showMessage(successMsg, 'success');
           
           // Show logout button
           document.getElementById('logoutBtn').style.display = 'block';
           
           // Reset form
           form.reset();
+          // Reset trial type back to default
+          document.getElementById('trialType').value = 'Regular Registration';
+          // Hide trial banner
+          const trialBanner = document.getElementById('trialBanner');
+          if (trialBanner) {
+            trialBanner.style.display = 'none';
+          }
         })
         .catch((error) => {
           console.error('Error registering user: ', error);
@@ -1141,6 +1155,24 @@ This email was sent from the STEM Learn website contact form.
     window.selectCourse = selectCourse;
     window.processPayment = processPayment;
 
+    // Book Free Trial Function
+    function bookFreeTrial() {
+      // Set trial type
+      document.getElementById('trialType').value = 'Free Trial';
+      
+      // Show trial banner
+      const trialBanner = document.getElementById('trialBanner');
+      if (trialBanner) {
+        trialBanner.style.display = 'block';
+      }
+      
+      // Scroll to form
+      document.getElementById('contactForm').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+    
+    // Make bookFreeTrial globally accessible
+    window.bookFreeTrial = bookFreeTrial;
+
     // Mobile Navigation Toggle
     function toggleMobileNav() {
       const hamburger = document.getElementById('hamburger');
@@ -1262,7 +1294,12 @@ This email was sent from the STEM Learn website contact form.
     <div class="hero-content">
       <h1 style="font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3rem; color: #ffffff; text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 3px 6px rgba(0, 0, 0, 0.8); animation: glow 2s ease-in-out infinite alternate;">LEARN. INNOVATE. EXCEL.</h1>
       <p>Excellence in programming education: from visual coding to advanced AI development.</p>
-      <a href="#courses" class="btn">See Programs</a>
+      <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
+        <a href="#contact" onclick="bookFreeTrial();" class="btn">
+          📚 Book Free Trial
+        </a>
+        <a href="#courses" class="btn">See Programs</a>
+      </div>
     </div>
   </section>
 
@@ -1299,19 +1336,26 @@ This email was sent from the STEM Learn website contact form.
     <!-- Registration Process Explanation -->
     <div style="background-color: #1f1f3f; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6; text-align: center;">
       <h4 style="color: #3b82f6; margin-bottom: 1rem;">Simple Registration Process</h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; color: #ccc; margin-bottom: 2rem;">
-        <div>
-          <strong style="color: #00fff7;">Step 1: Register</strong><br>
-          Pay £10 registration fee to secure your spot
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; color: #ccc; margin-bottom: 2rem;">
+        <div style="background-color: rgba(0, 255, 247, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #00fff7;">
+          <strong style="color: #00fff7; font-size: 1.1rem;">Step 1: Book Free Trial</strong><br>
+          <span style="font-size: 0.95rem;">Experience our teaching style first</span>
         </div>
-        <div>
-          <strong style="color: #00fff7;">Step 2: Monthly Setup</strong><br>
-          Set up recurring monthly payment separately
+        <div style="background-color: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #3b82f6;">
+          <strong style="color: #3b82f6; font-size: 1.1rem;">Step 2: Register</strong><br>
+          <span style="font-size: 0.95rem;">Pay £10 fee to secure your spot</span>
+        </div>
+        <div style="background-color: rgba(255, 107, 53, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #ff6b35;">
+          <strong style="color: #ff6b35; font-size: 1.1rem;">Step 3: Monthly Setup</strong><br>
+          <span style="font-size: 0.95rem;">Set up recurring payment</span>
         </div>
       </div>
       
       <!-- Separate Action Buttons -->
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#contact" onclick="bookFreeTrial();" style="background: transparent; border: 2px solid #00fff7; color: #00fff7; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+          📚 Book Free Trial
+        </a>
         <a href="pay-registration.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
           Pay Registration Fee (£10)
         </a>
@@ -1327,7 +1371,7 @@ This email was sent from the STEM Learn website contact form.
       <!-- Scratch Juniors Pricing -->
       <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center;">
         <h3 style="color: #00fff7; font-size: 1.5rem; margin-bottom: 1rem;">Scratch Juniors</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 6-10</p>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 8-11</p>
         <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£19.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
           <li>Project-based curriculum</li>
@@ -1341,7 +1385,7 @@ This email was sent from the STEM Learn website contact form.
       <!-- Young Coders Pricing -->
       <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center;">
         <h3 style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 1rem;">Young Coders</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 11-16</p>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 12-16</p>
         <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£24.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
           <li>Project based comprehensive curriculum</li>
@@ -1371,6 +1415,12 @@ This email was sent from the STEM Learn website contact form.
         <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
           <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Registration</h3>
           <div class="contact-form">
+           <!-- Free Trial Banner -->
+           <div id="trialBanner" style="display: none; background: linear-gradient(45deg, #00ff7f, #00fff7); color: #0b0c1a; padding: 1rem; border-radius: 10px; margin-bottom: 2rem; text-align: center; font-weight: bold; box-shadow: 0 4px 15px rgba(0, 255, 247, 0.3);">
+             <span style="font-size: 1.2rem;">📚 Booking FREE TRIAL Session</span>
+             <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; font-weight: normal;">Fill in your details below and we'll contact you to schedule your trial!</p>
+           </div>
+           
            <!-- Course Selection Display -->
            <div id="selectedCourse" style="display: none; background-color: #0b0c1a; padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6;">
              <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Selected Course</h4>
@@ -1378,6 +1428,9 @@ This email was sent from the STEM Learn website contact form.
            </div>
 
            <form id="contactForm" onsubmit="processPayment(event); return false;">
+            <!-- Hidden field for trial type -->
+            <input type="hidden" id="trialType" name="trialType" value="Regular Registration">
+            
             <div class="form-group">
               <label for="studentName">Student's Name *</label>
               <input type="text" id="studentName" name="studentName" required>
@@ -1470,6 +1523,9 @@ This email was sent from the STEM Learn website contact form.
             <h3 style="color: #0b0c1a; font-size: 1.5rem; margin-bottom: 1rem;">Ready to Start Your STEM Journey?</h3>
             <p style="color: #0b0c1a; margin-bottom: 1.5rem; font-size: 1.1rem;">Join thousands of students learning the skills of the future</p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+              <a href="#contact" onclick="bookFreeTrial();" style="background: transparent; border: 2px solid #00fff7; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+                📚 Book Free Trial
+              </a>
               <a href="pay-registration.html" style="background: #0b0c1a; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
                 Start Registration (£10)
               </a>
