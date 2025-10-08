@@ -59,6 +59,35 @@
       gap: 1.5rem;
     }
 
+    /* Hamburger Menu Styles */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #00fff7;
+      margin: 3px 0;
+      transition: 0.3s;
+      border-radius: 3px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
     .dropdown {
       position: relative;
     }
@@ -475,12 +504,150 @@
       font-size: 0.9rem;
     }
 
+    /* Mobile Responsive Styles */
     @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.2rem;
+      /* Show hamburger, hide desktop nav */
+      .hamburger {
+        display: flex;
       }
-      .hero p {
+
+      nav ul {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        flex-direction: column;
+        background-color: #0b0c1a;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        padding: 5rem 2rem 2rem;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        gap: 0;
+      }
+
+      nav ul.active {
+        right: 0;
+      }
+
+      nav ul li {
+        width: 100%;
+        padding: 1rem 0;
+        border-bottom: 1px solid #1f1f3f;
+      }
+
+      .dropdown-content {
+        position: static;
+        display: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        background-color: #1f1f3f;
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+      }
+
+      .dropdown.active .dropdown-content {
+        display: block;
+      }
+
+      /* Typography adjustments */
+      body {
         font-size: 1rem;
+      }
+
+      header .logo {
+        font-size: 1.5rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        min-height: 70vh;
+        padding: 2rem 1rem;
+      }
+
+      /* Cards and Grids */
+      .courses-grid, .features-grid, .pricing-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .card h3 {
+        font-size: 1.3rem;
+      }
+
+      .card p {
+        font-size: 0.95rem;
+      }
+
+      /* Buttons */
+      .btn, .cta-btn, .submit-btn, .test-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      input, textarea, select {
+        font-size: 1rem;
+      }
+
+      /* Container adjustments */
+      .container {
+        width: 95%;
+      }
+
+      /* Pricing cards */
+      .price {
+        font-size: 2rem !important;
+      }
+
+      /* Registration CTA */
+      div[style*="display: flex"] {
+        flex-direction: column !important;
+      }
+
+      /* Hide decorative elements on mobile for performance */
+      .hero::before,
+      .hero::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header .logo {
+        font-size: 1.2rem;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .card {
+        padding: 1.2rem;
+      }
+
+      .price {
+        font-size: 1.8rem !important;
       }
     }
   </style>
@@ -974,8 +1141,61 @@ This email was sent from the STEM Learn website contact form.
     window.selectCourse = selectCourse;
     window.processPayment = processPayment;
 
+    // Mobile Navigation Toggle
+    function toggleMobileNav() {
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu');
+      
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+    }
+
+    // Mobile dropdown toggle
+    function toggleDropdown(event) {
+      if (window.innerWidth <= 768) {
+        const dropdown = event.target.closest('.dropdown');
+        if (dropdown) {
+          event.preventDefault();
+          dropdown.classList.toggle('active');
+        }
+      }
+    }
+
     // Initialize Stripe when page loads
     document.addEventListener('DOMContentLoaded', function() {
+      
+      // Mobile menu toggle
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu');
+      
+      if (hamburger) {
+        hamburger.addEventListener('click', toggleMobileNav);
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('nav') && !event.target.closest('.hamburger')) {
+          navMenu.classList.remove('active');
+          hamburger.classList.remove('active');
+        }
+      });
+
+      // Mobile dropdown toggle
+      const dropdownLinks = document.querySelectorAll('.dropdown > a');
+      dropdownLinks.forEach(link => {
+        link.addEventListener('click', toggleDropdown);
+      });
+
+      // Close mobile menu when clicking a link
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+          }
+        });
+      });
       
       // Initialize Stripe after a short delay to ensure it's loaded
       setTimeout(() => {
@@ -987,8 +1207,13 @@ This email was sent from the STEM Learn website contact form.
 <body>
   <header class="container">
     <div class="logo">STEM Learn</div>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <nav>
-      <ul>
+      <ul id="navMenu">
         <li class="dropdown">
           <a href="#about">About Us</a>
           <div class="dropdown-content">

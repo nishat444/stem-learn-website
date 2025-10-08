@@ -251,6 +251,7 @@
             box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
         }
 
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .container {
                 padding: 0 1rem;
@@ -258,10 +259,88 @@
             
             .billing-info {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
             
             .success-banner h1 {
+                font-size: 1.6rem;
+            }
+
+            .success-banner p {
+                font-size: 0.95rem;
+            }
+
+            .payment-form {
+                padding: 1.5rem;
+            }
+
+            .payment-form h1 {
+                font-size: 1.8rem;
+            }
+
+            .course-selector {
+                padding: 1.2rem;
+            }
+
+            .course-option {
+                padding: 1rem;
+            }
+
+            .price {
+                font-size: 2rem !important;
+            }
+
+            #card-element {
+                padding: 0.8rem;
+            }
+
+            button {
+                padding: 0.9rem;
+                font-size: 1rem;
+            }
+
+            .back-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .course-info h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header .logo {
                 font-size: 1.5rem;
+            }
+
+            .success-banner h1 {
+                font-size: 1.3rem;
+            }
+
+            .success-banner p {
+                font-size: 0.85rem;
+            }
+
+            .payment-form {
+                padding: 1.2rem;
+            }
+
+            .payment-form h1 {
+                font-size: 1.5rem;
+            }
+
+            .course-option h3 {
+                font-size: 1.1rem;
+            }
+
+            .price {
+                font-size: 1.8rem !important;
+            }
+
+            button {
+                padding: 0.8rem;
+                font-size: 0.95rem;
             }
         }
     </style>
