@@ -79,6 +79,7 @@ node stripe-server.js
 
 ## 🔄 **What Happens Next:**
 
+
 1. **Without Stripe Setup**: Registration saves to Firebase, shows message about contacting for payment
 2. **With Stripe Setup**: Full payment processing with real-time card validation
 
