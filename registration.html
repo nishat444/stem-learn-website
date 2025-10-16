@@ -329,7 +329,7 @@
         <div class="container">
             <div class="course-selection">
                 <h1>Course Registration</h1>
-                <p>Choose your course and complete registration with a £10 registration fee</p>
+                <p>Choose your course and complete free registration</p>
             </div>
 
             <div class="pricing-cards" id="pricingCards">
@@ -338,7 +338,7 @@
                     <h3>Scratch Juniors</h3>
                     <p class="age">Ages 6-10</p>
                     <div class="price">£19.99<span style="font-size: 1rem; color: #cbd5e1;">/month</span></div>
-                    <div class="registration-fee">+ £10 Registration Fee</div>
+                    <div class="registration-fee">+ Free Registration</div>
                     <ul>
                         <li>Project-based curriculum</li>
                         <li>Computer science fundamentals</li>
@@ -354,7 +354,7 @@
                     <h3>Young Coders</h3>
                     <p class="age">Ages 11-16</p>
                     <div class="price">£24.99<span style="font-size: 1rem; color: #cbd5e1;">/month</span></div>
-                    <div class="registration-fee">+ £10 Registration Fee</div>
+                    <div class="registration-fee">+ Free Registration</div>
                     <ul>
                         <li>Project based comprehensive curriculum</li>
                         <li>Python programming mastery</li>
@@ -420,7 +420,7 @@
 
                     <div class="payment-section">
                         <h4>Registration Payment</h4>
-                        <p>Pay the £10 registration fee to secure your spot. Monthly payments will be set up separately after registration.</p>
+                        <p>Complete your free registration to secure your spot. Monthly payments will be set up separately after registration.</p>
                         
                         <div id="card-element">
                             <!-- Stripe Elements will be inserted here -->
@@ -430,7 +430,7 @@
                         
                         <div class="total-amount">
                             <span>Registration Fee:</span>
-                            <span id="totalAmount">£10.00</span>
+                            <span id="totalAmount">Free</span>
                         </div>
                     </div>
 
@@ -548,7 +548,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        amount: 1000, // £10 registration fee in pence
+                        amount: 0, // Free registration
                         currency: 'gbp',
                         course: selectedCourse,
                         monthlyPrice: selectedPrice,
@@ -582,7 +582,7 @@
                 } else if (paymentIntent.status === 'succeeded') {
                     // Save registration to Firebase
                     await saveRegistration(formData);
-                    showMessage(`Registration successful! £10 registration fee paid. You will receive an email with instructions to set up your monthly payment of £${selectedPrice}. Welcome to STEM Learn!`, 'success');
+                    showMessage(`Registration successful! Free registration completed. You will receive an email with instructions to set up your monthly payment of £${selectedPrice}. Welcome to STEM Learn!`, 'success');
                     
                     // Redirect to monthly payment setup after 3 seconds
                     setTimeout(() => {
