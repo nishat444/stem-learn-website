@@ -3,153 +3,134 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Monthly Payment Setup - STEM Learn (Checkout)</title>
+<title>Monthly Payment Setup - STEM Learn</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Poppins','Segoe UI','Roboto',sans-serif;background: linear-gradient(135deg,#0b0c1a 0%,#1e293b 100%);color:#fff;line-height:1.6;min-height:100vh;}
-    .container{max-width:900px;margin:0 auto;padding:2rem;}
-    .header{background:#1f1f3f;padding:1rem;border-bottom:1px solid #3b82f6;}
-    .logo{font-family:'Orbitron',sans-serif;font-size:1.8rem;color:#00fff7;letter-spacing:2px;}
-    .card{background:#1f1f3f;border:1px solid #3b82f6;padding:1.5rem;border-radius:12px;margin-bottom:1.5rem;}
-    .center{text-align:center;}
-    .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem;}
-    .course-btn{padding:1rem;border-radius:10px;border:none;cursor:pointer;font-weight:700;transition:all 0.2s ease;}
-    .course-btn .title{display:block;font-size:1rem;margin-bottom:.25rem;}
-    .course-btn .price{font-size:1.3rem;}
-    .course-btn:hover{transform:translateY(-2px);}
-    .primary{background:linear-gradient(45deg,#00fff7,#3b82f6);color:#071018;}
-    .accent{background:linear-gradient(45deg,#ff6b35,#ff8c42);color:#071018;}
-    .muted{background:#0b0c1a;color:#fff;border:1px solid #3b82f6;}
-    .actions{display:flex;gap:1rem;margin-top:1rem;}
-    .full{flex:1;padding:1rem;border-radius:8px;border:none;cursor:pointer;font-weight:700;transition:all 0.3s ease;}
-    .full[disabled]{opacity:.6;cursor:not-allowed;}
-    .message{padding:.8rem;border-radius:8px;margin-bottom:1rem;text-align:center;font-weight:500;}
-    .message.error{background:rgba(255,68,68,0.08);border:1px solid #ff4444;color:#ffbbbb;}
-    .message.success{background:rgba(0,255,127,0.06);border:1px solid #00ff7f;color:#bfffe2;}
-    @media(max-width:600px){.actions{flex-direction:column;}}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins','Segoe UI','Roboto',sans-serif;background: linear-gradient(135deg,#0b0c1a 0%,#1e293b 100%);color:#fff;line-height:1.6;min-height:100vh;}
+.container{max-width:900px;margin:0 auto;padding:2rem;}
+.header{background:#1f1f3f;padding:1rem;border-bottom:1px solid #3b82f6;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:'Orbitron',sans-serif;font-size:1.8rem;color:#00fff7;letter-spacing:2px;}
+.home-btn{background:none;border:2px solid #00fff7;color:#00fff7;padding:0.5rem 0.9rem;border-radius:8px;cursor:pointer;font-weight:600;transition:all .18s ease;}
+.home-btn:hover{background:#00fff7;color:#071018;}
+.card{background:#1f1f3f;border:1px solid #3b82f6;padding:1.5rem;border-radius:12px;margin-bottom:1.5rem;}
+.center{text-align:center;}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem;}
+.course-btn {padding: 1rem;border-radius: 10px;border: none;cursor: pointer;font-weight: 700;transition: all 0.2s ease;background: #0b0c1a;border: 1px solid #3b82f6;color: #fff;text-align: left;}
+.course-btn .title{display:block;font-size:1rem;margin-bottom:.25rem;}
+.course-btn .price{font-size:1.3rem;font-weight:800;}
+.course-btn .desc{font-size:0.9rem;color:#cbd5e1;margin-top:0.45rem;}
+.course-btn:hover{transform:translateY(-4px);background:linear-gradient(45deg,#00fff7,#3b82f6);color:#071018;}
+.actions{display:flex;gap:1rem;margin-top:1rem;}
+.full{flex:1;padding:1rem;border-radius:8px;border:none;cursor:pointer;font-weight:700;transition:all 0.3s ease;}
+.primary{background:linear-gradient(45deg,#00fff7,#3b82f6);color:#071018;}
+.muted{background:#0b0c1a;color:#fff;border:1px solid #3b82f6;}
+.full[disabled]{opacity:.6;cursor:not-allowed;}
+.message{padding:.8rem;border-radius:8px;margin-top:1rem;text-align:center;font-weight:500;}
+.message.error{background:rgba(255,68,68,0.08);border:1px solid #ff4444;color:#ffbbbb;}
+.message.success{background:rgba(0,255,127,0.06);border:1px solid #00ff7f;color:#bfffe2;}
+@media(max-width:600px){.actions{flex-direction:column;}.header{flex-direction:column;gap:0.5rem;align-items:flex-start}}
 </style>
 </head>
 <body>
 <div class="header">
-    <div class="container"><div class="logo">STEM Learn</div></div>
+  <div class="logo">STEM Learn</div>
+  <button class="home-btn" onclick="goHome()">Return to Home</button>
 </div>
 
 <div class="container" style="padding-top:2rem;">
-    <div class="card center">
-        <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;">Set Up Monthly Payment</h1>
-        <p style="color:#cbd5e1;">Choose a course below and complete enrollment via Stripe's secure hosted Checkout page.</p>
+  <div class="card center">
+    <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;">Set Up Monthly Payment</h1>
+    <p style="color:#cbd5e1;">Choose a course below — clicking the main button will open the hosted checkout page for that course.</p>
+  </div>
+
+  <div class="card">
+    <h2 style="color:#3b82f6;">Selected Course</h2>
+    <div id="selectedCourse" style="margin-top: .75rem; color:#cbd5e1;">No course selected — pick one below</div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#3b82f6;">Available Monthly Subscriptions</h3>
+    <div class="course-grid" id="courseGrid"></div>
+
+    <div class="actions" style="margin-top:1rem;">
+      <button id="checkoutBtn" class="full primary" disabled>Open Hosted Checkout</button>
+      <button id="skipBtn" class="full muted" onclick="skipPayment()">Skip for Now</button>
     </div>
 
-    <div class="card">
-        <h2 style="color:#3b82f6;">Selected Course</h2>
-        <div id="selectedCourse" style="margin-top: .75rem; color:#cbd5e1;">No course selected — pick one below</div>
-    </div>
-
-    <div class="card">
-        <h3 style="color:#3b82f6;">Available Monthly Subscriptions</h3>
-        <div class="course-grid" id="courseGrid"></div>
-
-        <div style="margin-top:1rem; display:flex; gap:1rem;" class="actions center">
-            <button id="checkoutBtn" class="full primary" disabled>Open Stripe Checkout</button>
-            <button id="skipBtn" class="full muted" onclick="skipPayment()">Skip for Now</button>
-        </div>
-
-        <div id="messageArea" style="margin-top:1rem;"></div>
-    </div>
+    <div id="messageArea"></div>
+  </div>
 </div>
 
-<!-- Stripe.js -->
-<script src="https://js.stripe.com/v3/"></script>
 <script>
-    const STRIPE_PUBLISHABLE_KEY = 'pk_test_51SECfERo1WoPgABEtOzmAhPrJlaCEmM4cX8updZEYSs1w8x6DrAZixHHBlx41Wqbgxx1ZtJmmrnXaL1wSTxxBcYk00GtS6MPzZ';
-    const CREATE_SESSION_ENDPOINT = '/create-checkout-session';
+  const COURSES = [
+    { title: "Scratch Juniors", price: "£25.00/month", desc: "Intro to programming with Scratch & micro:bit", link: "https://buy.stripe.com/test_9B6cN4bkE8d0gjy7zWcZa02" },
+    { title: "Young Coders", price: "£45.00/month", desc: "Project-driven coding & intro to AI", link: "https://buy.stripe.com/test_28E5kCewQ9h4c3i1bycZa01" },
+    { title: "GCSE Prep", price: "£60.00/month", desc: "GCSE-level programming & exam support", link: "https://buy.stripe.com/test_fZubJ088seBod7m6vScZa00" }
+  ];
 
-    const COURSES = [
-        { id: 'scratch-juniors', title: 'Scratch Juniors', pricePence: 2500, description: 'Intro to programming with Scratch & micro:bit' },
-        { id: 'young-coders', title: 'Young Coders', pricePence: 4500, description: 'Project-driven coding & intro to AI' },
-        { id: 'gcse-prep', title: 'GCSE Prep', pricePence: 6000, description: 'GCSE-level programming & exam support' }
-    ];
+  const courseGrid = document.getElementById('courseGrid');
+  const selectedCourseEl = document.getElementById('selectedCourse');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const messageArea = document.getElementById('messageArea');
+  let selectedCourse = null;
 
-    let stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-    const courseGrid = document.getElementById('courseGrid');
-    const selectedCourseEl = document.getElementById('selectedCourse');
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const messageArea = document.getElementById('messageArea');
-    let selectedCourse = null;
-
-    function renderCourses() {
-        courseGrid.innerHTML = '';
-        COURSES.forEach(c => {
-            const btn = document.createElement('button');
-            btn.className = 'course-btn muted';
-            btn.innerHTML = `<span class="title">${c.title}</span><span class="price">£${(c.pricePence/100).toFixed(2)}/month</span><div style="font-size:0.9rem;color:#cbd5e1;margin-top:.4rem">${c.description}</div>`;
-            btn.onclick = () => selectCourse(c);
-            courseGrid.appendChild(btn);
-        });
-    }
-
-    function selectCourse(c) {
-        selectedCourse = c;
-        selectedCourseEl.innerHTML = `<strong>${c.title}</strong> — £${(c.pricePence/100).toFixed(2)}/month<br/><span style="color:#cbd5e1">${c.description}</span>`;
-        checkoutBtn.disabled = false;
-        checkoutBtn.textContent = `Set up ${c.title} (£${(c.pricePence/100).toFixed(2)}/month)`;
-    }
-
-    function showMessage(text, type='error') {
-        messageArea.innerHTML = `<div class="message ${type}">${text}</div>`;
-        if(type==='success'){setTimeout(()=> messageArea.innerHTML='',5000);}
-    }
-
-    checkoutBtn.addEventListener('click', async () => {
-        if (!selectedCourse) return showMessage('Please select a course first.', 'error');
-
-        checkoutBtn.disabled = true;
-        checkoutBtn.textContent = 'Opening Checkout...';
-
-        try {
-            const resp = await fetch(CREATE_SESSION_ENDPOINT, {
-                method:'POST',
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({
-                    courseId: selectedCourse.id,
-                    courseName: selectedCourse.title,
-                    pricePence: selectedCourse.pricePence,
-                    currency:'gbp'
-                })
-            });
-
-            if (!resp.ok) throw new Error(`Server error (${resp.status})`);
-            const data = await resp.json();
-            if(!data.sessionId) throw new Error('No sessionId returned from server.');
-
-            const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
-            if(result.error) showMessage('Stripe Checkout error: '+result.error.message, 'error');
-        } catch(err) {
-            console.error(err);
-            showMessage('Could not start Checkout: '+err.message,'error');
-        } finally {
-            checkoutBtn.disabled = false;
-            checkoutBtn.textContent = selectedCourse ? `Set up ${selectedCourse.title} (£${(selectedCourse.pricePence/100).toFixed(2)}/month)` : 'Open Stripe Checkout';
-        }
+  function renderCourses() {
+    courseGrid.innerHTML = '';
+    COURSES.forEach((c, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'course-btn';
+      btn.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <span class="title">${c.title}</span>
+            <div class="desc">${c.desc}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="price">${c.price}</div>
+          </div>
+        </div>
+      `;
+      btn.onclick = () => selectCourse(c, idx);
+      courseGrid.appendChild(btn);
     });
+  }
 
-    function skipPayment() {
-        if(confirm('Skip payment now? You can set it up later by contacting us.')) {
-            showMessage('Skipped payment setup. You can enroll later.', 'success');
-            setTimeout(()=> window.location.href='index.html',1200);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded',()=>{
-        renderCourses();
-        const params = new URLSearchParams(window.location.search);
-        const q = params.get('course');
-        if(q){
-            const found = COURSES.find(c=>c.id===q || c.title.toLowerCase().includes(q.toLowerCase()));
-            if(found) selectCourse(found);
-        }
+  function selectCourse(c, idx) {
+    selectedCourse = c;
+    selectedCourseEl.innerHTML = `<strong>${c.title}</strong> — ${c.price}<br/><span style="color:#cbd5e1">${c.desc}</span>`;
+    checkoutBtn.disabled = false;
+    checkoutBtn.textContent = `Open Checkout for ${c.title}`;
+    // Highlight selected
+    Array.from(document.querySelectorAll('.course-btn')).forEach((b, i) => {
+      b.style.boxShadow = (i === idx) ? '0 10px 30px rgba(59,130,246,0.12)' : '';
     });
+  }
+
+  function showMessage(text, type='error') {
+    messageArea.innerHTML = `<div class="message ${type}">${text}</div>`;
+    if (type === 'success') setTimeout(()=> messageArea.innerHTML = '', 4000);
+  }
+
+  checkoutBtn.addEventListener('click', () => {
+    if (!selectedCourse) return showMessage('Please select a course first.', 'error');
+    window.location.href = selectedCourse.link; // direct open link
+  });
+
+  function skipPayment() {
+    if (confirm('Skip payment now? You can set it up later by contacting us.')) {
+      showMessage('Skipped payment setup. You can enroll later.', 'success');
+      setTimeout(()=> window.location.href = 'index.html', 1000);
+    }
+  }
+
+  function goHome() {
+    window.location.href = 'index.html';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCourses();
+  });
 </script>
 </body>
 </html>
