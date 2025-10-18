@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Successful — STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #0b0c1a;
+      --bg-2: #1f1f3f;
+      --accent-cyan: #00fff7;
+      --accent-blue: #3b82f6;
+      --success: #00ff7f;
+      --muted: #cbd5e1;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,var(--bg-1) 0%, #101128 50%, var(--bg-2) 100%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+    }
+
+    .card{
+      width:100%;
+      max-width:880px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      border:1px solid rgba(59,130,246,0.12);
+      border-radius:16px;
+      padding:2rem;
+      box-shadow:0 12px 40px rgba(2,6,23,0.6);
+    }
+
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1.25rem;
+    }
+
+    .brand{
+      display:flex;
+      gap:1rem;
+      align-items:center;
+    }
+
+    .logo{
+      font-family:'Orbitron',sans-serif;
+      color:var(--accent-cyan);
+      font-size:1.6rem;
+      letter-spacing:2px;
+    }
+
+    .small{
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    .success-banner{
+      background: linear-gradient(45deg, rgba(0,255,127,0.12), rgba(0,255,247,0.06));
+      border:1px solid rgba(0,255,127,0.18);
+      color:var(--success);
+      padding:1.25rem;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1.25rem;
+    }
+
+    .success-icon{
+      width:56px;
+      height:56px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--accent-cyan),var(--success));
+      color:#071018;
+      font-weight:700;
+      font-size:1.25rem;
+    }
+
+    h1{
+      font-family:'Orbitron',sans-serif;
+      color:var(--accent-blue);
+      font-size:1.6rem;
+      margin-bottom:0.25rem;
+    }
+
+    p.lead{
+      color:var(--muted);
+      font-size:1rem;
+      margin-bottom:1rem;
+    }
+
+    .details{
+      display:flex;
+      gap:1rem;
+      flex-wrap:wrap;
+      margin-bottom:1.25rem;
+    }
+
+    .detail{
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(59,130,246,0.06);
+      padding:0.9rem 1rem;
+      border-radius:10px;
+      min-width:200px;
+    }
+
+    .detail .label{ color:var(--muted); font-size:0.85rem; margin-bottom:0.4rem; display:block}
+    .detail .value{ font-weight:600; color:#fff; word-break:break-all }
+
+    .actions{
+      display:flex;
+      gap:0.75rem;
+      margin-top:0.75rem;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:0.85rem 1.2rem;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      font-size:0.98rem;
+      transition:all 0.18s ease;
+    }
+
+    .btn-primary{
+      background: linear-gradient(45deg,var(--accent-cyan),var(--accent-blue));
+      color:#071018;
+      box-shadow:0 8px 20px rgba(0,255,247,0.08);
+    }
+    .btn-primary:hover{ transform:translateY(-3px); }
+
+    .btn-ghost{
+      background:transparent;
+      color:var(--accent-blue);
+      border:1px solid rgba(59,130,246,0.22);
+    }
+    .btn-ghost:hover{ background:rgba(59,130,246,0.06); color:#fff; transform:translateY(-2px); }
+
+    .note{ color:var(--muted); margin-top:1rem; font-size:0.95rem }
+
+    /* responsive */
+    @media (max-width:600px){
+      .detail{ min-width:140px; }
+      .header{ flex-direction:column; align-items:flex-start; gap:0.5rem }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="successTitle">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">STEM Learn</div>
+        <div class="small">Subscription — Checkout</div>
+      </div>
+      <div>
+        <button class="btn btn-ghost" onclick="goHome()" aria-label="Return to home">Return to Home</button>
+      </div>
+    </div>
+
+    <div class="success-banner" role="status" aria-live="polite">
+      <div class="success-icon">✓</div>
+      <div>
+        <h1 id="successTitle">Payment successful</h1>
+        <p class="lead">Thank you — your subscription is active. A confirmation email will be sent shortly.</p>
+      </div>
+    </div>
+
+    <div class="details" aria-hidden="false">
+      <div class="detail">
+        <span class="label">Session ID</span>
+        <span class="value" id="sessionId">—</span>
+      </div>
+
+      <div class="detail">
+        <span class="label">Billing</span>
+        <span class="value" id="billing">Card charged via Stripe</span>
+      </div>
+
+      <div class="detail">
+        <span class="label">Next Billing</span>
+        <span class="value" id="nextBilling">See Stripe invoice</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="copySession()">Copy Session ID</button>
+      <button class="btn btn-ghost" onclick="openPortal()">View Subscription (Portal)</button>
+      <button class="btn btn-ghost" onclick="goHome()">Return to Home</button>
+    </div>
+
+    <p class="note">If you need help, contact us at <strong>stemlearn.co.uk@gmail.com</strong> or visit your dashboard.</p>
+  </div>
+
+  <script>
+    // read session_id from URL query string and show it
+    function qs(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const sessionId = qs('session_id') || qs('sessionId') || '';
+    if (sessionId) {
+      document.getElementById('sessionId').textContent = sessionId;
+    } else {
+      document.getElementById('sessionId').textContent = 'Not provided';
+    }
+
+    function copySession() {
+      const text = document.getElementById('sessionId').textContent;
+      if (!text || text === 'Not provided') {
+        alert('No session ID available to copy.');
+        return;
+      }
+      navigator.clipboard?.writeText(text).then(() => {
+        alert('Session ID copied to clipboard');
+      }, () => {
+        prompt('Copy the session ID manually:', text);
+      });
+    }
+
+    function openPortal() {
+      // placeholder: replace with your real customer portal link
+      window.location.href = '/account/portal'; 
+    }
+
+    function goHome() {
+      window.location.href = '/'; // replace or keep as index if needed
+    }
+  </script>
+</body>
+</html>
