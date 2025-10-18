@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Tuition - STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1e293b 100%);
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .header {
+      background-color: #1f1f3f;
+      padding: 1rem 0;
+      border-bottom: 1px solid #3b82f6;
+    }
+
+    .header .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+    }
+
+    .main-content {
+      padding: 3rem 0;
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .hero-section h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      color: #00fff7;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px #00fff7;
+    }
+
+    .hero-section p {
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .tuition-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .tuition-card {
+      background: linear-gradient(145deg, #1f1f3f, #2a2a4a);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid #3b82f6;
+      transition: all 0.3s ease;
+    }
+
+    .tuition-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    .tuition-card h3 {
+      color: #00fff7;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .tuition-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tuition-card li {
+      color: #ccc;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .tuition-card li:before {
+      content: "✓";
+      color: #00fff7;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .pricing-section {
+      background: linear-gradient(145deg, #1f1f3f, #2a2a4a);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 1px solid #00fff7;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .pricing-section h2 {
+      color: #00fff7;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .pricing-card {
+      background: rgba(0, 255, 247, 0.1);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid #00fff7;
+    }
+
+    .pricing-card h3 {
+      color: #00fff7;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-card .price {
+      font-size: 2rem;
+      color: #fff;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(45deg, #3b82f6, #00fff7);
+      padding: 3rem;
+      border-radius: 20px;
+      margin-bottom: 3rem;
+    }
+
+    .cta-section h2 {
+      color: #0b0c1a;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .cta-section p {
+      color: #0b0c1a;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #0b0c1a;
+      color: #00fff7;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border: 2px solid #0b0c1a;
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: #0b0c1a;
+      border-color: #0b0c1a;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 2rem;
+      color: #00fff7;
+      text-decoration: none;
+      border: 1px solid #00fff7;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #00fff7;
+      color: #0b0c1a;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+      
+      .tuition-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .pricing-section {
+        padding: 2rem 1rem;
+      }
+      
+      .cta-section {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+    
+    <div class="hero-section">
+      <h1>Private Tuition</h1>
+      <p>One-on-one personalized learning experience tailored to your child's specific needs and learning style. Get the focused attention and customized curriculum your child deserves.</p>
+    </div>
+
+    <div class="tuition-grid">
+      <div class="tuition-card">
+        <h3>🎯 11+ Preparation</h3>
+        <ul>
+          <li>Comprehensive preparation for grammar and independent school entrance exams</li>
+          <li>Verbal reasoning and non-verbal reasoning practice</li>
+          <li>Mathematics and English skills development</li>
+          <li>Mock exams and practice tests</li>
+          <li>Exam technique and time management strategies</li>
+          <li>Confidence building and stress management</li>
+        </ul>
+      </div>
+
+      <div class="tuition-card">
+        <h3>🔬 Primary School Maths/Science/English</h3>
+        <ul>
+          <li>Foundation building for ages 5-11</li>
+          <li>Interactive lessons and hands-on experiments</li>
+          <li>Problem-solving strategies and critical thinking</li>
+          <li>Key Stage 1 and 2 curriculum coverage</li>
+          <li>Fun and engaging learning methods</li>
+          <li>Regular progress assessments and feedback</li>
+        </ul>
+      </div>
+
+      <div class="tuition-card">
+        <h3>📚 Secondary School Maths/Science</h3>
+        <ul>
+          <li>GCSE and A-Level preparation and support</li>
+          <li>Advanced mathematics, physics, chemistry, and biology</li>
+          <li>Exam techniques and revision strategies</li>
+          <li>Practical applications and real-world examples</li>
+          <li>Past paper practice and analysis</li>
+          <li>University preparation and career guidance</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tuition-grid">
+      <div class="tuition-card">
+        <h3>🎯 Personalized Learning</h3>
+        <ul>
+          <li>Customized curriculum based on your child's needs</li>
+          <li>Individual attention and focused learning</li>
+          <li>Flexible pacing to match learning speed</li>
+          <li>Regular progress assessments and feedback</li>
+          <li>Adaptive teaching methods for different learning styles</li>
+        </ul>
+      </div>
+
+      <div class="tuition-card">
+        <h3>📚 Subject Expertise</h3>
+        <ul>
+          <li>Mathematics (Primary to A-Level)</li>
+          <li>Science (Physics, Chemistry, Biology)</li>
+          <li>Computer Science & Programming</li>
+          <li>English Language & Literature</li>
+          <li>11+ and GCSE/A-Level preparation</li>
+        </ul>
+      </div>
+
+      <div class="tuition-card">
+        <h3>⏰ Flexible Scheduling</h3>
+        <ul>
+          <li>Convenient time slots to fit your schedule</li>
+          <li>Online or in-person sessions available</li>
+          <li>Regular weekly sessions or intensive blocks</li>
+          <li>Holiday revision and catch-up sessions</li>
+          <li>Emergency support before exams</li>
+        </ul>
+      </div>
+
+      <div class="tuition-card">
+        <h3>🏆 Proven Results</h3>
+        <ul>
+          <li>Expert tutors with proven track records</li>
+          <li>Improved grades and confidence</li>
+          <li>Exam technique and study skills</li>
+          <li>Regular progress reports for parents</li>
+          <li>Success stories from previous students</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Ready to Get Started?</h2>
+      <p>Book a free consultation to discuss your child's needs and create a personalized learning plan.</p>
+      <a href="index.html#registration" class="btn">Book Free Consultation</a>
+    </div>
+  </div>
+</body>
+</html>

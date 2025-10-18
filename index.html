@@ -715,10 +715,11 @@
         // Validate required fields
         const studentName = formData.get('studentName');
         const grade = formData.get('grade');
+        const courseInterest = formData.get('courseInterest');
         const parentName = formData.get('parentName');
         const email = formData.get('email');
         
-        if (!studentName || !grade || !parentName || !email) {
+        if (!studentName || !grade || !courseInterest || !parentName || !email) {
           console.error('Missing required fields');
           showMessage('Please fill in all required fields (marked with *)', 'error');
           return;
@@ -786,6 +787,7 @@
       const userData = {
         studentName: formData.get('studentName'),
         grade: formData.get('grade'),
+        courseInterest: formData.get('courseInterest'),
         city: formData.get('city'),
         country: formData.get('country'),
         parentName: formData.get('parentName'),
@@ -823,8 +825,8 @@
             });
           }
           
-          // Show success message for free registration
-          let successMsg = '🎉 Registration Successful! You are now registered for our STEM programs. You can now take assessments and set up monthly payments.';
+          // Show success message for contact form submission
+          let successMsg = '🎉 Thank you for contacting us! We have received your details and will be in touch soon. You can now take assessments and set up monthly payments.';
           
           showMessage(successMsg, 'success');
           
@@ -858,6 +860,7 @@
     function sendEmailFallback(formData) {
       const studentName = formData.get('studentName');
       const grade = formData.get('grade');
+      const courseInterest = formData.get('courseInterest');
       const city = formData.get('city');
       const country = formData.get('country');
       const parentName = formData.get('parentName');
@@ -873,6 +876,7 @@ New Student Registration for STEM Learn
 Student Information:
 - Name: ${studentName}
 - Grade: ${grade}
+- Course Interest: ${courseInterest}
 - City: ${city}
 - Country: ${country}
 
@@ -1034,7 +1038,7 @@ This email was sent from the STEM Learn website contact form.
       
       
       if (courseInfo && selectedCourseDiv && paymentSection && totalAmount) {
-        courseInfo.textContent = `${course.charAt(0).toUpperCase() + course.slice(1).replace('-', ' ')} - £${price}/month (free registration)`;
+        courseInfo.textContent = `${course.charAt(0).toUpperCase() + course.slice(1).replace('-', ' ')} - £${price}/month (contact us for details)`;
         
         // Force display by removing the inline style and setting new one
         selectedCourseDiv.removeAttribute('style');
@@ -1054,7 +1058,7 @@ This email was sent from the STEM Learn website contact form.
         paymentSection.style.borderRadius = '10px';
         paymentSection.style.margin = '2rem 0';
         paymentSection.style.border = '1px solid #3b82f6';
-        totalAmount.textContent = `Free Registration`;
+        totalAmount.textContent = `Contact Form`;
         
         // Scroll to the payment section
         paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1136,7 +1140,7 @@ This email was sent from the STEM Learn website contact form.
         } else if (paymentIntent.status === 'succeeded') {
           // Save registration to Firebase
           await saveNewUser(formData);
-          showMessage(`Registration successful! Free registration completed. Monthly payment of £${selectedPrice} will be set up separately. Welcome to STEM Learn!`, 'success');
+          showMessage(`Thank you for contacting us! Your details have been received. Monthly payment of £${selectedPrice} will be set up separately. Welcome to STEM Learn!`, 'success');
           form.reset();
           document.getElementById('selectedCourse').style.display = 'none';
           document.getElementById('paymentSection').style.display = 'none';
@@ -1265,6 +1269,7 @@ This email was sent from the STEM Learn website contact form.
           <div class="dropdown-content">
             <a href="#courses">STEM Programs</a>
             <a href="career-counselling.html">Career Counselling</a>
+            <a href="private-tuition.html">Private Tuition</a>
             <a href="online-assessment.html">Online Assessment</a>
           </div>
         </li>
@@ -1329,6 +1334,13 @@ This email was sent from the STEM Learn website contact form.
            and introduction to AI. Students master Python, web development, app creation, and AI projects 
            while preparing for GCSE and A-Level Computer Science success.</p>
         <a class="btn" href="courses/young-coders.html">Learn More</a>
+      </div>
+      <div class="card">
+        <h3>Private Tuition</h3>
+        <p>One-on-one personalized learning experience tailored to your child's specific needs and learning 
+           style. Flexible scheduling, customized curriculum, and focused attention to help your child excel 
+           in any subject or prepare for specific exams.</p>
+        <a class="btn" href="private-tuition.html">Learn More</a>
       </div>
     </div>
   </section>
@@ -1410,7 +1422,7 @@ This email was sent from the STEM Learn website contact form.
       <!-- Registration Form Section - Middle -->
       <div id="registration" style="max-width: 800px; margin: 0 auto 3rem auto;">
         <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
-          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Free Registration</h3>
+          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Contact Us</h3>
           <div class="contact-form">
            <!-- Free Trial Banner -->
            
@@ -1447,6 +1459,20 @@ This email was sent from the STEM Learn website contact form.
                 <option value="12">12</option>
                 <option value="13">13</option>
                 <option value="Undergraduate">Undergraduate</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="courseInterest">Course Interest *</label>
+              <select id="courseInterest" name="courseInterest" required style="width: 100%; padding: 0.75rem; border: 1px solid #00fff7; border-radius: 5px; background-color: #0b0c1a; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1rem;">
+                <option value="">Select Your Course Interest</option>
+                <option value="Scratch Juniors">Scratch Juniors (Ages 8-11)</option>
+                <option value="Young Coders">Young Coders (Ages 12-16)</option>
+                <option value="Career Guidance">Career Guidance</option>
+                <option value="11+ Preparation">11+ Preparation</option>
+                <option value="Primary School Maths/Science/English">Primary School Maths/Science/English Classes</option>
+                <option value="Secondary School Maths/Science">Secondary School Maths/Science Classes</option>
+                <option value="Private Tuition">Private Tuition</option>
               </select>
             </div>
             
@@ -1488,7 +1514,7 @@ This email was sent from the STEM Learn website contact form.
             <!-- Payment Section -->
             <div id="paymentSection" style="display: none; background-color: #0b0c1a; padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border: 1px solid #3b82f6;">
               <h4 style="color: #3b82f6; margin-bottom: 1rem;">Registration Payment</h4>
-              <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Complete your free registration now. Monthly payments will be set up separately after registration.</p>
+              <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Submit your details to contact us. Monthly payments will be set up separately after registration.</p>
               
               <!-- Stripe Elements will be inserted here -->
               <div id="card-element" style="background-color: #1f1f3f; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
