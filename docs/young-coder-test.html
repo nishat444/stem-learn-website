@@ -476,17 +476,53 @@
       }
     }
 
-    // Save assessment results to Firebase
-    async function saveAssessmentResults() {
-      // Initialize db if not available
-      if (typeof db === 'undefined') {
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-          window.db = firebase.firestore();
-          console.log('Firestore database initialized on demand in saveAssessmentResults');
-        } else {
-          console.error('Firestore database is not initialized in saveAssessmentResults');
+    // Firebase initialization check function
+    function ensureFirebaseInitialized() {
+      return new Promise((resolve, reject) => {
+        // Check if Firebase is already initialized
+        if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+          if (typeof window.db === 'undefined' && firebase.firestore) {
+            window.db = firebase.firestore();
+            console.log('Firebase database initialized on demand');
+          }
+          resolve(true);
           return;
         }
+        
+        // Wait for Firebase to load
+        let attempts = 0;
+        const maxAttempts = 50; // 5 seconds max wait
+        
+        const checkFirebase = () => {
+          attempts++;
+          
+          if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+            if (typeof window.db === 'undefined' && firebase.firestore) {
+              window.db = firebase.firestore();
+              console.log('Firebase database initialized after waiting');
+            }
+            resolve(true);
+          } else if (attempts >= maxAttempts) {
+            console.error('Firebase failed to initialize after 5 seconds');
+            reject(new Error('Firebase initialization timeout'));
+          } else {
+            setTimeout(checkFirebase, 100);
+          }
+        };
+        
+        checkFirebase();
+      });
+    }
+
+    // Save assessment results to Firebase
+    async function saveAssessmentResults() {
+      // Ensure Firebase is initialized
+      try {
+        await ensureFirebaseInitialized();
+        console.log('Firebase is ready for saveAssessmentResults operations');
+      } catch (error) {
+        console.error('Firebase initialization failed in saveAssessmentResults:', error);
+        return;
       }
       
       const userId = sessionStorage.getItem('userId');

@@ -664,6 +664,44 @@
   
   <script>
     
+    // Firebase initialization check function
+    function ensureFirebaseInitialized() {
+      return new Promise((resolve, reject) => {
+        // Check if Firebase is already initialized
+        if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+          if (typeof window.db === 'undefined' && firebase.firestore) {
+            window.db = firebase.firestore();
+            console.log('Firebase database initialized on demand');
+          }
+          resolve(true);
+          return;
+        }
+        
+        // Wait for Firebase to load
+        let attempts = 0;
+        const maxAttempts = 50; // 5 seconds max wait
+        
+        const checkFirebase = () => {
+          attempts++;
+          
+          if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+            if (typeof window.db === 'undefined' && firebase.firestore) {
+              window.db = firebase.firestore();
+              console.log('Firebase database initialized after waiting');
+            }
+            resolve(true);
+          } else if (attempts >= maxAttempts) {
+            console.error('Firebase failed to initialize after 5 seconds');
+            reject(new Error('Firebase initialization timeout'));
+          } else {
+            setTimeout(checkFirebase, 100);
+          }
+        };
+        
+        checkFirebase();
+      });
+    }
+
     // Dropdown functionality
     document.addEventListener('DOMContentLoaded', function() {
       const dropdowns = document.querySelectorAll('.dropdown');
@@ -695,7 +733,7 @@
       });
     });
 
-    function registerUser(event) {
+    async function registerUser(event) {
       try {
         if (event && event.preventDefault) {
         event.preventDefault();
@@ -725,23 +763,14 @@
           return;
         }
         
-        // Check if Firebase is loaded
-        if (typeof firebase === 'undefined') {
-          console.error('Firebase is not loaded');
-          showMessage('Firebase is not loaded. Please check your internet connection and try again.', 'error');
+        // Ensure Firebase is initialized
+        try {
+          await ensureFirebaseInitialized();
+          console.log('Firebase is ready for database operations');
+        } catch (error) {
+          console.error('Firebase initialization failed:', error);
+          showMessage('Database is not available. Please check your internet connection and try again.', 'error');
           return;
-        }
-        
-        // Initialize db if not available
-        if (typeof db === 'undefined') {
-          if (typeof firebase !== 'undefined' && firebase.firestore) {
-            window.db = firebase.firestore();
-            console.log('Firestore database initialized on demand');
-          } else {
-            console.error('Firestore database is not initialized');
-            showMessage('Database is not initialized. Please refresh the page and try again.', 'error');
-            return;
-          }
         }
         
         // Check if Firebase is properly configured (not using placeholder values)
@@ -785,17 +814,15 @@
     }
 
     // Save new user to Firebase
-    function saveNewUser(formData) {
-      // Initialize db if not available
-      if (typeof db === 'undefined') {
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-          window.db = firebase.firestore();
-          console.log('Firestore database initialized on demand in saveNewUser');
-        } else {
-          console.error('Firestore database is not initialized in saveNewUser');
-          sendEmailFallback(formData);
-          return;
-        }
+    async function saveNewUser(formData) {
+      // Ensure Firebase is initialized
+      try {
+        await ensureFirebaseInitialized();
+        console.log('Firebase is ready for saveNewUser operations');
+      } catch (error) {
+        console.error('Firebase initialization failed in saveNewUser:', error);
+        sendEmailFallback(formData);
+        return;
       }
       
       const form = document.getElementById('contactForm');
@@ -955,6 +982,20 @@ This email was sent from the STEM Learn website contact form.
     // Check login status when page loads
     document.addEventListener('DOMContentLoaded', function() {
       checkLoginStatus();
+      
+      // Test Firebase connection after page loads
+      setTimeout(async () => {
+        try {
+          const isFirebaseReady = await testFirebaseConnection();
+          if (isFirebaseReady) {
+            console.log('🎉 Firebase is ready for use!');
+          } else {
+            console.warn('⚠️ Firebase is not ready. Form submissions may fall back to email.');
+          }
+        } catch (error) {
+          console.error('Firebase test failed:', error);
+        }
+      }, 2000); // Wait 2 seconds for Firebase to load
     });
 
     
@@ -1181,14 +1222,14 @@ This email was sent from the STEM Learn website contact form.
     window.processPayment = processPayment;
 
     // Handle form submission - now only handles free registration
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
       try {
         event.preventDefault();
         
         // All form submissions now go to free registration
         // Free trials are handled via Calendly
         console.log('Processing free registration');
-        registerUser(event);
+        await registerUser(event);
         return false;
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
@@ -1199,6 +1240,34 @@ This email was sent from the STEM Learn website contact form.
     
     // Make handleFormSubmit globally accessible
     window.handleFormSubmit = handleFormSubmit;
+    
+    // Test Firebase connection function (for debugging)
+    async function testFirebaseConnection() {
+      try {
+        console.log('Testing Firebase connection...');
+        await ensureFirebaseInitialized();
+        console.log('✅ Firebase is initialized and ready');
+        
+        if (typeof window.db !== 'undefined') {
+          console.log('✅ Database object is available');
+          
+          // Try a simple read operation
+          const testCollection = window.db.collection('test');
+          console.log('✅ Database collection reference created');
+          
+          return true;
+        } else {
+          console.error('❌ Database object is not available');
+          return false;
+        }
+      } catch (error) {
+        console.error('❌ Firebase connection test failed:', error);
+        return false;
+      }
+    }
+    
+    // Make test function globally accessible
+    window.testFirebaseConnection = testFirebaseConnection;
 
     // Calendly integration - no JavaScript needed as we're using direct links
 
