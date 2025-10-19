@@ -171,7 +171,7 @@ body {
 const COURSES = [
   { title: "Scratch Juniors", price: "£19.99/month", desc: "Intro to programming with Scratch & micro:bit", link: "https://buy.stripe.com/test_3cIaEW74octgd7m1bycZa03", type: "monthly" },
   { title: "Young Coders", price: "£24.99/month", desc: "Project-driven coding & intro to AI", link: "https://buy.stripe.com/test_5kQ00idsMfFs6IY07ucZa04", type: "monthly" },
-  { title: "Private Tuition", price: "custom/session payment", desc: "Personalized learning experience", link: "private-tuition-payment.html", type: "private" }
+  { title: "Private Tuition", price: "custom/session payment", desc: "Personalized learning experience", link: "https://buy.stripe.com/test_4gMaEWcoI78W7N2f2ocZa05", type: "monthly" }
 ];
 
 const courseGrid = document.getElementById('courseGrid');
@@ -184,7 +184,7 @@ function renderCourses() {
   courseGrid.innerHTML = '';
   COURSES.forEach((c, idx) => {
     const btn = document.createElement('button');
-    btn.className = c.type === 'private' ? 'course-btn private' : 'course-btn';
+    btn.className = 'course-btn';
     btn.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
@@ -204,11 +204,6 @@ function renderCourses() {
 function selectCourse(c, idx) {
   selectedCourse = c;
   
-  // Handle Private Tuition differently - redirect directly to payment page
-  if (c.type === 'private') {
-    window.location.href = c.link;
-    return;
-  }
   
   selectedCourseEl.innerHTML = `<strong>${c.title}</strong> — ${c.price}<br/><span style="color:#cbd5e1">${c.desc}</span>`;
   checkoutBtn.disabled = false;
