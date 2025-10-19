@@ -472,12 +472,16 @@
 
       /* Grid adjustments */
       .mentors-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: 1fr;
         gap: 1.5rem;
+        margin-top: 2rem;
       }
 
       .mentor-card {
         padding: 1.5rem;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
       }
 
       .mentor-card h3 {
@@ -493,7 +497,7 @@
 
       /* Body padding for tablet */
       body {
-        padding: 0 1.5rem;
+        padding: 0 0.5rem;
       }
 
       /* Back button */
@@ -523,7 +527,7 @@
       }
 
       body {
-        padding: 0.5rem 1rem;
+        padding: 0.25rem 0.5rem;
       }
 
       .hero {
@@ -540,8 +544,57 @@
 
       /* Make mentor cards wider on small mobile */
       .mentors-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: 1fr;
         gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .mentor-card {
+        padding: 1rem;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .mentor-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .mentor-card p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+    }
+
+    /* Extra small mobile screens */
+    @media (max-width: 360px) {
+      .container {
+        width: 100%;
+        padding: 0 0.1rem;
+      }
+
+      body {
+        padding: 0.1rem 0.25rem;
+      }
+
+      .mentors-grid {
+        gap: 0.8rem;
+        margin-top: 1rem;
+      }
+
+      .mentor-card {
+        padding: 0.8rem;
+      }
+
+      .mentor-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .mentor-card p {
+        font-size: 0.8rem;
+        line-height: 1.3;
       }
     }
   </style>
