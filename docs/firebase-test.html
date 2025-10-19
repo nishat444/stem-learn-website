@@ -80,7 +80,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
-    <script src="firebase-config.js"></script>
+    <script src="../firebase-config.js"></script>
     
     <script>
         function log(message, type = 'info') {
@@ -133,6 +133,16 @@
             firestoreStatus.innerHTML = 'Testing...';
             
             try {
+                // Initialize db if not available
+                if (typeof db === 'undefined') {
+                  if (typeof firebase !== 'undefined' && firebase.firestore) {
+                    window.db = firebase.firestore();
+                    console.log('Firestore database initialized on demand in testFirestore');
+                  } else {
+                    throw new Error('Firebase not initialized');
+                  }
+                }
+                
                 if (typeof db === 'undefined') {
                     throw new Error('Firestore not initialized');
                 }
@@ -163,6 +173,16 @@
             registrationStatus.innerHTML = 'Testing...';
             
             try {
+                // Initialize db if not available
+                if (typeof db === 'undefined') {
+                  if (typeof firebase !== 'undefined' && firebase.firestore) {
+                    window.db = firebase.firestore();
+                    console.log('Firestore database initialized on demand in testRegistration');
+                  } else {
+                    throw new Error('Firebase not initialized');
+                  }
+                }
+                
                 if (typeof db === 'undefined') {
                     throw new Error('Firestore not initialized');
                 }

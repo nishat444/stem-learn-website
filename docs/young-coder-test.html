@@ -283,7 +283,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
-  <script src="firebase-config.js"></script>
+  <script src="../firebase-config.js"></script>
 
   <script>
     // Check if user is registered
@@ -478,6 +478,17 @@
 
     // Save assessment results to Firebase
     async function saveAssessmentResults() {
+      // Initialize db if not available
+      if (typeof db === 'undefined') {
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+          window.db = firebase.firestore();
+          console.log('Firestore database initialized on demand in saveAssessmentResults');
+        } else {
+          console.error('Firestore database is not initialized in saveAssessmentResults');
+          return;
+        }
+      }
+      
       const userId = sessionStorage.getItem('userId');
       const studentName = sessionStorage.getItem('studentName');
       const grade = sessionStorage.getItem('grade');

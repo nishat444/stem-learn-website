@@ -660,7 +660,7 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
-  <script src="firebase-config.js"></script>
+  <script src="../firebase-config.js"></script>
   
   <script>
     
@@ -732,10 +732,16 @@
           return;
         }
         
+        // Initialize db if not available
         if (typeof db === 'undefined') {
-          console.error('Firestore database is not initialized');
-          showMessage('Database is not initialized. Please refresh the page and try again.', 'error');
-          return;
+          if (typeof firebase !== 'undefined' && firebase.firestore) {
+            window.db = firebase.firestore();
+            console.log('Firestore database initialized on demand');
+          } else {
+            console.error('Firestore database is not initialized');
+            showMessage('Database is not initialized. Please refresh the page and try again.', 'error');
+            return;
+          }
         }
         
         // Check if Firebase is properly configured (not using placeholder values)
@@ -780,6 +786,18 @@
 
     // Save new user to Firebase
     function saveNewUser(formData) {
+      // Initialize db if not available
+      if (typeof db === 'undefined') {
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+          window.db = firebase.firestore();
+          console.log('Firestore database initialized on demand in saveNewUser');
+        } else {
+          console.error('Firestore database is not initialized in saveNewUser');
+          sendEmailFallback(formData);
+          return;
+        }
+      }
+      
       const form = document.getElementById('contactForm');
       const trialType = formData.get('trialType') || 'Regular Registration';
       

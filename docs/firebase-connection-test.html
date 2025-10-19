@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Connection Test - STEM Learn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Firebase Connection Test</h1>
+    <p>This page tests Firebase connectivity and configuration.</p>
+    
+    <div id="sdk-status" class="test-result info">⏳ Checking Firebase SDK...</div>
+    <div id="config-status" class="test-result info">⏳ Checking Firebase Configuration...</div>
+    <div id="connection-status" class="test-result info">⏳ Testing Firebase Connection...</div>
+    
+    <button onclick="runAllTests()">Run All Tests</button>
+    <button onclick="testFirestore()">Test Firestore</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="results"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            results.innerHTML += `<div class="test-result ${className}">[${timestamp}] ${message}</div>`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        // Test 1: Firebase SDK Loading
+        function checkSDK() {
+            const sdkStatus = document.getElementById('sdk-status');
+            
+            if (typeof firebase !== 'undefined') {
+                sdkStatus.innerHTML = '<span class="success">✅ Firebase SDK loaded successfully</span>';
+                log('Firebase SDK loaded successfully', 'success');
+                return true;
+            } else {
+                sdkStatus.innerHTML = '<span class="error">❌ Firebase SDK not loaded</span>';
+                log('Firebase SDK not loaded', 'error');
+                return false;
+            }
+        }
+
+        // Test 2: Firebase Configuration
+        function checkConfig() {
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                const app = firebase.app();
+                const config = app.options;
+                
+                if (config.projectId && config.projectId !== 'your-project-id') {
+                    configStatus.innerHTML = '<span class="success">✅ Firebase configured with real project: ' + config.projectId + '</span>';
+                    log('Firebase configured with project: ' + config.projectId, 'success');
+                    return true;
+                } else {
+                    configStatus.innerHTML = '<span class="warning">⚠️ Firebase configured but using placeholder credentials</span>';
+                    log('Firebase configured but using placeholder credentials', 'warning');
+                    return false;
+                }
+            } else {
+                configStatus.innerHTML = '<span class="error">❌ Firebase not initialized</span>';
+                log('Firebase not initialized', 'error');
+                return false;
+            }
+        }
+
+        // Test 3: Firebase Connection
+        async function testConnection() {
+            const connectionStatus = document.getElementById('connection-status');
+            
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    throw new Error('Firebase not loaded');
+                }
+                
+                // Initialize db if not available
+                if (typeof db === 'undefined') {
+                  window.db = firebase.firestore();
+                  console.log('Firestore database initialized on demand in testConnection');
+                }
+                
+                const db = window.db;
+                
+                // Try to read from a test collection
+                const testDoc = await db.collection('test').doc('connection').get();
+                
+                connectionStatus.innerHTML = '<span class="success">✅ Firebase connection successful</span>';
+                log('Firebase connection successful', 'success');
+                return true;
+                
+            } catch (error) {
+                connectionStatus.innerHTML = '<span class="error">❌ Firebase connection failed: ' + error.message + '</span>';
+                log('Firebase connection failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // Test 4: Firestore Write Test
+        async function testFirestore() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    throw new Error('Firebase not loaded');
+                }
+                
+                // Initialize db if not available
+                if (typeof db === 'undefined') {
+                  window.db = firebase.firestore();
+                  console.log('Firestore database initialized on demand in testFirestore');
+                }
+                
+                const db = window.db;
+                const testData = {
+                    message: 'Firebase connection test',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    testId: Math.random().toString(36).substr(2, 9)
+                };
+                
+                log('Attempting to write test data to Firestore...', 'info');
+                
+                await db.collection('test').add(testData);
+                
+                log('✅ Firestore write test successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Firestore write test failed: ' + error.message, 'error');
+            }
+        }
+
+        // Run all tests
+        async function runAllTests() {
+            log('Starting Firebase tests...', 'info');
+            
+            const sdkOk = checkSDK();
+            if (!sdkOk) return;
+            
+            const configOk = checkConfig();
+            if (!configOk) return;
+            
+            await testConnection();
+        }
+
+        // Clear results
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', function() {
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>
