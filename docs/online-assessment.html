@@ -28,8 +28,7 @@
     }
 
     .container {
-      width: 90%;
-      max-width: 1200px;
+      width: 70%;
       margin: 0 auto;
     }
 
@@ -500,7 +499,7 @@
         <div class="test-card">
           <div class="test-icon">🎮</div>
           <h3 class="test-title">Scratch Juniors Test</h3>
-          <p class="test-subtitle">Ages 8-11 • Visual Programming Assessment</p>
+          <p class="test-subtitle">Ages 7-11 • Visual Programming Assessment</p>
           <p class="test-description">
             Designed for young learners to assess their understanding of basic programming concepts, 
             Scratch interface, and creative problem-solving abilities.
@@ -569,36 +568,18 @@
       }
     }
 
-    // Check registration status
+    // Check registration status - No registration required
     function checkRegistrationStatus() {
-      const userId = sessionStorage.getItem('userId');
-      const studentName = sessionStorage.getItem('studentName');
-      
       const statusDiv = document.getElementById('registrationStatus');
       
-      if (userId && studentName) {
-        // User is registered
-        statusDiv.innerHTML = `
-          <div style="background-color: #00ff7f; color: #0b0c1a; padding: 1.5rem; border-radius: 10px; text-align: center; margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 0.5rem 0; color: #0b0c1a;">Welcome, ${studentName}!</h3>
-            <p style="margin: 0 0 1rem 0; color: #0b0c1a;">You are registered and can take assessments.</p>
-            <button onclick="logoutUser()" style="background: #ff4444; color: #fff; padding: 0.5rem 1rem; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: bold;">
-              Logout
-            </button>
-          </div>
-        `;
-        return true;
-      } else {
-        // User not registered
-        statusDiv.innerHTML = `
-          <div style="background-color: #ff4444; color: #fff; padding: 1.5rem; border-radius: 10px; text-align: center; margin-bottom: 2rem;">
-            <h3 style="margin: 0 0 0.5rem 0;">⚠️ Registration Required</h3>
-            <p style="margin: 0 0 1rem 0;">You must register before taking assessments.</p>
-            <a href="index.html#contact" style="background: #fff; color: #ff4444; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">Go to Registration</a>
-          </div>
-        `;
-        return false;
-      }
+      // Always show welcome message - no registration required
+      statusDiv.innerHTML = `
+        <div style="background-color: #00ff7f; color: #0b0c1a; padding: 1.5rem; border-radius: 10px; text-align: center; margin-bottom: 2rem;">
+          <h3 style="margin: 0 0 0.5rem 0; color: #0b0c1a;">Welcome to STEM Learn Assessments!</h3>
+          <p style="margin: 0 0 1rem 0; color: #0b0c1a;">You can take assessments without registration. Click on any test below to get started.</p>
+        </div>
+      `;
+      return true;
     }
 
     // Dropdown functionality
@@ -636,20 +617,10 @@
     });
 
     function startScratchTest() {
-      // Check if user is registered
-      if (!checkRegistrationStatus()) {
-        alert('Please register first before taking assessments.');
-        return;
-      }
       window.open('scratch-test.html', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
     }
 
     function startYoungCoderTest() {
-      // Check if user is registered
-      if (!checkRegistrationStatus()) {
-        alert('Please register first before taking assessments.');
-        return;
-      }
       window.open('young-coder-test.html', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
     }
   </script>

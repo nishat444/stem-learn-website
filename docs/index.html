@@ -34,8 +34,7 @@
     }
 
     .container {
-      width: 90%;
-      max-width: 1200px;
+      width: 70%;
       margin: 0 auto;
     }
 
@@ -419,7 +418,8 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 0.75rem;
       border: 1px solid #00fff7;
@@ -431,10 +431,11 @@
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       outline: none;
       border-color: #3b82f6;
-      box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
 
     .form-group textarea {
@@ -1438,7 +1439,7 @@ This email was sent from the STEM Learn website contact form.
           </div>
         </li>
         <li><a href="#registration">Contact Us</a></li>
-        <li><a href="monthly-payment.html" style="color: #00fff7;">Payment</a></li>
+        <li><a href="monthly-payment.html" style="color: #00fff7;">Course Fees</a></li>
         <li id="logoutBtn" style="display: none;">
           <a href="#" onclick="logoutUser(); return false;" style="color: #ff4444;">Logout</a>
         </li>
@@ -1544,7 +1545,7 @@ This email was sent from the STEM Learn website contact form.
       <!-- Scratch Juniors Pricing -->
       <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center;">
         <h3 style="color: #00fff7; font-size: 1.5rem; margin-bottom: 1rem;">Scratch Juniors</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 6-10</p>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 7-11</p>
         <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£19.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
         <div style="color: #00ff7f; font-weight: bold; margin-bottom: 1rem;">+ Free Registration</div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
@@ -1554,7 +1555,7 @@ This email was sent from the STEM Learn website contact form.
           <li>AI concepts for young learners</li>
           <li>Weekly 1 hr session</li>
         </ul>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Payment</a>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Course Fees</a>
       </div>
       
       <!-- Young Coders Pricing -->
@@ -1570,7 +1571,7 @@ This email was sent from the STEM Learn website contact form.
           <li>AI & machine learning projects</li>
           <li>Weekly 1-hour sessions</li>
         </ul>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #3b82f6, #00fff7); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Payment</a>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #3b82f6, #00fff7); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Course Fees</a>
       </div>
       
       <!-- Private Tuition Pricing -->
@@ -1580,7 +1581,7 @@ This email was sent from the STEM Learn website contact form.
         <div style="font-size: 1.2rem; color: #ff6b35; font-weight: bold; margin-bottom: 1rem; text-align: center;">custom/session payment</div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
           <li>Personalized learning experience</li>
-          <li>11+ Preparation</li>
+          <li>11+ Grammar School Preparation</li>
           <li>Primary School Maths/Science/English</li>
           <li>Secondary School Maths/Science</li>
           <li>Flexible scheduling</li>
@@ -1631,7 +1632,7 @@ This email was sent from the STEM Learn website contact form.
             
             <div class="form-group">
               <label for="grade">Grade *</label>
-              <select id="grade" name="grade" required style="width: 100%; padding: 0.75rem; border: 1px solid #00fff7; border-radius: 5px; background-color: #0b0c1a; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1rem;">
+              <select id="grade" name="grade" required>
                 <option value="">Select Your Grade</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -1652,12 +1653,12 @@ This email was sent from the STEM Learn website contact form.
             
             <div class="form-group">
               <label for="courseInterest">Course Interest *</label>
-              <select id="courseInterest" name="courseInterest" required style="width: 100%; padding: 0.75rem; border: 1px solid #00fff7; border-radius: 5px; background-color: #0b0c1a; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 1rem;">
+              <select id="courseInterest" name="courseInterest" required>
                 <option value="">Select Your Course Interest</option>
-                <option value="Scratch Juniors">Scratch Juniors (Ages 8-11)</option>
+                <option value="Scratch Juniors">Scratch Juniors (Ages 7-11)</option>
                 <option value="Young Coders">Young Coders (Ages 12-16)</option>
                 <option value="Career Guidance">Career Guidance</option>
-                <option value="11+ Preparation">11+ Preparation</option>
+                <option value="11+ Grammar School Preparation">11+ Grammar School Preparation</option>
                 <option value="Primary School Maths/Science/English">Primary School Maths/Science/English Classes</option>
                 <option value="Secondary School Maths/Science">Secondary School Maths/Science Classes</option>
                 <option value="Private Tuition">Private Tuition</option>

@@ -286,26 +286,8 @@
   <script src="/firebase-config.js"></script>
 
   <script>
-    // Check if user is registered
+    // No registration required - assessments are open to all
     function checkRegistration() {
-      const userId = sessionStorage.getItem('userId');
-      const studentName = sessionStorage.getItem('studentName');
-      
-      if (!userId || !studentName) {
-        document.getElementById('testContent').innerHTML = `
-          <div style="text-align: center; padding: 2rem; color: #fff;">
-            <h2 style="color: #ff4444; margin-bottom: 1rem;">⚠️ Registration Required</h2>
-            <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">
-              You must register with STEM Learn before taking assessments.
-            </p>
-            <p style="margin-bottom: 2rem; color: #ccc;">
-              Please close this window and complete the registration form on the main page.
-            </p>
-            <button class="btn" onclick="window.close()">Close Window</button>
-          </div>
-        `;
-        return false;
-      }
       return true;
     }
 
