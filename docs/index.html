@@ -641,6 +641,18 @@
       }
 
       /* Contact form mobile improvements */
+      
+      /* Make sections full width on mobile */
+      .container > div[style*="grid-template-columns"] {
+        display: block !important;
+        grid-template-columns: none !important;
+      }
+      
+      .container > div[style*="grid-template-columns"] > div {
+        grid-column: unset !important;
+        width: 100% !important;
+        margin-bottom: 2rem;
+      }
 
       .registration-container {
         padding: 0 !important;
@@ -737,6 +749,18 @@
       }
 
       /* Contact form extra mobile improvements */
+      
+      /* Make sections full width on small mobile */
+      .container > div[style*="grid-template-columns"] {
+        display: block !important;
+        grid-template-columns: none !important;
+      }
+      
+      .container > div[style*="grid-template-columns"] > div {
+        grid-column: unset !important;
+        width: 100% !important;
+        margin-bottom: 1.5rem;
+      }
 
       .registration-container {
         padding: 0 !important;
@@ -795,6 +819,18 @@
 
     /* Extra small mobile screens */
     @media (max-width: 360px) {
+      
+      /* Make sections full width on extra small mobile */
+      .container > div[style*="grid-template-columns"] {
+        display: block !important;
+        grid-template-columns: none !important;
+      }
+      
+      .container > div[style*="grid-template-columns"] > div {
+        grid-column: unset !important;
+        width: 100% !important;
+        margin-bottom: 1rem;
+      }
 
       .registration-form-wrapper {
         padding: 0.5rem !important;
