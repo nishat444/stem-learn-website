@@ -210,7 +210,27 @@ function selectCourse(c, idx) {
   checkoutBtn.textContent = `Open Checkout for ${c.title}`;
   // Highlight selected
   Array.from(document.querySelectorAll('.course-btn')).forEach((b, i) => {
-    b.style.boxShadow = (i === idx) ? '0 8px 25px rgba(59,130,246,0.15)' : '';
+    if (i === idx) {
+      b.style.boxShadow = '0 8px 25px rgba(59,130,246,0.3)';
+      b.style.transform = 'translateY(-2px)';
+      
+      // Different highlighting for Private Tuition
+      if (c.title === 'Private Tuition') {
+        b.style.background = 'linear-gradient(45deg, #ff6b35, #ff8c42)';
+        b.style.color = '#0b0c1a';
+        b.style.borderColor = '#ff6b35';
+      } else {
+        b.style.background = 'linear-gradient(45deg, #00fff7, #3b82f6)';
+        b.style.color = '#071018';
+        b.style.borderColor = '#00fff7';
+      }
+    } else {
+      b.style.boxShadow = '';
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+      b.style.transform = '';
+    }
   });
 }
 
