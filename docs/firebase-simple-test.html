@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Simple Test - STEM Learn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border-left-color: #28a745;
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border-left-color: #dc3545;
+        }
+        .warning { 
+            background: #fff3cd; 
+            color: #856404; 
+            border-left-color: #ffc107;
+        }
+        .info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border-left-color: #17a2b8;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover { background: #0056b3; }
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Firebase Simple Test</h1>
+    <p>This is a simplified test to check Firebase configuration on the deployed site.</p>
+    
+    <div id="test-results"></div>
+    
+    <button onclick="runTest()">Run Firebase Test</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div class="code">
+        <strong>Current URL:</strong> <span id="current-url"></span><br>
+        <strong>Hostname:</strong> <span id="hostname"></span><br>
+        <strong>Protocol:</strong> <span id="protocol"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    
+    <script>
+        // Display environment info
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('hostname').textContent = window.location.hostname;
+        document.getElementById('protocol').textContent = window.location.protocol;
+
+        function log(message, type = 'info') {
+            const results = document.getElementById('test-results');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            results.innerHTML += `<div class="test-result ${className}">[${timestamp}] ${message}</div>`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+        }
+
+        async function runTest() {
+            clearResults();
+            log('Starting Firebase test...', 'info');
+            
+            // Test 1: Check if Firebase SDK is loaded
+            if (typeof firebase === 'undefined') {
+                log('❌ Firebase SDK not loaded', 'error');
+                log('This usually means the Firebase CDN is blocked or not accessible', 'error');
+                return;
+            }
+            log('✅ Firebase SDK loaded', 'success');
+            
+            // Test 2: Check if Firebase config is loaded
+            if (typeof initializeFirebase === 'undefined') {
+                log('❌ Firebase config file not loaded', 'error');
+                log('Check if /firebase-config.js is accessible', 'error');
+                return;
+            }
+            log('✅ Firebase config file loaded', 'success');
+            
+            // Test 3: Try to initialize Firebase
+            try {
+                log('Attempting to initialize Firebase...', 'info');
+                const result = await initializeFirebase();
+                
+                if (result) {
+                    log('✅ Firebase initialized successfully', 'success');
+                    
+                    // Test 4: Try to access Firestore
+                    if (typeof window.db !== 'undefined') {
+                        log('✅ Firestore database object available', 'success');
+                        
+                        // Test 5: Try a simple Firestore operation
+                        try {
+                            log('Testing Firestore connection...', 'info');
+                            const testCollection = window.db.collection('test');
+                            log('✅ Firestore collection reference created', 'success');
+                            
+                            // Try to read from Firestore
+                            const snapshot = await testCollection.limit(1).get();
+                            log('✅ Firestore read operation successful', 'success');
+                            log(`Found ${snapshot.size} documents in test collection`, 'info');
+                            
+                        } catch (firestoreError) {
+                            log('❌ Firestore operation failed: ' + firestoreError.message, 'error');
+                            log('This might be a CORS or permissions issue', 'warning');
+                        }
+                        
+                    } else {
+                        log('❌ Firestore database object not available', 'error');
+                    }
+                    
+                } else {
+                    log('❌ Firebase initialization failed', 'error');
+                    log('Check Firebase project configuration and authorized domains', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Firebase initialization error: ' + error.message, 'error');
+                log('Check browser console for more details', 'error');
+            }
+            
+            log('Test completed', 'info');
+        }
+
+        // Auto-run test when page loads
+        window.addEventListener('load', function() {
+            setTimeout(runTest, 2000);
+        });
+    </script>
+</body>
+</html>

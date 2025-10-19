@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Diagnostic - STEM Learn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            border-left-color: #28a745;
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border-left-color: #dc3545;
+        }
+        .warning { 
+            background: #fff3cd; 
+            color: #856404; 
+            border-left-color: #ffc107;
+        }
+        .info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border-left-color: #17a2b8;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        #results { margin-top: 20px; }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+        h1 { color: #333; }
+        h2 { color: #495057; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Firebase Diagnostic Tool</h1>
+    <p>This tool helps diagnose Firebase connectivity issues on the deployed website.</p>
+    
+    <div class="section">
+        <h2>Environment Information</h2>
+        <div id="env-info">
+            <p><strong>URL:</strong> <span id="current-url"></span></p>
+            <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+            <p><strong>Protocol:</strong> <span id="protocol"></span></p>
+            <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Firebase SDK Loading</h2>
+        <div id="sdk-status" class="test-result info">⏳ Checking Firebase SDK...</div>
+        <div id="config-status" class="test-result info">⏳ Checking Firebase Configuration...</div>
+        <div id="connection-status" class="test-result info">⏳ Testing Firebase Connection...</div>
+    </div>
+
+    <div class="section">
+        <h2>Network & CORS Tests</h2>
+        <div id="network-status" class="test-result info">⏳ Testing network connectivity...</div>
+        <div id="cors-status" class="test-result info">⏳ Testing CORS configuration...</div>
+    </div>
+
+    <div class="section">
+        <h2>Actions</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="testFirestoreWrite()">Test Firestore Write</button>
+        <button onclick="testFirestoreRead()">Test Firestore Read</button>
+        <button onclick="clearResults()">Clear Results</button>
+        <button onclick="copyDiagnosticInfo()">Copy Diagnostic Info</button>
+    </div>
+
+    <div class="section">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <div class="section">
+        <h2>Common Solutions</h2>
+        <div class="code">
+            <strong>If Firebase SDK fails to load:</strong><br>
+            • Check internet connection<br>
+            • Try refreshing the page<br>
+            • Check if Firebase CDN is accessible<br>
+            • Verify no ad blockers are blocking Firebase
+        </div>
+        <div class="code">
+            <strong>If CORS errors occur:</strong><br>
+            • Check Firebase project settings<br>
+            • Verify authorized domains in Firebase Console<br>
+            • Ensure HTTPS is used for production
+        </div>
+        <div class="code">
+            <strong>If connection times out:</strong><br>
+            • Check Firebase project status<br>
+            • Verify API keys are correct<br>
+            • Check Firestore rules and permissions
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    
+    <script>
+        // Environment info
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('hostname').textContent = window.location.hostname;
+        document.getElementById('protocol').textContent = window.location.protocol;
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            results.innerHTML += `<div class="test-result ${className}">[${timestamp}] ${message}</div>`;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        // Test 1: Firebase SDK Loading
+        function checkSDK() {
+            const sdkStatus = document.getElementById('sdk-status');
+            
+            if (typeof firebase !== 'undefined') {
+                sdkStatus.innerHTML = '<span class="success">✅ Firebase SDK loaded successfully</span>';
+                log('Firebase SDK loaded successfully', 'success');
+                return true;
+            } else {
+                sdkStatus.innerHTML = '<span class="error">❌ Firebase SDK not loaded</span>';
+                log('Firebase SDK not loaded', 'error');
+                return false;
+            }
+        }
+
+        // Test 2: Firebase Configuration
+        function checkConfig() {
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+                const app = firebase.app();
+                const config = app.options;
+                
+                if (config.projectId && config.projectId !== 'your-project-id') {
+                    configStatus.innerHTML = '<span class="success">✅ Firebase configured with real project: ' + config.projectId + '</span>';
+                    log('Firebase configured with project: ' + config.projectId, 'success');
+                    return true;
+                } else {
+                    configStatus.innerHTML = '<span class="warning">⚠️ Firebase configured but using placeholder credentials</span>';
+                    log('Firebase configured but using placeholder credentials', 'warning');
+                    return false;
+                }
+            } else {
+                configStatus.innerHTML = '<span class="error">❌ Firebase not initialized</span>';
+                log('Firebase not initialized', 'error');
+                return false;
+            }
+        }
+
+        // Test 3: Firebase Connection
+        async function testConnection() {
+            const connectionStatus = document.getElementById('connection-status');
+            
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    throw new Error('Firebase not loaded');
+                }
+                
+                // Initialize db if not available
+                if (typeof db === 'undefined') {
+                  window.db = firebase.firestore();
+                  console.log('Firestore database initialized on demand in testConnection');
+                }
+                
+                const db = window.db;
+                
+                // Try to read from a test collection
+                const testDoc = await db.collection('test').doc('connection').get();
+                
+                connectionStatus.innerHTML = '<span class="success">✅ Firebase connection successful</span>';
+                log('Firebase connection successful', 'success');
+                return true;
+                
+            } catch (error) {
+                connectionStatus.innerHTML = '<span class="error">❌ Firebase connection failed: ' + error.message + '</span>';
+                log('Firebase connection failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // Test 4: Network Connectivity
+        async function testNetwork() {
+            const networkStatus = document.getElementById('network-status');
+            
+            try {
+                // Test basic connectivity
+                const response = await fetch('https://www.google.com', { mode: 'no-cors' });
+                networkStatus.innerHTML = '<span class="success">✅ Network connectivity OK</span>';
+                log('Network connectivity OK', 'success');
+                return true;
+            } catch (error) {
+                networkStatus.innerHTML = '<span class="error">❌ Network connectivity failed</span>';
+                log('Network connectivity failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // Test 5: CORS Configuration
+        async function testCORS() {
+            const corsStatus = document.getElementById('cors-status');
+            
+            try {
+                // Test Firebase API accessibility
+                const response = await fetch('https://firestore.googleapis.com/v1/projects/stemlearn-fcda0/databases/(default)/documents', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    corsStatus.innerHTML = '<span class="success">✅ CORS configuration OK</span>';
+                    log('CORS configuration OK', 'success');
+                    return true;
+                } else {
+                    corsStatus.innerHTML = '<span class="warning">⚠️ CORS may be restricted (Status: ' + response.status + ')</span>';
+                    log('CORS may be restricted (Status: ' + response.status + ')', 'warning');
+                    return false;
+                }
+            } catch (error) {
+                corsStatus.innerHTML = '<span class="error">❌ CORS test failed: ' + error.message + '</span>';
+                log('CORS test failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // Test 6: Firestore Write
+        async function testFirestoreWrite() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    throw new Error('Firebase not loaded');
+                }
+                
+                if (typeof db === 'undefined') {
+                  window.db = firebase.firestore();
+                }
+                
+                const testData = {
+                    message: 'Firebase diagnostic test',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    testId: Math.random().toString(36).substr(2, 9),
+                    environment: window.location.hostname
+                };
+                
+                log('Attempting to write test data to Firestore...', 'info');
+                
+                await db.collection('test').add(testData);
+                
+                log('✅ Firestore write test successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Firestore write test failed: ' + error.message, 'error');
+            }
+        }
+
+        // Test 7: Firestore Read
+        async function testFirestoreRead() {
+            try {
+                if (typeof firebase === 'undefined' || !firebase.firestore) {
+                    throw new Error('Firebase not loaded');
+                }
+                
+                if (typeof db === 'undefined') {
+                  window.db = firebase.firestore();
+                }
+                
+                log('Attempting to read from Firestore...', 'info');
+                
+                const snapshot = await db.collection('test').limit(5).get();
+                
+                log('✅ Firestore read test successful! Found ' + snapshot.size + ' documents', 'success');
+                
+            } catch (error) {
+                log('❌ Firestore read test failed: ' + error.message, 'error');
+            }
+        }
+
+        // Run all tests
+        async function runAllTests() {
+            log('Starting comprehensive Firebase diagnostic...', 'info');
+            
+            const sdkOk = checkSDK();
+            if (!sdkOk) return;
+            
+            const configOk = checkConfig();
+            if (!configOk) return;
+            
+            await testNetwork();
+            await testCORS();
+            await testConnection();
+        }
+
+        // Clear results
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Copy diagnostic info
+        function copyDiagnosticInfo() {
+            const envInfo = `
+Firebase Diagnostic Report
+========================
+URL: ${window.location.href}
+Hostname: ${window.location.hostname}
+Protocol: ${window.location.protocol}
+User Agent: ${navigator.userAgent}
+Timestamp: ${new Date().toISOString()}
+
+Firebase Status:
+- SDK Loaded: ${typeof firebase !== 'undefined' ? 'Yes' : 'No'}
+- Apps Initialized: ${typeof firebase !== 'undefined' && firebase.apps ? firebase.apps.length : 'N/A'}
+- Database Available: ${typeof db !== 'undefined' ? 'Yes' : 'No'}
+
+Console Logs:
+${document.getElementById('results').innerText}
+            `;
+            
+            navigator.clipboard.writeText(envInfo).then(() => {
+                log('Diagnostic info copied to clipboard', 'success');
+            }).catch(() => {
+                log('Failed to copy diagnostic info', 'error');
+            });
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', function() {
+            setTimeout(runAllTests, 1000);
+        });
+    </script>
+</body>
+</html>
