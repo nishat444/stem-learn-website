@@ -155,12 +155,12 @@ body {
     }
     
     /* Private Tuition specific mobile styling */
-    .course-btn .price[style*="font-size: 0.9rem"] {
-        font-size: 0.7rem !important;
+    .course-btn .price[style*="font-size: 0.8rem"] {
+        font-size: 0.6rem !important;
         text-align: center !important;
-        line-height: 1.1;
+        line-height: 1.0;
         word-break: break-word;
-        padding: 0.1rem;
+        padding: 0.05rem;
         max-width: 100%;
         overflow: hidden;
     }
@@ -168,12 +168,12 @@ body {
 
 @media(max-width:480px){
     /* Extra small mobile screens */
-    .course-btn .price[style*="font-size: 0.9rem"] {
-        font-size: 0.6rem !important;
+    .course-btn .price[style*="font-size: 0.8rem"] {
+        font-size: 0.5rem !important;
         text-align: center !important;
-        line-height: 1.0;
+        line-height: 0.9;
         word-break: break-word;
-        padding: 0.05rem;
+        padding: 0.02rem;
         max-width: 100%;
         overflow: hidden;
         white-space: normal;
@@ -188,11 +188,11 @@ body {
 @media(max-width:360px){
     /* Very small mobile screens */
     .course-btn .price[style*="font-size: 0.8rem"] {
-        font-size: 0.5rem !important;
+        font-size: 0.4rem !important;
         text-align: center !important;
-        line-height: 0.9;
+        line-height: 0.8;
         word-break: break-word;
-        padding: 0.02rem;
+        padding: 0.01rem;
         max-width: 100%;
         overflow: hidden;
         white-space: normal;
@@ -260,7 +260,7 @@ function renderCourses() {
           <div class="desc">${c.desc}</div>
         </div>
         <div style="text-align:right">
-          <div class="price" style="${c.type === 'private' ? 'font-size: 0.8rem; text-align: center; line-height: 1.1; word-break: break-word; padding: 0.1rem; max-width: 100%; overflow: hidden; white-space: normal;' : ''}">${c.price}</div>
+          <div class="price" style="${c.type === 'private' ? 'font-size: 0.7rem; text-align: center; line-height: 1.0; word-break: break-word; padding: 0.05rem; max-width: 100%; overflow: hidden; white-space: normal;' : ''}">${c.price}</div>
         </div>
       </div>
     `;
