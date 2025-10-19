@@ -21,9 +21,10 @@
     }
 
     .container {
-      width: 70%;
+      width: 90%;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 1rem;
     }
 
     .header {
@@ -65,7 +66,7 @@
 
     .tuition-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 2rem;
       margin-bottom: 3rem;
     }
@@ -128,7 +129,7 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
@@ -210,20 +211,57 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 0 0.5rem;
+      }
+
       .hero-section h1 {
         font-size: 2rem;
       }
       
       .tuition-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
       
       .pricing-section {
-        padding: 2rem 1rem;
+        padding: 2rem 0;
       }
       
       .cta-section {
-        padding: 2rem 1rem;
+        padding: 2rem 0;
+      }
+
+      .tuition-card,
+      .pricing-card {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 100%;
+        padding: 0 0.25rem;
+      }
+
+      .tuition-grid,
+      .pricing-grid {
+        gap: 1rem;
+      }
+
+      .tuition-card,
+      .pricing-card {
+        padding: 1rem;
+      }
+
+      .hero-section h1 {
+        font-size: 1.5rem;
       }
     }
   </style>
