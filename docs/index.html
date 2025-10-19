@@ -616,13 +616,16 @@
 
       /* About section mobile improvements */
       .about p {
-        padding: 0 0.5rem;
+        padding: 0 1.5rem;
         font-size: 1.15rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
       }
 
       .about h2 {
         font-size: 2.2rem;
-        padding: 0 0.5rem;
+        padding: 0 1.5rem;
+        margin-bottom: 1.5rem;
       }
 
       /* Pricing cards */
@@ -681,15 +684,27 @@
         padding: 3rem 0;
       }
 
-      .about p {
+      /* Additional about section mobile improvements */
+      .about {
+        text-align: left;
+      }
+
+      .about .container {
+        max-width: 100%;
         padding: 0 1rem;
+      }
+
+      .about p {
+        padding: 0 2rem;
         font-size: 1.1rem;
-        line-height: 1.7;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
       }
 
       .about h2 {
         font-size: 2rem;
-        padding: 0 1rem;
+        padding: 0 2rem;
+        margin-bottom: 1.5rem;
       }
     }
   </style>
@@ -1372,21 +1387,6 @@ This email was sent from the STEM Learn website contact form.
     // Make test function globally accessible
     window.testFirebaseConnection = testFirebaseConnection;
 
-    // Private Tuition Payment Function
-    function proceedToPrivatePayment() {
-      const amount = document.getElementById('privateAmount').value;
-      
-      if (!amount || amount < 20) {
-        alert('Please enter a valid amount (minimum £20)');
-        return;
-      }
-      
-      // Store the amount in sessionStorage for the payment page
-      sessionStorage.setItem('privateTuitionAmount', amount);
-      
-      // Redirect to the private tuition payment page
-      window.location.href = `private-tuition-payment.html?amount=${amount}`;
-    }
 
     // Calendly integration - no JavaScript needed as we're using direct links
 
@@ -1572,7 +1572,7 @@ This email was sent from the STEM Learn website contact form.
       <!-- Action Buttons -->
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <a href="#registration" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Contact Us (Free)
+          Contact Us
         </a>
         <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
           Course Fees
@@ -1627,12 +1627,7 @@ This email was sent from the STEM Learn website contact form.
           <li>Secondary School Maths/Science</li>
           <li>Flexible scheduling</li>
         </ul>
-        <div style="margin-bottom: 1.5rem;">
-          <label for="privateAmount" style="display: block; margin-bottom: 0.5rem; color: #ff6b35; font-weight: bold; font-size: 0.9rem;">Enter Amount (£)</label>
-          <input type="number" id="privateAmount" min="20" max="500" step="5" placeholder="50" 
-                 style="width: 80%; padding: 0.75rem; font-size: 1rem; border: 2px solid #ff6b35; border-radius: 8px; background: #0b0c1a; color: #fff; text-align: center;">
-        </div>
-        <button onclick="proceedToPrivatePayment()" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block; border: none; cursor: pointer; width: 80%;">Setup One-Time Payment</button>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block; margin-top: 5rem;">Course Fees</a>
       </div>
       
     </div>
@@ -1773,7 +1768,7 @@ This email was sent from the STEM Learn website contact form.
             <p style="color: #0b0c1a; margin-bottom: 1.5rem; font-size: 1.1rem;">Join thousands of students learning the skills of the future</p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
               <a href="#registration" style="background: #0b0c1a; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
-                Contact Us (Free)
+                Contact Us
               </a>
             </div>
           </div>

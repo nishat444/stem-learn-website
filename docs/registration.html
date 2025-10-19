@@ -381,12 +381,7 @@
                         <li>Secondary School Maths/Science</li>
                         <li>Flexible scheduling</li>
                     </ul>
-                    <div style="margin: 1rem 0;">
-                        <label for="privateAmountReg" style="display: block; margin-bottom: 0.5rem; color: #ff6b35; font-weight: bold; font-size: 0.9rem;">Enter Amount (£)</label>
-                        <input type="number" id="privateAmountReg" min="20" max="500" step="5" placeholder="50" 
-                               style="width: 80%; padding: 0.75rem; font-size: 1rem; border: 2px solid #ff6b35; border-radius: 8px; background: #0b0c1a; color: #fff; text-align: center;">
-                    </div>
-                    <button onclick="proceedToPrivatePaymentReg()" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none; background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; border: none; cursor: pointer; width: 80%;">Setup One-Time Payment</button>
+                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none; background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; border: none; cursor: pointer; margin-top: 5rem;">Course Fees</a>
                 </div>
             </div>
 
@@ -661,21 +656,6 @@
         // Initialize form submission
         document.getElementById('registrationFormElement').addEventListener('submit', processRegistration);
 
-        // Private Tuition Payment Function for Registration Page
-        function proceedToPrivatePaymentReg() {
-            const amount = document.getElementById('privateAmountReg').value;
-            
-            if (!amount || amount < 20) {
-                alert('Please enter a valid amount (minimum £20)');
-                return;
-            }
-            
-            // Store the amount in sessionStorage for the payment page
-            sessionStorage.setItem('privateTuitionAmount', amount);
-            
-            // Redirect to the private tuition payment page
-            window.location.href = `private-tuition-payment.html?amount=${amount}`;
-        }
 
         // Initialize Stripe when page loads
         document.addEventListener('DOMContentLoaded', function() {
