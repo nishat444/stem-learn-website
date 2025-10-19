@@ -399,6 +399,19 @@
       font-size: 1.1rem;
     }
 
+    .registration-container {
+      max-width: 800px;
+      margin: 0 auto 3rem auto;
+    }
+
+    .registration-form-wrapper {
+      background-color: #1f1f3f;
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid #00d9ff;
+      text-align: left;
+    }
+
     .contact-form {
       background-color: #1f1f3f;
       padding: 2rem;
@@ -635,25 +648,25 @@
 
       /* Contact form mobile improvements */
       .contact-form {
-        padding: 1rem;
+        padding: 1rem !important;
         margin: 0;
       }
 
-      #registration {
-        padding: 0;
-        margin: 0 auto 2rem auto;
-        max-width: 100%;
+      .registration-container {
+        padding: 0 !important;
+        margin: 0 auto 2rem auto !important;
+        max-width: 100% !important;
       }
 
-      #registration > div {
-        padding: 1rem;
+      .registration-form-wrapper {
+        padding: 1rem !important;
         margin: 0;
-        border-radius: 10px;
+        border-radius: 10px !important;
       }
 
-      #registration h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+      .registration-form-wrapper h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
       }
 
       /* Container adjustments */
@@ -735,25 +748,25 @@
 
       /* Contact form extra mobile improvements */
       .contact-form {
-        padding: 0.5rem;
+        padding: 0.5rem !important;
         margin: 0;
       }
 
-      #registration {
-        padding: 0;
-        margin: 0 auto 1.5rem auto;
-        max-width: 100%;
+      .registration-container {
+        padding: 0 !important;
+        margin: 0 auto 1.5rem auto !important;
+        max-width: 100% !important;
       }
 
-      #registration > div {
-        padding: 0.75rem;
+      .registration-form-wrapper {
+        padding: 0.75rem !important;
         margin: 0;
-        border-radius: 8px;
+        border-radius: 8px !important;
       }
 
-      #registration h3 {
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
+      .registration-form-wrapper h3 {
+        font-size: 1.3rem !important;
+        margin-bottom: 1rem !important;
         padding: 0 0.5rem;
       }
 
@@ -797,16 +810,16 @@
     /* Extra small mobile screens */
     @media (max-width: 360px) {
       .contact-form {
-        padding: 0.25rem;
+        padding: 0.25rem !important;
       }
 
-      #registration > div {
-        padding: 0.5rem;
+      .registration-form-wrapper {
+        padding: 0.5rem !important;
       }
 
-      #registration h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.75rem;
+      .registration-form-wrapper h3 {
+        font-size: 1.2rem !important;
+        margin-bottom: 0.75rem !important;
       }
 
       .form-group {
@@ -1801,8 +1814,8 @@ This email was sent from the STEM Learn website contact form.
       </div>
       
       <!-- Registration Form Section - Middle -->
-      <div id="registration" style="max-width: 800px; margin: 0 auto 3rem auto;">
-        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00d9ff; text-align: left;">
+      <div id="registration" class="registration-container">
+        <div class="registration-form-wrapper">
           <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Contact Us</h3>
           <div class="contact-form">
            <!-- Free Trial Banner -->
