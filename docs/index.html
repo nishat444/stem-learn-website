@@ -1330,6 +1330,22 @@ This email was sent from the STEM Learn website contact form.
     // Make test function globally accessible
     window.testFirebaseConnection = testFirebaseConnection;
 
+    // Private Tuition Payment Function
+    function proceedToPrivatePayment() {
+      const amount = document.getElementById('privateAmount').value;
+      
+      if (!amount || amount < 20) {
+        alert('Please enter a valid amount (minimum £20)');
+        return;
+      }
+      
+      // Store the amount in sessionStorage for the payment page
+      sessionStorage.setItem('privateTuitionAmount', amount);
+      
+      // Redirect to the private tuition payment page
+      window.location.href = `private-tuition-payment.html?amount=${amount}`;
+    }
+
     // Calendly integration - no JavaScript needed as we're using direct links
 
     // Mobile Navigation Toggle
@@ -1422,7 +1438,7 @@ This email was sent from the STEM Learn website contact form.
           </div>
         </li>
         <li><a href="#registration">Contact Us</a></li>
-        <li><a href="registration.html" style="color: #00fff7;">Register Now</a></li>
+        <li><a href="monthly-payment.html" style="color: #00fff7;">Payment</a></li>
         <li id="logoutBtn" style="display: none;">
           <a href="#" onclick="logoutUser(); return false;" style="color: #ff4444;">Logout</a>
         </li>
@@ -1514,10 +1530,10 @@ This email was sent from the STEM Learn website contact form.
       <!-- Action Buttons -->
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <a href="#registration" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Register Now (Free)
+          Contact Us (Free)
         </a>
         <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Set Up Monthly Payment
+          Course Fees
         </a>
       </div>
     </div>
@@ -1528,8 +1544,9 @@ This email was sent from the STEM Learn website contact form.
       <!-- Scratch Juniors Pricing -->
       <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center;">
         <h3 style="color: #00fff7; font-size: 1.5rem; margin-bottom: 1rem;">Scratch Juniors</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 8-11</p>
+        <p style="color: #ccc; margin-bottom: 1rem;">Ages 6-10</p>
         <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£19.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
+        <div style="color: #00ff7f; font-weight: bold; margin-bottom: 1rem;">+ Free Registration</div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
           <li>Project-based curriculum</li>
           <li>Computer science fundamentals</li>
@@ -1537,6 +1554,7 @@ This email was sent from the STEM Learn website contact form.
           <li>AI concepts for young learners</li>
           <li>Weekly 1 hr session</li>
         </ul>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Payment</a>
       </div>
       
       <!-- Young Coders Pricing -->
@@ -1544,6 +1562,7 @@ This email was sent from the STEM Learn website contact form.
         <h3 style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 1rem;">Young Coders</h3>
         <p style="color: #ccc; margin-bottom: 1rem;">Ages 12-16</p>
         <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£24.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
+        <div style="color: #00ff7f; font-weight: bold; margin-bottom: 1rem;">+ Free Registration</div>
         <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
           <li>Project based comprehensive curriculum</li>
           <li>Python programming mastery</li>
@@ -1551,6 +1570,27 @@ This email was sent from the STEM Learn website contact form.
           <li>AI & machine learning projects</li>
           <li>Weekly 1-hour sessions</li>
         </ul>
+        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #3b82f6, #00fff7); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Payment</a>
+      </div>
+      
+      <!-- Private Tuition Pricing -->
+      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #ff6b35; text-align: center;">
+        <h3 style="color: #ff6b35; font-size: 1.5rem; margin-bottom: 1rem;">Private Tuition</h3>
+        <p style="color: #ccc; margin-bottom: 1rem;">All Ages</p>
+        <div style="font-size: 1.2rem; color: #ff6b35; font-weight: bold; margin-bottom: 1rem; text-align: center;">custom/session payment</div>
+        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
+          <li>Personalized learning experience</li>
+          <li>11+ Preparation</li>
+          <li>Primary School Maths/Science/English</li>
+          <li>Secondary School Maths/Science</li>
+          <li>Flexible scheduling</li>
+        </ul>
+        <div style="margin-bottom: 1.5rem;">
+          <label for="privateAmount" style="display: block; margin-bottom: 0.5rem; color: #ff6b35; font-weight: bold; font-size: 0.9rem;">Enter Amount (£)</label>
+          <input type="number" id="privateAmount" min="20" max="500" step="5" placeholder="50" 
+                 style="width: 80%; padding: 0.75rem; font-size: 1rem; border: 2px solid #ff6b35; border-radius: 8px; background: #0b0c1a; color: #fff; text-align: center;">
+        </div>
+        <button onclick="proceedToPrivatePayment()" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block; border: none; cursor: pointer; width: 80%;">Setup One-Time Payment</button>
       </div>
       
     </div>
@@ -1690,8 +1730,8 @@ This email was sent from the STEM Learn website contact form.
             <h3 style="color: #0b0c1a; font-size: 1.5rem; margin-bottom: 1rem;">Ready to Start Your STEM Journey?</h3>
             <p style="color: #0b0c1a; margin-bottom: 1.5rem; font-size: 1.1rem;">Join thousands of students learning the skills of the future</p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="registration.html" style="background: #0b0c1a; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
-                Start Registration (Free)
+              <a href="#registration" style="background: #0b0c1a; color: #00fff7; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; border: 2px solid #0b0c1a;">
+                Contact Us (Free)
               </a>
             </div>
           </div>

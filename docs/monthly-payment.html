@@ -94,6 +94,13 @@ body {
     background:linear-gradient(45deg,#00fff7,#3b82f6);
     color:#071018;
 }
+.course-btn.private {
+    border-color:#ff6b35;
+}
+.course-btn.private:hover {
+    background:linear-gradient(45deg,#ff6b35,#ff8c42);
+    color:#0b0c1a;
+}
 .actions {
     display:flex;
     gap:1rem;
@@ -138,7 +145,7 @@ body {
 
 <div class="container">
   <div class="card center">
-    <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;font-size:1.6rem;">Set Up Monthly Payment</h1>
+    <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;font-size:1.6rem;">Course Fees</h1>
     <p style="color:#cbd5e1;font-size:0.95rem;">Choose a course below — clicking the main button will open the hosted checkout page for that course.</p>
   </div>
 
@@ -162,9 +169,9 @@ body {
 
 <script>
 const COURSES = [
-  { title: "Scratch Juniors", price: "£25.00/month", desc: "Intro to programming with Scratch & micro:bit", link: "https://buy.stripe.com/test_9B6cN4bkE8d0gjy7zWcZa02" },
-  { title: "Young Coders", price: "£45.00/month", desc: "Project-driven coding & intro to AI", link: "https://buy.stripe.com/test_28E5kCewQ9h4c3i1bycZa01" },
-  { title: "GCSE Prep", price: "£60.00/month", desc: "GCSE-level programming & exam support", link: "https://buy.stripe.com/test_fZubJ088seBod7m6vScZa00" }
+  { title: "Scratch Juniors", price: "£19.99/month", desc: "Intro to programming with Scratch & micro:bit", link: "https://buy.stripe.com/test_9B6cN4bkE8d0gjy7zWcZa02", type: "monthly" },
+  { title: "Young Coders", price: "£24.99/month", desc: "Project-driven coding & intro to AI", link: "https://buy.stripe.com/test_28E5kCewQ9h4c3i1bycZa01", type: "monthly" },
+  { title: "Private Tuition", price: "custom/session payment", desc: "Personalized learning experience", link: "private-tuition-payment.html", type: "private" }
 ];
 
 const courseGrid = document.getElementById('courseGrid');
@@ -177,7 +184,7 @@ function renderCourses() {
   courseGrid.innerHTML = '';
   COURSES.forEach((c, idx) => {
     const btn = document.createElement('button');
-    btn.className = 'course-btn';
+    btn.className = c.type === 'private' ? 'course-btn private' : 'course-btn';
     btn.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
@@ -185,7 +192,7 @@ function renderCourses() {
           <div class="desc">${c.desc}</div>
         </div>
         <div style="text-align:right">
-          <div class="price">${c.price}</div>
+          <div class="price" style="${c.type === 'private' ? 'font-size: 0.9rem; text-align: center;' : ''}">${c.price}</div>
         </div>
       </div>
     `;
@@ -196,6 +203,13 @@ function renderCourses() {
 
 function selectCourse(c, idx) {
   selectedCourse = c;
+  
+  // Handle Private Tuition differently - redirect directly to payment page
+  if (c.type === 'private') {
+    window.location.href = c.link;
+    return;
+  }
+  
   selectedCourseEl.innerHTML = `<strong>${c.title}</strong> — ${c.price}<br/><span style="color:#cbd5e1">${c.desc}</span>`;
   checkoutBtn.disabled = false;
   checkoutBtn.textContent = `Open Checkout for ${c.title}`;

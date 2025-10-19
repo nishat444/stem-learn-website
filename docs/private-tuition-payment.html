@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Tuition Payment - STEM Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0b0c1a 0%, #1e293b 100%);
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: #00fff7;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .payment-card {
+      background: linear-gradient(145deg, #1f1f3f, #2a2a4a);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid #3b82f6;
+    }
+
+    .payment-summary {
+      background: #0b0c1a;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid #00fff7;
+    }
+
+    .payment-summary h3 {
+      color: #00fff7;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .amount-display {
+      font-size: 2.5rem;
+      color: #3b82f6;
+      font-weight: bold;
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .payment-form {
+      margin-top: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #00fff7;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      background: #1f1f3f;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #00fff7;
+    }
+
+    .card-element {
+      padding: 1rem;
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      background: #1f1f3f;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #3b82f6, #00fff7);
+      color: #0b0c1a;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .back-btn {
+      background: transparent;
+      color: #00fff7;
+      border: 2px solid #00fff7;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #00fff7;
+      color: #0b0c1a;
+    }
+
+    .message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .message.success {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .message.error {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .spinner {
+      border: 3px solid #3b82f6;
+      border-top: 3px solid #00fff7;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .service-details {
+      background: #1f1f3f;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid #00fff7;
+    }
+
+    .service-details h4 {
+      color: #00fff7;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-details p {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">STEM Learn</div>
+      <h1>Private Tuition Payment</h1>
+    </div>
+
+    <a href="private-tuition.html" class="back-btn">← Back to Private Tuition</a>
+
+    <div class="payment-card">
+      <div class="payment-summary">
+        <h3>Payment Summary</h3>
+        <div class="service-details">
+          <h4>Private Tuition Session</h4>
+          <p>One-time payment for personalized tutoring session</p>
+        </div>
+        <div class="amount-display" id="amountDisplay">£0</div>
+        <p style="text-align: center; color: #cbd5e1; font-size: 0.9rem;">
+          Custom amount as specified by course admin
+        </p>
+      </div>
+
+      <div class="payment-form">
+        <form id="payment-form">
+          <div class="form-group">
+            <label for="student-name">Student Name</label>
+            <input type="text" id="student-name" name="studentName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="parent-name">Parent/Guardian Name</label>
+            <input type="text" id="parent-name" name="parentName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject/Area of Focus</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select subject</option>
+              <option value="11-plus">11+ Preparation</option>
+              <option value="primary-maths">Primary School Maths</option>
+              <option value="primary-science">Primary School Science</option>
+              <option value="primary-english">Primary School English</option>
+              <option value="secondary-maths">Secondary School Maths</option>
+              <option value="secondary-science">Secondary School Science</option>
+              <option value="computer-science">Computer Science</option>
+              <option value="programming">Programming</option>
+              <option value="other">Other (specify in notes)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes (Optional)</label>
+            <input type="text" id="notes" name="notes" placeholder="Any specific requirements or preferences">
+          </div>
+
+          <div class="form-group">
+            <label for="paymentAmount">Payment Amount (£)</label>
+            <input type="number" id="paymentAmount" name="paymentAmount" min="20" max="500" step="5" placeholder="Enter amount" required
+                   style="width: 100%; padding: 1rem; font-size: 1rem; border: 2px solid #3b82f6; border-radius: 8px; background: #1f1f3f; color: #fff; text-align: center;">
+            <small style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.5rem; display: block;">Enter fees amount</small>
+          </div>
+
+          <div class="form-group">
+            <label>Card Details</label>
+            <div id="card-element" class="card-element">
+              <!-- Stripe Elements will be inserted here -->
+            </div>
+            <div id="card-errors" role="alert"></div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="btn">
+            Pay £<span id="submit-amount">0</span>
+          </button>
+        </form>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Processing payment...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Stripe
+    const stripe = Stripe('pk_test_51SECfERo1WoPgABEtOzmAhPrJlaCEmM4cX8updZEYSs1w8x6DrAZixHHBlx41Wqbgxx1ZtJmmrnXaL1wSTxxBcYk00GtS6MPzZ');
+    const elements = stripe.elements();
+
+    // Get amount from URL parameter or sessionStorage, default to empty
+    const urlParams = new URLSearchParams(window.location.search);
+    let amount = urlParams.get('amount') || sessionStorage.getItem('privateTuitionAmount') || '';
+    
+    // Show placeholder text initially
+    document.getElementById('amountDisplay').textContent = 'Enter amount below';
+    document.getElementById('submit-amount').textContent = '0.00';
+
+    // Create card element
+    const cardElement = elements.create('card', {
+      style: {
+        base: {
+          fontSize: '16px',
+          color: '#fff',
+          '::placeholder': {
+            color: '#94a3b8',
+          },
+        },
+        invalid: {
+          color: '#ef4444',
+        },
+      },
+      hidePostalCode: true
+    });
+
+    cardElement.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element
+    cardElement.on('change', function(event) {
+      const displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Handle form submission
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const submitButton = document.getElementById('submit-btn');
+      const loading = document.getElementById('loading');
+      const paymentAmount = document.getElementById('paymentAmount').value;
+
+      // Validate amount
+      if (!paymentAmount || paymentAmount < 20 || paymentAmount > 500) {
+        alert('Please enter a valid amount between £20 and £500');
+        return;
+      }
+
+      // Convert to pence
+      const amountInPence = Math.round(parseFloat(paymentAmount) * 100);
+
+      // Update display
+      document.getElementById('amountDisplay').textContent = `£${paymentAmount}`;
+      document.getElementById('submit-amount').textContent = paymentAmount;
+
+      // Disable submit button and show loading
+      submitButton.disabled = true;
+      loading.style.display = 'block';
+
+      try {
+        // Create payment intent
+        const response = await fetch('/create-payment-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: amountInPence,
+            currency: 'gbp',
+            description: 'Private Tuition Session - Custom Amount'
+          }),
+        });
+
+        const { clientSecret } = await response.json();
+
+        // Confirm payment
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: document.getElementById('parent-name').value,
+              email: document.getElementById('email').value,
+            },
+          },
+        });
+
+        if (error) {
+          showMessage('Payment failed: ' + error.message, 'error');
+        } else if (paymentIntent.status === 'succeeded') {
+          showMessage('Payment successful! We will contact you soon to schedule your private tuition session.', 'success');
+          
+          // Save student information
+          await saveStudentInfo();
+          
+          // Clear form
+          form.reset();
+          
+          // Redirect after 3 seconds
+          setTimeout(() => {
+            window.location.href = 'private-tuition.html';
+          }, 3000);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage('An error occurred. Please try again.', 'error');
+      } finally {
+        submitButton.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
+
+    function showMessage(message, type) {
+      const existingMessage = document.querySelector('.message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      const form = document.getElementById('payment-form');
+      form.insertBefore(messageDiv, form.firstChild);
+    }
+
+    async function saveStudentInfo() {
+      const studentData = {
+        studentName: document.getElementById('student-name').value,
+        parentName: document.getElementById('parent-name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        subject: document.getElementById('subject').value,
+        notes: document.getElementById('notes').value,
+        amount: parseFloat(document.getElementById('paymentAmount').value),
+        timestamp: new Date().toISOString(),
+        type: 'private-tuition'
+      };
+
+      try {
+        const response = await fetch('/save-student-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(studentData),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to save student information');
+        }
+      } catch (error) {
+        console.error('Error saving student information:', error);
+      }
+    }
+
+    // Real-time amount update
+    document.addEventListener('DOMContentLoaded', function() {
+      const paymentAmountInput = document.getElementById('paymentAmount');
+      if (paymentAmountInput) {
+        console.log('Payment amount input found:', paymentAmountInput);
+        
+        // Real-time update of display when user types
+        paymentAmountInput.addEventListener('input', function() {
+          const value = this.value;
+          console.log('Amount changed to:', value);
+          
+          if (value && value >= 20 && value <= 500) {
+            document.getElementById('amountDisplay').textContent = `£${value}`;
+            document.getElementById('submit-amount').textContent = value;
+          } else {
+            document.getElementById('amountDisplay').textContent = 'Enter amount below';
+            document.getElementById('submit-amount').textContent = '0.00';
+          }
+        });
+        
+        // Clear the input field on focus to allow fresh input
+        paymentAmountInput.addEventListener('focus', function() {
+          if (this.value === '50') {
+            this.value = '';
+          }
+        });
+      } else {
+        console.error('Payment amount input not found!');
+      }
+    });
+
+  </script>
+</body>
+</html>

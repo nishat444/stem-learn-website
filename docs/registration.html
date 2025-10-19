@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Registration - STEM Learn</title>
+    <title>Setup Course Fees - STEM Learn</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -330,10 +330,10 @@
             <div class="course-selection">
                 <div style="text-align: center; margin-bottom: 2rem;">
                     <a href="index.html#registration" style="background: linear-gradient(45deg, #3b82f6, #00fff7); color: #0b0c1a; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease; display: inline-block; border: 2px solid transparent;">Contact Us</a>
-                    <p style="margin-top: 1rem; color: #94a3b8; font-size: 0.9rem;">Quick contact form</p>
+                    <p style="margin-top: 1rem; color: #94a3b8; font-size: 0.9rem;">Fill form for registration</p>
                 </div>
-                <h1>Course Registration</h1>
-                <p>Choose your course and complete free registration</p>
+                <h1>Setup Course Fees</h1>
+                <p>Choose your course and set up monthly payments</p>
             </div>
 
             <div class="pricing-cards" id="pricingCards">
@@ -350,7 +350,7 @@
                         <li>AI concepts for young learners</li>
                         <li>Weekly 1 hr session</li>
                     </ul>
-                    <button class="select-btn" onclick="selectCourse('scratch-juniors', 19.99)">Register Now</button>
+                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none;">Course Fees</a>
                 </div>
 
                 <!-- Young Coders Card -->
@@ -366,7 +366,27 @@
                         <li>AI & machine learning projects</li>
                         <li>Weekly 1-hour sessions</li>
                     </ul>
-                    <button class="select-btn" onclick="selectCourse('young-coders', 24.99)">Register Now</button>
+                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none;">Course Fees</a>
+                </div>
+
+                <!-- Private Tuition Card -->
+                <div class="pricing-card" style="border: 1px solid #ff6b35;">
+                    <h3 style="color: #ff6b35;">Private Tuition</h3>
+                    <p class="age">All Ages</p>
+                    <div class="price" style="color: #ff6b35; font-size: 1.2rem; text-align: center;">custom/session payment</div>
+                    <ul>
+                        <li>Personalized learning experience</li>
+                        <li>11+ Preparation</li>
+                        <li>Primary School Maths/Science/English</li>
+                        <li>Secondary School Maths/Science</li>
+                        <li>Flexible scheduling</li>
+                    </ul>
+                    <div style="margin: 1rem 0;">
+                        <label for="privateAmountReg" style="display: block; margin-bottom: 0.5rem; color: #ff6b35; font-weight: bold; font-size: 0.9rem;">Enter Amount (£)</label>
+                        <input type="number" id="privateAmountReg" min="20" max="500" step="5" placeholder="50" 
+                               style="width: 80%; padding: 0.75rem; font-size: 1rem; border: 2px solid #ff6b35; border-radius: 8px; background: #0b0c1a; color: #fff; text-align: center;">
+                    </div>
+                    <button onclick="proceedToPrivatePaymentReg()" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none; background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; border: none; cursor: pointer; width: 80%;">Setup One-Time Payment</button>
                 </div>
             </div>
 
@@ -640,6 +660,22 @@
 
         // Initialize form submission
         document.getElementById('registrationFormElement').addEventListener('submit', processRegistration);
+
+        // Private Tuition Payment Function for Registration Page
+        function proceedToPrivatePaymentReg() {
+            const amount = document.getElementById('privateAmountReg').value;
+            
+            if (!amount || amount < 20) {
+                alert('Please enter a valid amount (minimum £20)');
+                return;
+            }
+            
+            // Store the amount in sessionStorage for the payment page
+            sessionStorage.setItem('privateTuitionAmount', amount);
+            
+            // Redirect to the private tuition payment page
+            window.location.href = `private-tuition-payment.html?amount=${amount}`;
+        }
 
         // Initialize Stripe when page loads
         document.addEventListener('DOMContentLoaded', function() {
