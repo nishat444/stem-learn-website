@@ -156,27 +156,51 @@ body {
     
     /* Private Tuition specific mobile styling */
     .course-btn .price[style*="font-size: 0.9rem"] {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
         text-align: center !important;
-        line-height: 1.2;
+        line-height: 1.1;
         word-break: break-word;
-        padding: 0.2rem;
+        padding: 0.1rem;
+        max-width: 100%;
+        overflow: hidden;
     }
 }
 
 @media(max-width:480px){
     /* Extra small mobile screens */
     .course-btn .price[style*="font-size: 0.9rem"] {
-        font-size: 0.7rem !important;
+        font-size: 0.6rem !important;
         text-align: center !important;
-        line-height: 1.1;
+        line-height: 1.0;
         word-break: break-word;
-        padding: 0.1rem;
+        padding: 0.05rem;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: normal;
     }
     
     .course-btn {
         padding: 0.6rem;
         min-height: 70px;
+    }
+}
+
+@media(max-width:360px){
+    /* Very small mobile screens */
+    .course-btn .price[style*="font-size: 0.8rem"] {
+        font-size: 0.5rem !important;
+        text-align: center !important;
+        line-height: 0.9;
+        word-break: break-word;
+        padding: 0.02rem;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: normal;
+    }
+    
+    .course-btn {
+        padding: 0.4rem;
+        min-height: 60px;
     }
 }
 </style>
@@ -236,7 +260,7 @@ function renderCourses() {
           <div class="desc">${c.desc}</div>
         </div>
         <div style="text-align:right">
-          <div class="price" style="${c.type === 'private' ? 'font-size: 0.9rem; text-align: center; line-height: 1.2; word-break: break-word; padding: 0.2rem;' : ''}">${c.price}</div>
+          <div class="price" style="${c.type === 'private' ? 'font-size: 0.8rem; text-align: center; line-height: 1.1; word-break: break-word; padding: 0.1rem; max-width: 100%; overflow: hidden; white-space: normal;' : ''}">${c.price}</div>
         </div>
       </div>
     `;
