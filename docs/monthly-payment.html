@@ -18,6 +18,7 @@ body {
     width:70%;
     margin:0 auto;
     padding:2rem 1rem;
+    text-align: center;
 }
 .header {
     background:#1f1f3f;
@@ -68,8 +69,8 @@ body {
     cursor:pointer;
     font-weight:700;
     transition:all 0.2s ease;
-    background:#0b0c1a;
-    color:#fff;
+    background:#f8fafc;
+    color:#0b0c1a;
     text-align:left;
     display:flex;
     flex-direction:column;
@@ -79,20 +80,24 @@ body {
 .course-btn .title {
     font-size:1.05rem;
     margin-bottom:0.25rem;
+    color: #0b0c1a;
+    font-weight: bold;
 }
 .course-btn .price {
     font-size:1.2rem;
     font-weight:800;
+    color: #0b0c1a;
 }
 .course-btn .desc {
     font-size:0.85rem;
-    color:#cbd5e1;
+    color:#374151;
     margin-top:0.4rem;
 }
 .course-btn:hover {
     transform:translateY(-4px);
     background:linear-gradient(45deg,#00fff7,#3b82f6);
-    color:#071018;
+    color:#0b0c1a;
+    box-shadow: 0 8px 25px rgba(0, 255, 247, 0.3);
 }
 .course-btn.private {
     border-color:#ff6b35;
@@ -100,6 +105,7 @@ body {
 .course-btn.private:hover {
     background:linear-gradient(45deg,#ff6b35,#ff8c42);
     color:#0b0c1a;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
 }
 .actions {
     display:flex;
@@ -133,16 +139,33 @@ body {
 .message.success {background:rgba(0,255,127,0.06);border:1px solid #00ff7f;color:#bfffe2;}
 @media(max-width:600px){
     .actions {flex-direction:column;}
-    .header {flex-direction:column;align-items:flex-start;}
+    .header {flex-direction:column;align-items:center;text-align:center;}
+    .container {width: 95%; padding: 1rem 0.5rem;}
     
     /* Mobile improvements for course buttons */
     .course-btn {
         padding: 0.8rem;
         min-height: 80px;
+        text-align: center;
+    }
+    
+    .course-btn {
+        background: #f8fafc !important;
+        color: #0b0c1a !important;
     }
     
     .course-btn .title {
         font-size: 1rem;
+        color: #0b0c1a !important;
+        font-weight: bold !important;
+    }
+    
+    .course-btn .price {
+        color: #0b0c1a !important;
+    }
+    
+    .course-btn .desc {
+        color: #374151 !important;
     }
     
     .course-btn .price {
@@ -168,6 +191,28 @@ body {
 
 @media(max-width:480px){
     /* Extra small mobile screens */
+    .container {width: 98%; padding: 0.5rem 0.25rem;}
+    .course-grid {grid-template-columns: 1fr; gap: 0.8rem;}
+    
+    .course-btn {
+        background: #f8fafc !important;
+        color: #0b0c1a !important;
+    }
+    
+    .course-btn .title {
+        color: #0b0c1a !important;
+        font-weight: bold !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .course-btn .price {
+        color: #0b0c1a !important;
+    }
+    
+    .course-btn .desc {
+        color: #374151 !important;
+    }
+    
     .course-btn .price[style*="font-size: 0.7rem"] {
         font-size: 0.4rem !important;
         text-align: center !important;
@@ -187,6 +232,28 @@ body {
 
 @media(max-width:360px){
     /* Very small mobile screens */
+    .container {width: 100%; padding: 0.25rem;}
+    .course-grid {gap: 0.5rem;}
+    
+    .course-btn {
+        background: #f8fafc !important;
+        color: #0b0c1a !important;
+    }
+    
+    .course-btn .title {
+        color: #0b0c1a !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .course-btn .price {
+        color: #0b0c1a !important;
+    }
+    
+    .course-btn .desc {
+        color: #374151 !important;
+    }
+    
     .course-btn .price[style*="font-size: 0.7rem"] {
         font-size: 0.3rem !important;
         text-align: center !important;
@@ -223,7 +290,7 @@ body {
   </div>
 
   <div class="card">
-    <h3 style="color:#3b82f6;font-size:1.2rem;">Available Monthly Subscriptions</h3>
+    <h3 style="color:#3b82f6;font-size:1.2rem;">Payment</h3>
     <div class="course-grid" id="courseGrid"></div>
 
     <div class="actions">

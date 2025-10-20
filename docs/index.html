@@ -462,6 +462,7 @@
       transition: 0.3s;
       font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
       font-size: 1rem;
+      margin: 1rem 1rem 0 1rem;
     }
 
     .submit-btn:hover {
@@ -511,6 +512,55 @@
       background-color: #101128;
       color: #777;
       font-size: 0.9rem;
+    }
+
+    /* Action Buttons Styles */
+    .action-buttons-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 0.75rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      text-align: center;
+      min-width: 140px;
+      box-sizing: border-box;
+      display: inline-block;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Get Started Section Styles */
+    .get-started-section {
+      padding: 5rem 0;
+      background-color: #101128;
+      text-align: center;
+    }
+
+    .get-started-btn {
+      background: linear-gradient(45deg, #00fff7, #3b82f6) !important;
+      color: #0b0c1a !important;
+      padding: 0.75rem 2rem !important;
+      border-radius: 5px !important;
+      text-decoration: none !important;
+      font-weight: bold !important;
+      transition: all 0.3s ease !important;
+      display: inline-block !important;
+      border: none !important;
+    }
+
+    .get-started-btn:hover {
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 20px rgba(0, 255, 247, 0.5) !important;
     }
 
     /* Mobile Responsive Styles */
@@ -628,6 +678,53 @@
         font-size: 1rem;
       }
 
+      .submit-btn {
+        margin: 1rem 0.5rem 0 0.5rem !important;
+        width: calc(100% - 1rem) !important;
+        max-width: calc(100% - 1rem) !important;
+      }
+
+      /* Action buttons mobile styles */
+      .action-btn {
+        min-width: 120px !important;
+        padding: 0.7rem 1.5rem !important;
+        font-size: 0.95rem !important;
+      }
+
+      .action-buttons-container {
+        gap: 0.8rem !important;
+      }
+
+      /* Contact response text mobile styles */
+      .contact-response-text {
+        margin: 0 1rem 1rem 1rem !important;
+        padding: 0 0.5rem !important;
+      }
+
+      /* Get started section mobile styles */
+      .get-started-section {
+        padding: 3rem 0 !important;
+      }
+
+      .get-started-section h2 {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+        padding: 0 1rem !important;
+      }
+
+      .get-started-text {
+        margin: 1rem 1rem 2rem 1rem !important;
+        padding: 0 0.5rem !important;
+        font-size: 1.1rem !important;
+        text-align: center !important;
+      }
+
+      .get-started-btn {
+        padding: 0.7rem 1.5rem !important;
+        font-size: 1rem !important;
+        margin: 0 0.5rem !important;
+      }
+
       /* Forms */
       .form-group {
         margin-bottom: 1.5rem;
@@ -641,6 +738,14 @@
       }
 
       /* Contact form mobile improvements */
+      
+      /* Submit button mobile improvements */
+      .registration-form-wrapper .submit-btn {
+        margin: 1rem 0.5rem 0 0.5rem !important;
+        width: calc(100% - 1rem) !important;
+        max-width: calc(100% - 1rem) !important;
+        box-sizing: border-box !important;
+      }
       
       /* Make sections full width on mobile */
       .container > div[style*="grid-template-columns"] {
@@ -699,6 +804,21 @@
         margin-bottom: 1.5rem;
       }
 
+      /* Ready to Transform section mobile improvements */
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] {
+        margin: 0 0.5rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] h3 {
+        padding: 0 1.5rem !important;
+        font-size: 1.5rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] p {
+        padding: 0 1.5rem !important;
+        font-size: 1rem !important;
+      }
+
       /* Pricing cards */
       .price {
         font-size: 2rem !important;
@@ -737,6 +857,48 @@
         font-size: 1.8rem !important;
       }
 
+      /* Action buttons small mobile styles */
+      .action-btn {
+        min-width: 110px !important;
+        padding: 0.6rem 1.2rem !important;
+        font-size: 0.9rem !important;
+      }
+
+      .action-buttons-container {
+        gap: 0.6rem !important;
+      }
+
+      /* Contact response text small mobile styles */
+      .contact-response-text {
+        margin: 0 0.8rem 1rem 0.8rem !important;
+        padding: 0 0.3rem !important;
+        font-size: 0.9rem !important;
+      }
+
+      /* Get started section small mobile styles */
+      .get-started-section {
+        padding: 2.5rem 0 !important;
+      }
+
+      .get-started-section h2 {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.8rem !important;
+        padding: 0 0.8rem !important;
+      }
+
+      .get-started-text {
+        margin: 0.8rem 0.8rem 1.5rem 0.8rem !important;
+        padding: 0 0.3rem !important;
+        font-size: 1rem !important;
+        text-align: center !important;
+      }
+
+      .get-started-btn {
+        padding: 0.6rem 1.2rem !important;
+        font-size: 0.9rem !important;
+        margin: 0 0.3rem !important;
+      }
+
       /* Better mobile padding */
       .container {
         width: 100% !important;
@@ -753,6 +915,14 @@
       }
 
       /* Contact form extra mobile improvements */
+      
+      /* Submit button small mobile improvements */
+      .registration-form-wrapper .submit-btn {
+        margin: 1rem 0.25rem 0 0.25rem !important;
+        width: calc(100% - 0.5rem) !important;
+        max-width: calc(100% - 0.5rem) !important;
+        box-sizing: border-box !important;
+      }
       
       /* Make sections full width on small mobile */
       .container > div[style*="grid-template-columns"] {
@@ -814,12 +984,27 @@
       .submit-btn {
         padding: 0.8rem 1.5rem;
         font-size: 0.9rem;
-        margin-top: 1rem;
-        width: 100%;
+        margin: 1rem 0.25rem 0 0.25rem;
+        width: calc(100% - 0.5rem);
       }
 
       .about, .courses, .contact {
         padding: 3rem 0;
+      }
+
+      /* Ready to Transform section small mobile improvements */
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] {
+        margin: 0 0.25rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] h3 {
+        padding: 0 1rem !important;
+        font-size: 1.3rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] p {
+        padding: 0 1rem !important;
+        font-size: 0.9rem !important;
       }
     }
 
@@ -871,6 +1056,16 @@
       .submit-btn {
         padding: 0.7rem 1rem;
         font-size: 0.85rem;
+        margin: 1rem 0.1rem 0 0.1rem;
+        width: calc(100% - 0.2rem);
+      }
+
+      /* Submit button extra small mobile improvements */
+      .registration-form-wrapper .submit-btn {
+        margin: 1rem 0.1rem 0 0.1rem !important;
+        width: calc(100% - 0.2rem) !important;
+        max-width: calc(100% - 0.2rem) !important;
+        box-sizing: border-box !important;
       }
 
       /* Additional about section mobile improvements */
@@ -901,6 +1096,63 @@
         font-size: 2rem;
         padding: 0 2rem;
         margin-bottom: 1.5rem;
+      }
+
+      /* Ready to Transform section extra small mobile improvements */
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] {
+        margin: 0 0.1rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] h3 {
+        padding: 0 0.8rem !important;
+        font-size: 1.2rem !important;
+      }
+
+      .container > div[style*="grid-template-columns"] > div[style*="grid-column: 1 / -1"] p {
+        padding: 0 0.8rem !important;
+        font-size: 0.85rem !important;
+      }
+
+      /* Action buttons extra small mobile styles */
+      .action-btn {
+        min-width: 100px !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+      }
+
+      .action-buttons-container {
+        gap: 0.5rem !important;
+      }
+
+      /* Contact response text extra small mobile styles */
+      .contact-response-text {
+        margin: 0 0.5rem 1rem 0.5rem !important;
+        padding: 0 0.2rem !important;
+        font-size: 0.85rem !important;
+      }
+
+      /* Get started section extra small mobile styles */
+      .get-started-section {
+        padding: 2rem 0 !important;
+      }
+
+      .get-started-section h2 {
+        font-size: 1.6rem !important;
+        margin-bottom: 0.6rem !important;
+        padding: 0 0.5rem !important;
+      }
+
+      .get-started-text {
+        margin: 0.5rem 0.5rem 1rem 0.5rem !important;
+        padding: 0 0.2rem !important;
+        font-size: 0.9rem !important;
+        text-align: center !important;
+      }
+
+      .get-started-btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+        margin: 0 0.2rem !important;
       }
     }
   </style>
@@ -1747,9 +1999,18 @@ This email was sent from the STEM Learn website contact form.
     </div>
   </section>
 
+  <section class="get-started-section" id="get-started">
+    <div class="container">
+      <h2 style="color: #00fff7; font-size: 2.5rem; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 10px #00fff7;">Ready to Get Started?</h2>
+      <p class="get-started-text" style="color: #e2e8f0; margin-bottom: 2rem; font-size: 1.3rem; line-height: 1.7; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">Choose Your Learning Path and Transform Your Future Today</p>
+      <div style="text-align: center;">
+        <a href="#contact" class="btn get-started-btn" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Get Started Now</a>
+      </div>
+    </div>
+  </section>
+
   <section class="contact" id="contact">
     <h2>Pricing & Registration</h2>
-    <p style="color: #e2e8f0; margin-bottom: 2rem; font-size: 1.3rem; line-height: 1.7;">Choose Your Learning Path and Get Started Today</p>
     
     <!-- Registration Process Explanation -->
     <div style="background-color: #1f1f3f; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6; text-align: center;">
@@ -1766,11 +2027,11 @@ This email was sent from the STEM Learn website contact form.
       </div>
       
       <!-- Action Buttons -->
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="#registration" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Contact Us
+      <div class="action-buttons-container" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#registration" class="action-btn register-btn" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+          Register Now
         </a>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+        <a href="monthly-payment.html" class="action-btn course-fees-btn" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
           Course Fees
         </a>
       </div>
@@ -1831,12 +2092,12 @@ This email was sent from the STEM Learn website contact form.
     <div class="container">
       <!-- Ready to Transform Your Future Section - Top -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center; grid-column: 1 / -1;">
-          <h3 style="color: #3b82f6; font-size: 2rem; margin-bottom: 1.5rem;">Ready to Transform Your Future?</h3>
-          <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 1rem; line-height: 1.8;">
+        <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center; grid-column: 1 / -1; margin: 0 1rem;">
+          <h3 style="color: #3b82f6; font-size: 2rem; margin-bottom: 1.5rem; padding: 0 1rem;">Ready to Transform Your Future?</h3>
+          <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 1rem; line-height: 1.8; padding: 0 1rem;">
             Be among the first to experience our innovative AI and programming education platform. Master cutting-edge technology through our comprehensive, project-based learning approach.
           </p>
-          <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 0; line-height: 1.8;">
+          <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 0; line-height: 1.8; padding: 0 1rem;">
             Our expert instructors guide you from visual programming basics to advanced AI development, preparing you for GCSE/A-Level success and future tech careers.
           </p>
         </div>
@@ -1964,7 +2225,7 @@ This email was sent from the STEM Learn website contact form.
           <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333; text-align: center;">
             <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Direct Contact</p>
             <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem; text-align: center; word-break: break-all;">stemlearn.co.uk@gmail.com</p>
-            <p style="color: #ccc; font-size: 1rem; line-height: 1.5; text-align: center;">
+            <p class="contact-response-text" style="color: #ccc; font-size: 1rem; line-height: 1.5; text-align: center;">
               We typically respond within 24 hours and are here to answer all your questions about our programs.
             </p>
           </div>
