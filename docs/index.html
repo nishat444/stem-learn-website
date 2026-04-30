@@ -338,37 +338,46 @@
     .about h2 {
       font-size: 2.5rem;
       color: #00d9ff;
-      margin-bottom: 1rem;
+      margin: 0 auto 1rem auto;
+      max-width: 800px;
+      padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+      box-sizing: border-box;
       text-shadow: 0 0 10px #00bfff;
       text-align: center;
     }
 
-    .about p {
+    /* Single column for About body: one padding + max-width fixes mobile alignment */
+    .about-prose {
+      width: 100%;
       max-width: 800px;
-      margin: 0 auto 1.5rem auto;
+      margin: 0 auto;
+      padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    .about-prose p {
+      margin: 0 0 1.5rem 0;
       color: #cbd5e1;
       font-size: 1.2rem;
       line-height: 1.8;
       text-align: left;
     }
 
-    .about h3 {
+    .about-prose h3 {
       color: #00fff7;
-      margin: 2rem auto 0.8rem auto;
-      max-width: 800px;
-      text-align: left;
+      margin: 2rem 0 0.8rem 0;
       font-size: 1.35rem;
       font-weight: 600;
       line-height: 1.35;
-      box-sizing: border-box;
+      text-align: left;
     }
 
-    .about ul {
-      max-width: 800px;
-      margin: 0 auto 1.5rem auto;
-      padding-left: 1.75rem;
-      padding-right: 0;
-      box-sizing: border-box;
+    .about-prose ul {
+      margin: 0 0 1.5rem 0;
+      padding-left: 1.35rem;
       color: #cbd5e1;
       font-size: 1.2rem;
       line-height: 1.8;
@@ -376,11 +385,11 @@
       list-style-position: outside;
     }
 
-    .about ul.about-list--tight {
+    .about-prose ul.about-list--tight {
       margin-bottom: 1rem;
     }
 
-    .about p.about-sub {
+    .about-prose p.about-sub {
       margin-bottom: 0.6rem;
       font-size: 1.2rem;
     }
@@ -947,29 +956,23 @@
         padding-bottom: env(safe-area-inset-bottom, 0px) !important;
       }
 
-      /* About section mobile improvements */
-      .about p {
-        padding: 0 1.5rem;
-        font-size: 1.15rem;
-        line-height: 1.8;
+      /* About section — title matches prose gutters */
+      .about h2 {
+        font-size: 2.2rem;
+        padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
         margin-bottom: 1.5rem;
-      }
-
-      .about h3 {
-        padding: 0 1.5rem;
         box-sizing: border-box;
       }
 
-      .about ul {
-        padding-left: 2.5rem;
-        padding-right: 1.5rem;
+      .about-prose p {
         font-size: 1.15rem;
       }
 
-      .about h2 {
-        font-size: 2.2rem;
-        padding: 0 1.5rem;
-        margin-bottom: 1.5rem;
+      .about-prose ul {
+        font-size: 1.15rem;
+        list-style-position: inside;
+        padding-left: 0;
       }
 
       /* Ready to Transform section mobile improvements */
@@ -1273,11 +1276,6 @@
         box-sizing: border-box !important;
       }
 
-      /* Additional about section mobile improvements */
-      .about {
-        text-align: left;
-      }
-
       .about .container {
         max-width: 100%;
         padding: 0 1rem;
@@ -1290,28 +1288,24 @@
         padding: 0 1rem;
       }
 
-      .about p {
-        padding: 0 2rem;
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-      }
-
-      .about h3 {
-        padding: 0 2rem;
-        box-sizing: border-box;
-      }
-
-      .about ul {
-        padding-left: 2.75rem;
-        padding-right: 2rem;
-        font-size: 1.1rem;
+      .about-prose {
+        padding-left: max(1rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1rem, env(safe-area-inset-right, 0px));
       }
 
       .about h2 {
         font-size: 2rem;
-        padding: 0 2rem;
+        padding-left: max(1rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1rem, env(safe-area-inset-right, 0px));
         margin-bottom: 1.5rem;
+      }
+
+      .about-prose p {
+        font-size: 1.1rem;
+      }
+
+      .about-prose ul {
+        font-size: 1.1rem;
       }
 
       /* Ready to Transform section extra small mobile improvements */
@@ -1590,7 +1584,7 @@
               // Show logout button
               document.getElementById('logoutBtn').style.display = 'block';
               
-              showMessage(`Welcome back, ${existingData.studentName}! You are already registered. You can now take assessments.`, 'success');
+              showMessage(`Welcome back, ${existingData.studentName}! You are already registered.`, 'success');
               form.reset();
             } else {
               // User doesn't exist, proceed with registration
@@ -1674,7 +1668,7 @@
           }
           
           // Show success message for contact form submission
-          let successMsg = '🎉 Thank you for contacting us! We have received your details and will be in touch soon. You can now take assessments and set up monthly payments.';
+          let successMsg = '🎉 Thank you for contacting us! We have received your details and will be in touch soon. You can set up monthly payments from the Payments page when you\'re ready.';
           
           showMessage(successMsg, 'success');
           
@@ -1756,7 +1750,7 @@ This email was sent from the STEM Learn website contact form.
 
     // Logout function
     function logoutUser() {
-      if (confirm('Are you sure you want to logout? You will need to register again to take assessments.')) {
+      if (confirm('Are you sure you want to log out? You will need to register again to restore your saved session.')) {
         // Clear session storage
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('studentName');
@@ -2160,7 +2154,6 @@ This email was sent from the STEM Learn website contact form.
           <div class="dropdown-content">
             <a href="#courses">STEM Programs</a>
             <a href="career-counselling.html">Career Counselling</a>
-            <a href="online-assessment.html">Online Assessment</a>
           </div>
         </li>
         <li class="dropdown">
@@ -2211,6 +2204,7 @@ This email was sent from the STEM Learn website contact form.
 
   <section class="about" id="about">
     <h2>About STEM Learn</h2>
+    <div class="about-prose">
     <p>StemLearn is a forward-thinking STEM education initiative and a subsidiary of AI Labs, dedicated to developing the next generation of scientists, innovators, and technology leaders.</p>
     <p>We provide a structured, hands-on learning experience that takes students from foundational computing and electronics to advanced Artificial Intelligence, Machine Learning, Robotics, and Software Engineering.</p>
     <p><strong>Our mission is simple:</strong> Turn learners into creators of technology, not just users of it.</p>
@@ -2292,6 +2286,7 @@ This email was sent from the STEM Learn website contact form.
       <li>Progressive skill development</li>
     </ul>
     <p><strong>Students do not just study technology, they create it.</strong></p>
+    </div>
   </section>
 
   <section class="courses" id="courses">
