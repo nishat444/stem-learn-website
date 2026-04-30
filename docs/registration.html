@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Setup Payments - STEM Learn</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -12,23 +12,35 @@
             box-sizing: border-box;
         }
 
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #0b0c1a 0%, #1e293b 100%);
             color: #fff;
             line-height: 1.6;
             min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         .container {
             width: 70%;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
         .header {
             background-color: #1f1f3f;
-            padding: 1rem 0;
+            padding: max(1rem, env(safe-area-inset-top, 0px)) 0 1rem;
             border-bottom: 1px solid #3b82f6;
         }
 
@@ -305,15 +317,22 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 0 1rem;
+                width: 100%;
+                max-width: 100%;
+                padding: 0 max(1rem, env(safe-area-inset-left, 0px)) 0 max(1rem, env(safe-area-inset-right, 0px));
+                box-sizing: border-box;
             }
             
             .course-selection h1 {
-                font-size: 2rem;
+                font-size: clamp(1.35rem, 5vw, 2rem);
             }
             
             .pricing-cards {
                 grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 2rem 0 max(2rem, env(safe-area-inset-bottom, 0px));
             }
         }
     </style>

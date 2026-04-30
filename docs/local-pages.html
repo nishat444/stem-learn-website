@@ -2,27 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Local preview — STEM Learn</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 max(1rem, env(safe-area-inset-right, 0px)) 2rem max(1rem, env(safe-area-inset-left, 0px)); line-height: 1.5; }
     h1 { font-size: 1.35rem; }
     h2 { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: #333; }
     ul { padding-left: 1.25rem; margin: 0.35rem 0 0; }
     a { color: #0a6; }
     p.note { color: #555; font-size: 0.9rem; }
     code { background: #f4f4f4; padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.9em; }
+    .muted { color: #666; font-size: 0.85rem; margin-top: 0.25rem; }
   </style>
 </head>
 <body>
   <h1>Local preview links</h1>
-  <p class="note">From the project root run <code>npm start</code>, then open this page at <strong>http://localhost:3000/local-pages.html</strong> (adjust the port if yours differs).</p>
+  <p class="note">From the project root run <code>npm start</code>, then open:</p>
+  <p class="note"><strong>http://localhost:3000/local-pages.html</strong></p>
+  <p class="muted">Use a normal browser tab (not <code>file://</code>). Change the port if your server uses something other than 3000.</p>
 
   <h2>Home — jump to sections</h2>
   <ul>
     <li><a href="index.html">Home (top)</a></li>
-    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#about">About STEM Learn</a></li>
     <li><a href="index.html#courses">Our Programs</a></li>
+    <li><a href="index.html#get-started">Get started</a></li>
     <li><a href="index.html#registration">Contact / registration form</a></li>
   </ul>
 
@@ -36,14 +40,26 @@
   <h2>Site pages</h2>
   <ul>
     <li><a href="mentors.html">Our Experts / Mentors</a></li>
-    <li><a href="registration.html">Registration</a></li>
+    <li><a href="registration.html">Registration / setup payments</a></li>
     <li><a href="success-stories.html">Success Stories</a></li>
-    <li><a href="monthly-payment.html">Payments</a></li>
+    <li><a href="monthly-payment.html">Monthly payments</a></li>
     <li><a href="private-tuition.html">Private tuition</a></li>
     <li><a href="private-tuition-payment.html">Private tuition payment</a></li>
     <li><a href="career-counselling.html">Career counselling</a></li>
     <li><a href="online-assessment.html">Online assessment</a></li>
     <li><a href="success.html">Success (confirmation)</a></li>
+  </ul>
+
+  <h2>Dev / test pages (local only)</h2>
+  <p class="muted">Optional helpers; not linked from the main site menu.</p>
+  <ul>
+    <li><a href="test-course-selection.html">Test course selection</a></li>
+    <li><a href="young-coder-test.html">Young coder test</a></li>
+    <li><a href="scratch-test.html">Scratch test</a></li>
+    <li><a href="firebase-simple-test.html">Firebase simple test</a></li>
+    <li><a href="firebase-test.html">Firebase test</a></li>
+    <li><a href="firebase-diagnostic.html">Firebase diagnostic</a></li>
+    <li><a href="firebase-connection-test.html">Firebase connection test</a></li>
   </ul>
 
   <p><a href="index.html">← Back to home</a></p>

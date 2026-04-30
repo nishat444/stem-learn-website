@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>STEM Learn</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -13,6 +13,13 @@
       padding: 0;
     }
 
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
       background-color: #0b0c1a;
@@ -21,7 +28,11 @@
       overflow-x: hidden;
       font-size: 1.1rem;
       font-weight: 400;
-      padding: 0 1rem;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-left: max(1rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1rem, env(safe-area-inset-right, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     a {
@@ -180,6 +191,7 @@
       align-items: center;
       text-align: center;
       min-height: 90vh;
+      min-height: 90dvh;
       background: linear-gradient(135deg, #0b0c1a 0%, #1f1f3f 100%);
       position: relative;
       padding: 0 1rem;
@@ -224,6 +236,9 @@
     .hero-content {
       position: relative;
       z-index: 3;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .floating-elements {
@@ -325,6 +340,7 @@
       color: #00d9ff;
       margin-bottom: 1rem;
       text-shadow: 0 0 10px #00bfff;
+      text-align: center;
     }
 
     .about p {
@@ -333,6 +349,40 @@
       color: #cbd5e1;
       font-size: 1.2rem;
       line-height: 1.8;
+      text-align: left;
+    }
+
+    .about h3 {
+      color: #00fff7;
+      margin: 2rem auto 0.8rem auto;
+      max-width: 800px;
+      text-align: left;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1.35;
+      box-sizing: border-box;
+    }
+
+    .about ul {
+      max-width: 800px;
+      margin: 0 auto 1.5rem auto;
+      padding-left: 1.75rem;
+      padding-right: 0;
+      box-sizing: border-box;
+      color: #cbd5e1;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      text-align: left;
+      list-style-position: outside;
+    }
+
+    .about ul.about-list--tight {
+      margin-bottom: 1rem;
+    }
+
+    .about p.about-sub {
+      margin-bottom: 0.6rem;
+      font-size: 1.2rem;
     }
 
     .courses {
@@ -618,11 +668,18 @@
       }
       
       header {
+        position: sticky;
+        top: 0;
+        z-index: 998;
+        background: rgba(11, 12, 26, 0.94);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
         justify-content: space-between;
         align-items: center;
         width: 100%;
         max-width: 100%;
         padding: 1rem;
+        padding-top: max(1rem, env(safe-area-inset-top, 0px));
         margin: 0;
       }
       
@@ -642,14 +699,18 @@
         top: 0;
         flex-direction: column;
         background-color: #0b0c1a;
-        width: 80%;
+        width: min(88vw, 300px);
         max-width: 300px;
         height: 100vh;
-        padding: 5rem 2rem 2rem;
+        height: 100dvh;
+        padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
         box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
         transition: right 0.3s ease-in-out;
         z-index: 1000;
         gap: 0;
+        box-sizing: border-box;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       nav ul.active {
@@ -694,13 +755,33 @@
         font-size: 2rem;
       }
 
+      .hero-content h1 {
+        font-size: clamp(1.35rem, 6.5vw, 2.15rem) !important;
+        letter-spacing: 0.1em !important;
+        line-height: 1.15 !important;
+        word-break: break-word;
+        hyphens: auto;
+      }
+
       .hero p {
         font-size: 0.95rem;
       }
 
+      .hero .floating-icon {
+        font-size: 2.25rem !important;
+      }
+
+      .hero .floating-code {
+        font-size: 0.65rem !important;
+      }
+
       .hero {
-        min-height: 70vh;
-        padding: 2rem 1rem;
+        /* Fill viewport below sticky header (≈5rem) for a true “full screen” first view */
+        min-height: calc(100vh - 5rem);
+        min-height: calc(100svh - 5rem);
+        min-height: calc(100dvh - 5rem);
+        padding: 1rem 0.75rem max(1.5rem, env(safe-area-inset-bottom, 0px));
+        box-sizing: border-box;
       }
 
       /* Cards and Grids */
@@ -859,9 +940,11 @@
         max-width: 100% !important;
       }
 
-      /* Body padding for tablet */
+      /* Body padding for tablet — respect notch / home indicator */
       body {
-        padding: 0 0.5rem !important;
+        padding-left: max(0.5rem, env(safe-area-inset-left, 0px)) !important;
+        padding-right: max(0.5rem, env(safe-area-inset-right, 0px)) !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px) !important;
       }
 
       /* About section mobile improvements */
@@ -870,6 +953,17 @@
         font-size: 1.15rem;
         line-height: 1.8;
         margin-bottom: 1.5rem;
+      }
+
+      .about h3 {
+        padding: 0 1.5rem;
+        box-sizing: border-box;
+      }
+
+      .about ul {
+        padding-left: 2.5rem;
+        padding-right: 1.5rem;
+        font-size: 1.15rem;
       }
 
       .about h2 {
@@ -917,6 +1011,17 @@
 
       .hero h1 {
         font-size: 1.7rem;
+      }
+
+      .hero-content h1 {
+        font-size: clamp(1.15rem, 7vw, 1.75rem) !important;
+        letter-spacing: 0.07em !important;
+      }
+
+      .hero {
+        min-height: calc(100vh - 4.5rem);
+        min-height: calc(100svh - 4.5rem);
+        min-height: calc(100dvh - 4.5rem);
       }
 
       .hero p {
@@ -1190,6 +1295,17 @@
         font-size: 1.1rem;
         line-height: 1.8;
         margin-bottom: 1.5rem;
+      }
+
+      .about h3 {
+        padding: 0 2rem;
+        box-sizing: border-box;
+      }
+
+      .about ul {
+        padding-left: 2.75rem;
+        padding-right: 2rem;
+        font-size: 1.1rem;
       }
 
       .about h2 {
@@ -2099,9 +2215,9 @@ This email was sent from the STEM Learn website contact form.
     <p>We provide a structured, hands-on learning experience that takes students from foundational computing and electronics to advanced Artificial Intelligence, Machine Learning, Robotics, and Software Engineering.</p>
     <p><strong>Our mission is simple:</strong> Turn learners into creators of technology, not just users of it.</p>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Vision</h3>
+    <h3>Our Vision</h3>
     <p>We aim to bridge the gap between traditional education and the future of technology by equipping students with:</p>
-    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <ul>
       <li>Computational thinking</li>
       <li>Engineering confidence</li>
       <li>Problem-solving ability</li>
@@ -2112,40 +2228,40 @@ This email was sent from the STEM Learn website contact form.
     </ul>
     <p>By combining theory with practical innovation, we prepare students for a world driven by AI, automation, and digital systems.</p>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">What We Teach</h3>
-    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Software and Programming</strong></p>
-    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <h3>What We Teach</h3>
+    <p class="about-sub"><strong>Software and Programming</strong></p>
+    <ul class="about-list--tight">
       <li>Vibe coding</li>
       <li>Python programming</li>
       <li>Web development fundamentals</li>
       <li>Logical programming and algorithms</li>
       <li>Software engineering principles</li>
     </ul>
-    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Artificial Intelligence and Machine Learning</strong></p>
-    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <p class="about-sub"><strong>Artificial Intelligence and Machine Learning</strong></p>
+    <ul class="about-list--tight">
       <li>AI fundamentals and real-world applications</li>
       <li>Machine learning concepts and intelligent systems</li>
       <li>Data-driven decision making</li>
       <li>Smart automation systems</li>
     </ul>
-    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Electronics and Robotics</strong></p>
-    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <p class="about-sub"><strong>Electronics and Robotics</strong></p>
+    <ul class="about-list--tight">
       <li>Circuit design and electronics fundamentals</li>
       <li>Sensors, motors, and embedded systems</li>
       <li>Robotics engineering and automation</li>
       <li>Hardware-software integration</li>
     </ul>
-    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Innovation and Future Skills</strong></p>
-    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <p class="about-sub"><strong>Innovation and Future Skills</strong></p>
+    <ul>
       <li>Entrepreneurship and startup thinking</li>
       <li>Innovation and patent awareness</li>
       <li>Digital creativity and product design</li>
       <li>School work experience and career readiness</li>
     </ul>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Learning Approach</h3>
+    <h3>Learning Approach</h3>
     <p>StemLearn uses a project-first, hands-on learning model where students:</p>
-    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <ul>
       <li>Build real working systems</li>
       <li>Learn through experimentation</li>
       <li>Solve real-world engineering challenges</li>
@@ -2154,12 +2270,12 @@ This email was sent from the STEM Learn website contact form.
     </ul>
     <p>Each stage reinforces practical skills in both hardware and software development.</p>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Organisation</h3>
+    <h3>Our Organisation</h3>
     <p>StemLearn operates as a subsidiary of AI Labs, an innovation-driven organisation working across advanced technology research, university-level projects, startup incubation, industry-focused internships, and real-world engineering solutions.</p>
     <p>This connection ensures our students gain exposure to real industry practices and innovation pathways.</p>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Goal</h3>
-    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <h3>Our Goal</h3>
+    <ul>
       <li>Technically skilled</li>
       <li>Creatively confident</li>
       <li>Industry-ready</li>
@@ -2167,8 +2283,8 @@ This email was sent from the STEM Learn website contact form.
       <li>Future-focused</li>
     </ul>
 
-    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">The StemLearn Difference</h3>
-    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+    <h3>The StemLearn Difference</h3>
+    <ul>
       <li>Learning by building</li>
       <li>Thinking through problem-solving</li>
       <li>Hands-on robotics and AI systems</li>

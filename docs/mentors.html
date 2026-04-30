@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Our Experts – STEM Learn</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -10,6 +10,13 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      width: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -20,7 +27,11 @@
       overflow-x: hidden;
       font-size: 1.1rem;
       font-weight: 400;
-      padding: 0 1rem;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-left: max(1rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1rem, env(safe-area-inset-right, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     a {
@@ -397,11 +408,18 @@
       }
       
       header {
+        position: sticky;
+        top: 0;
+        z-index: 998;
+        background: rgba(11, 12, 26, 0.94);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
         justify-content: space-between;
         align-items: center;
         width: 100%;
         max-width: 100%;
         padding: 1rem;
+        padding-top: max(1rem, env(safe-area-inset-top, 0px));
         margin: 0;
       }
       
@@ -421,14 +439,18 @@
         top: 0;
         flex-direction: column;
         background-color: #0b0c1a;
-        width: 80%;
+        width: min(88vw, 300px);
         max-width: 300px;
         height: 100vh;
-        padding: 5rem 2rem 2rem;
+        height: 100dvh;
+        padding: calc(4.5rem + env(safe-area-inset-top, 0px)) 1.25rem calc(2rem + env(safe-area-inset-bottom, 0px)) 1.25rem;
         box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
         transition: right 0.3s ease-in-out;
         z-index: 1000;
         gap: 0;
+        box-sizing: border-box;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       nav ul.active {
@@ -474,8 +496,11 @@
       }
 
       .hero {
-        min-height: 60vh;
-        padding: 2rem 1rem;
+        min-height: calc(100vh - 5rem);
+        min-height: calc(100svh - 5rem);
+        min-height: calc(100dvh - 5rem);
+        padding: 1rem 0.75rem max(1.5rem, env(safe-area-inset-bottom, 0px));
+        box-sizing: border-box;
       }
 
       /* Grid adjustments */
@@ -526,9 +551,10 @@
         margin: 0 !important;
       }
 
-      /* Body padding for tablet */
       body {
-        padding: 0 0.25rem !important;
+        padding-left: max(0.25rem, env(safe-area-inset-left, 0px)) !important;
+        padding-right: max(0.25rem, env(safe-area-inset-right, 0px)) !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px) !important;
       }
 
       /* Back button */
@@ -563,7 +589,11 @@
       }
 
       .hero {
-        padding: 2rem 1rem;
+        min-height: calc(100vh - 4.5rem);
+        min-height: calc(100svh - 4.5rem);
+        min-height: calc(100dvh - 4.5rem);
+        padding: 1rem 0.75rem max(1.25rem, env(safe-area-inset-bottom, 0px));
+        box-sizing: border-box;
       }
 
       .about, .courses, .contact {

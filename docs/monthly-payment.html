@@ -2,27 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Monthly Payment Setup - STEM Learn</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+}
 body {
     font-family:'Poppins','Segoe UI','Roboto',sans-serif;
     background: linear-gradient(135deg,#0b0c1a 0%,#1e293b 100%);
     color:#fff;
     line-height:1.6;
     min-height:100vh;
+    min-height:100dvh;
+    overflow-x: hidden;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .container {
     width:70%;
+    max-width: 1200px;
     margin:0 auto;
-    padding:2rem 1rem;
+    padding:2rem max(1rem, env(safe-area-inset-left, 0px)) 2rem max(1rem, env(safe-area-inset-right, 0px));
     text-align: center;
 }
 .header {
     background:#1f1f3f;
-    padding:1rem 2rem;
+    padding:max(1rem, env(safe-area-inset-top, 0px)) max(1rem, env(safe-area-inset-right, 0px)) 1rem max(1rem, env(safe-area-inset-left, 0px));
     border-bottom:1px solid #3b82f6;
     display:flex;
     justify-content:space-between;
@@ -140,7 +151,7 @@ body {
 @media(max-width:600px){
     .actions {flex-direction:column;}
     .header {flex-direction:column;align-items:center;text-align:center;}
-    .container {width: 95%; padding: 1rem 0.5rem;}
+    .container {width: 100%; max-width: 100%; padding: 1rem max(0.75rem, env(safe-area-inset-left, 0px)) 1rem max(0.75rem, env(safe-area-inset-right, 0px)); box-sizing: border-box;}
     
     /* Mobile improvements for course buttons */
     .course-btn {
