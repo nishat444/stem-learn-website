@@ -195,7 +195,7 @@ body {
         font-size: 0.8rem;
     }
     
-    /* Private Tuition specific mobile styling */
+    /* Custom Payment specific mobile styling */
     .course-btn .price[style*="font-size: 0.7rem"] {
         font-size: 0.5rem !important;
         text-align: center !important;
@@ -334,7 +334,7 @@ body {
 
 <div class="container">
   <div class="card center">
-    <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;font-size:1.6rem;">Course Fees</h1>
+    <h1 style="font-family:Orbitron, sans-serif;margin-bottom:.5rem;font-size:1.6rem;">Payments</h1>
     <p style="color:#cbd5e1;font-size:0.95rem;">Choose a course below — clicking the main button will open the hosted checkout page for that course.</p>
   </div>
 
@@ -358,9 +358,9 @@ body {
 
 <script>
 const COURSES = [
-  { title: "Scratch Juniors", price: "£19.99/month", desc: "Intro to programming with Scratch & micro:bit", link: "https://buy.stripe.com/00w7sKgG7eqS1Im2jKgrS02", type: "monthly" },
-  { title: "Young Coders", price: "£24.99/month", desc: "Project-driven coding & intro to AI", link: "https://buy.stripe.com/fZudR84XpaaCaeS5vWgrS01", type: "monthly" },
-  { title: "Private Tuition", price: "Custom/Session Payment", desc: "Personalized learning experience", link: "https://buy.stripe.com/6oUeVc9dFfuW86KaQggrS00", type: "monthly" }
+  { title: "StemLearn Diploma Certificate", price: "£150/per term", desc: "", link: "https://buy.stripe.com/00w7sKgG7eqS1Im2jKgrS02", type: "monthly" },
+  { title: "StemLearn Foundation Certificate", price: "£24.99/month", desc: "", link: "https://buy.stripe.com/fZudR84XpaaCaeS5vWgrS01", type: "monthly" },
+  { title: "Custom Payment", price: "Custom/Session Payment", desc: "Personalized learning experience", link: "https://buy.stripe.com/6oUeVc9dFfuW86KaQggrS00", type: "monthly" }
 ];
 
 const courseGrid = document.getElementById('courseGrid');
@@ -375,14 +375,10 @@ function renderCourses() {
     const btn = document.createElement('button');
     btn.className = 'course-btn';
     btn.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <span class="title">${c.title}</span>
-          <div class="desc">${c.desc}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="price" style="${c.type === 'private' ? 'font-size: 0.6rem; text-align: center; line-height: 0.9; word-break: break-word; padding: 0.02rem; max-width: 100%; overflow: hidden; white-space: normal;' : ''}">${c.price}</div>
-        </div>
+      <div>
+        <span class="title">${c.title}</span>
+        <div class="price" style="margin-top: 0.35rem; ${c.type === 'private' ? 'font-size: 0.6rem; text-align: left; line-height: 0.9; word-break: break-word; padding: 0.02rem; max-width: 100%; overflow: hidden; white-space: normal;' : ''}">${c.price}</div>
+        <div class="desc">${c.desc}</div>
       </div>
     `;
     btn.onclick = () => selectCourse(c, idx);
@@ -403,8 +399,8 @@ function selectCourse(c, idx) {
       b.style.boxShadow = '0 8px 25px rgba(59,130,246,0.3)';
       b.style.transform = 'translateY(-2px)';
       
-      // Different highlighting for Private Tuition
-      if (c.title === 'Private Tuition') {
+      // Different highlighting for Custom Payment
+      if (c.title === 'Custom Payment') {
         b.style.background = 'linear-gradient(45deg, #ff6b35, #ff8c42)';
         b.style.color = '#0b0c1a';
         b.style.borderColor = '#ff6b35';

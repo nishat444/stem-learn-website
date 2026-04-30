@@ -35,7 +35,8 @@
     }
 
     .container {
-      width: 70%;
+      width: 85%;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -43,6 +44,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: nowrap;
+      gap: 1rem;
       padding: 1rem 0;
       border-bottom: 1px solid #1f1f3f;
     }
@@ -51,12 +54,30 @@
       font-size: 1.8rem;
       color: #00fff7;
       letter-spacing: 2px;
+      flex-shrink: 0;
+    }
+
+    nav {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-width: 0;
     }
 
     nav ul {
       list-style: none;
       display: flex;
-      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.65rem 1rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      flex-shrink: 0;
     }
 
     /* Hamburger Menu Styles */
@@ -133,6 +154,8 @@
       font-weight: bold;
       position: relative;
       transition: 0.3s;
+      white-space: nowrap;
+      font-size: 0.95rem;
     }
 
     nav ul li a::after {
@@ -327,7 +350,7 @@
 
     .course-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 2rem;
     }
 
@@ -353,6 +376,28 @@
     .card .btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px #3b82f6;
+    }
+
+    /* Keep program cards aligned despite different text lengths */
+    .course-cards .card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .course-cards .card h3 {
+      line-height: 1.4;
+      font-size: 1.35rem;
+      word-break: break-word;
+    }
+
+    .course-cards .card p {
+      flex-grow: 1;
+    }
+
+    .course-cards .card .btn {
+      margin-top: auto;
+      align-self: flex-start;
     }
 
     .contact {
@@ -617,6 +662,10 @@
         border-bottom: 1px solid #1f1f3f;
       }
 
+      nav ul li a {
+        white-space: normal;
+      }
+
       .dropdown-content {
         position: static;
         display: none;
@@ -655,7 +704,7 @@
       }
 
       /* Cards and Grids */
-      .courses-grid, .features-grid, .pricing-grid {
+      .course-cards, .courses-grid, .features-grid, .pricing-grid {
         grid-template-columns: 1fr !important;
         gap: 1.5rem;
       }
@@ -666,6 +715,10 @@
 
       .card h3 {
         font-size: 1.3rem;
+      }
+
+      .course-cards .card h3 {
+        font-size: 1.2rem;
       }
 
       .card p {
@@ -872,6 +925,11 @@
 
       .card {
         padding: 1.2rem;
+      }
+
+      .course-cards .card h3 {
+        font-size: 1.05rem;
+        line-height: 1.35;
       }
 
       .price {
@@ -1986,12 +2044,18 @@ This email was sent from the STEM Learn website contact form.
           <div class="dropdown-content">
             <a href="#courses">STEM Programs</a>
             <a href="career-counselling.html">Career Counselling</a>
-            <a href="private-tuition.html">Private Tuition</a>
             <a href="online-assessment.html">Online Assessment</a>
           </div>
         </li>
+        <li class="dropdown">
+          <a href="success-stories.html">Success Stories</a>
+          <div class="dropdown-content">
+            <a href="success-stories.html">All Success Stories</a>
+            <a href="success-stories.html#awards">Award &amp; Recognition</a>
+          </div>
+        </li>
         <li><a href="#registration">Contact Us</a></li>
-        <li><a href="monthly-payment.html" style="color: #00fff7;">Course Fees</a></li>
+        <li><a href="monthly-payment.html" style="color: #00fff7;">Payments</a></li>
         <li id="logoutBtn" style="display: none;">
           <a href="#" onclick="logoutUser(); return false;" style="color: #ff4444;">Logout</a>
         </li>
@@ -2022,7 +2086,7 @@ This email was sent from the STEM Learn website contact form.
     </div>
     <div class="hero-content">
       <h1 style="font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3rem; color: #ffffff; text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 3px 6px rgba(0, 0, 0, 0.8); animation: glow 2s ease-in-out infinite alternate;">LEARN INNOVATE EXCEL</h1>
-      <p>Excellence in programming education: from visual coding to advanced AI development.</p>
+      <p>A hands-on, project-based learning journey where students master coding, vibe coding, and advanced AI development while building real-world electronics and robotics systems, exploring patent and innovation thinking, and developing essential soft skills to become confident, future-ready technology leaders.</p>
       <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
       <a href="#courses" class="btn">See Programs</a>
       </div>
@@ -2031,33 +2095,105 @@ This email was sent from the STEM Learn website contact form.
 
   <section class="about" id="about">
     <h2>About STEM Learn</h2>
-    <p>Embark on an extraordinary journey from fundamental programming principles to cutting-edge artificial intelligence mastery. Our meticulously designed curriculum transforms students into confident technologists through immersive, project-based learning experiences. Master the art of computational thinking, algorithmic problem-solving, and creative coding while building a robust foundation in Python, web technologies, and advanced AI frameworks.</p>
-    <p>From intuitive visual programming with Scratch to sophisticated machine learning implementations, students craft everything from intelligent chatbots and predictive models to dynamic web applications and mobile solutions. Each carefully crafted project builds essential skills in software engineering, AI development, and digital innovation. Graduate with an impressive portfolio of AI-powered solutions that demonstrate both technical excellence and creative vision, perfectly positioning you for academic excellence and leadership in tomorrow's technology landscape.</p>
+    <p>StemLearn is a forward-thinking STEM education initiative and a subsidiary of AI Labs, dedicated to developing the next generation of scientists, innovators, and technology leaders.</p>
+    <p>We provide a structured, hands-on learning experience that takes students from foundational computing and electronics to advanced Artificial Intelligence, Machine Learning, Robotics, and Software Engineering.</p>
+    <p><strong>Our mission is simple:</strong> Turn learners into creators of technology, not just users of it.</p>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Vision</h3>
+    <p>We aim to bridge the gap between traditional education and the future of technology by equipping students with:</p>
+    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Computational thinking</li>
+      <li>Engineering confidence</li>
+      <li>Problem-solving ability</li>
+      <li>Real-world technical skills</li>
+      <li>Innovation</li>
+      <li>Patent awareness</li>
+      <li>Entrepreneurial mindset</li>
+    </ul>
+    <p>By combining theory with practical innovation, we prepare students for a world driven by AI, automation, and digital systems.</p>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">What We Teach</h3>
+    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Software and Programming</strong></p>
+    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Vibe coding</li>
+      <li>Python programming</li>
+      <li>Web development fundamentals</li>
+      <li>Logical programming and algorithms</li>
+      <li>Software engineering principles</li>
+    </ul>
+    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Artificial Intelligence and Machine Learning</strong></p>
+    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>AI fundamentals and real-world applications</li>
+      <li>Machine learning concepts and intelligent systems</li>
+      <li>Data-driven decision making</li>
+      <li>Smart automation systems</li>
+    </ul>
+    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Electronics and Robotics</strong></p>
+    <ul style="max-width: 800px; margin: 0 auto 1rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Circuit design and electronics fundamentals</li>
+      <li>Sensors, motors, and embedded systems</li>
+      <li>Robotics engineering and automation</li>
+      <li>Hardware-software integration</li>
+    </ul>
+    <p style="max-width: 800px; margin: 0 auto 0.6rem auto; text-align: left;"><strong>Innovation and Future Skills</strong></p>
+    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Entrepreneurship and startup thinking</li>
+      <li>Innovation and patent awareness</li>
+      <li>Digital creativity and product design</li>
+      <li>School work experience and career readiness</li>
+    </ul>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Learning Approach</h3>
+    <p>StemLearn uses a project-first, hands-on learning model where students:</p>
+    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Build real working systems</li>
+      <li>Learn through experimentation</li>
+      <li>Solve real-world engineering challenges</li>
+      <li>Develop logical and creative thinking</li>
+      <li>Work like real engineers and developers</li>
+    </ul>
+    <p>Each stage reinforces practical skills in both hardware and software development.</p>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Organisation</h3>
+    <p>StemLearn operates as a subsidiary of AI Labs, an innovation-driven organisation working across advanced technology research, university-level projects, startup incubation, industry-focused internships, and real-world engineering solutions.</p>
+    <p>This connection ensures our students gain exposure to real industry practices and innovation pathways.</p>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">Our Goal</h3>
+    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Technically skilled</li>
+      <li>Creatively confident</li>
+      <li>Industry-ready</li>
+      <li>Entrepreneurially minded</li>
+      <li>Future-focused</li>
+    </ul>
+
+    <h3 style="color: #00fff7; margin: 2rem auto 0.8rem auto; max-width: 800px; text-align: left;">The StemLearn Difference</h3>
+    <ul style="max-width: 800px; margin: 0 auto 1.5rem auto; color: #cbd5e1; font-size: 1.1rem; line-height: 1.8; text-align: left; padding-left: 2rem;">
+      <li>Learning by building</li>
+      <li>Thinking through problem-solving</li>
+      <li>Hands-on robotics and AI systems</li>
+      <li>Real-world applications</li>
+      <li>Progressive skill development</li>
+    </ul>
+    <p><strong>Students do not just study technology, they create it.</strong></p>
   </section>
 
   <section class="courses" id="courses">
     <h2>Our Programs</h2>
     <div class="container course-cards">
       <div class="card">
-        <h3>Scratch Juniors</h3>
-        <p>Perfect introduction to programming through visual Scratch coding, hands-on micro:bit projects, 
-           and beginner-friendly AI concepts. Young learners build games, animations, and interactive 
-           projects while developing computational thinking skills.</p>
+        <h3>StemLearn Foundation Certificate</h3>
+        <p><strong>STEM, Coding and Electronics for Young Beginners</strong><br><br>
+           A perfect first step into the world of technology for primary school learners with no prior computing experience required.<br><br>
+           This programme introduces children to the basics of coding, electronics, and problem-solving in a fun, hands-on way. Using visual tools like Scratch, simple hardware like micro:bit, and beginner-friendly electronics kits, students learn by building exciting projects from day one.</p>
         <a class="btn" href="courses/scratch-juniors.html">Learn More</a>
       </div>
       <div class="card">
-        <h3>Young Coders</h3>
-        <p>A comprehensive project‑driven pathway covering core programming concepts, problem solving, 
-           and introduction to AI. Students master Python, web development, app creation, and AI projects 
-           while preparing for GCSE and A-Level Computer Science success.</p>
+        <h3>StemLearn Diploma Certificate</h3>
+        <p><strong>STEM, Coding and Electronics for Advanced Innovators</strong><br><br>
+           A comprehensive, project-driven programme designed to take students from foundational computing to advanced programming, electronics, and artificial intelligence.<br><br>
+           This course develops strong skills in computational thinking, engineering logic, and real-world problem solving, while preparing students for success in GCSE and A-Level Computer Science and future STEM careers.</p>
         <a class="btn" href="courses/young-coders.html">Learn More</a>
-      </div>
-      <div class="card">
-        <h3>Private Tuition</h3>
-        <p>One-on-one personalized learning experience tailored to your child's specific needs and learning 
-           style. Flexible scheduling, customized curriculum, and focused attention to help your child excel 
-           in any subject or prepare for specific exams.</p>
-        <a class="btn" href="private-tuition.html">Learn More</a>
       </div>
     </div>
   </section>
@@ -2073,85 +2209,7 @@ This email was sent from the STEM Learn website contact form.
   </section>
 
   <section class="contact" id="contact">
-    <h2>Pricing & Registration</h2>
-    
-    <!-- Registration Process Explanation -->
-    <div style="background-color: #1f1f3f; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6; text-align: center;">
-      <h4 style="color: #3b82f6; margin-bottom: 1rem;">Simple Registration Process</h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; color: #ccc; margin-bottom: 2rem;">
-        <div style="background-color: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #3b82f6;">
-          <strong style="color: #3b82f6; font-size: 1.1rem;">Step 1: Register</strong><br>
-          <span style="font-size: 0.95rem;">Free registration to secure your spot</span>
-        </div>
-        <div style="background-color: rgba(255, 107, 53, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #ff6b35;">
-          <strong style="color: #ff6b35; font-size: 1.1rem;">Step 2: Monthly Setup</strong><br>
-          <span style="font-size: 0.95rem;">Set up recurring payment</span>
-        </div>
-      </div>
-      
-      <!-- Action Buttons -->
-      <div class="action-buttons-container" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="#registration" class="action-btn register-btn" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Register Now
-        </a>
-        <a href="monthly-payment.html" class="action-btn course-fees-btn" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
-          Course Fees
-        </a>
-      </div>
-    </div>
-    
-    
-    <!-- Pricing Section -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-      <!-- Scratch Juniors Pricing -->
-      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #00fff7; text-align: center;">
-        <h3 style="color: #00fff7; font-size: 1.5rem; margin-bottom: 1rem;">Scratch Juniors</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 7-11</p>
-        <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£19.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
-        <div style="color: #00ff7f; font-weight: bold; margin-bottom: 1rem;">+ Free Registration</div>
-        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
-          <li>Project-based curriculum</li>
-          <li>Computer science fundamentals</li>
-          <li>Scratch programming & micro:bit</li>
-          <li>AI concepts for young learners</li>
-          <li>Weekly 1 hr session</li>
-        </ul>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Course Fees</a>
-      </div>
-      
-      <!-- Young Coders Pricing -->
-      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center;">
-        <h3 style="color: #3b82f6; font-size: 1.5rem; margin-bottom: 1rem;">Young Coders</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">Ages 12-16</p>
-        <div style="font-size: 2.5rem; color: #3b82f6; font-weight: bold; margin-bottom: 1rem;">£24.99<span style="font-size: 1rem; color: #ccc;">/month</span></div>
-        <div style="color: #00ff7f; font-weight: bold; margin-bottom: 1rem;">+ Free Registration</div>
-        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
-          <li>Project based comprehensive curriculum</li>
-          <li>Python programming mastery</li>
-          <li>Web development & app creation</li>
-          <li>AI & machine learning projects</li>
-          <li>Weekly 1-hour sessions</li>
-        </ul>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #3b82f6, #00fff7); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block;">Course Fees</a>
-      </div>
-      
-      <!-- Private Tuition Pricing -->
-      <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #ff6b35; text-align: center;">
-        <h3 style="color: #ff6b35; font-size: 1.5rem; margin-bottom: 1rem;">Private Tuition</h3>
-        <p style="color: #ccc; margin-bottom: 1rem;">All Ages</p>
-        <div style="font-size: 1.2rem; color: #ff6b35; font-weight: bold; margin-bottom: 1rem; text-align: center;">Custom/Session Payment</div>
-        <ul style="color: #ccc; text-align: left; margin-bottom: 2rem;">
-          <li>Personalized learning experience</li>
-          <li>11+ Grammar School Preparation</li>
-          <li>GCSE Computer Science Crash Course</li>
-          <li>Primary School Maths/Science/English</li>
-          <li>Secondary School Maths/Science</li>
-          <li>Flexible scheduling</li>
-        </ul>
-        <a href="monthly-payment.html" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; padding: 0.75rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; display: inline-block; margin-top: 5rem;">Course Fees</a>
-      </div>
-      
-    </div>
+    <h2>Contact Us</h2>
     
     <div class="container">
       <!-- Ready to Transform Your Future Section - Top -->
@@ -2159,10 +2217,10 @@ This email was sent from the STEM Learn website contact form.
         <div style="background-color: #1f1f3f; padding: 2rem; border-radius: 15px; border: 1px solid #3b82f6; text-align: center; grid-column: 1 / -1; margin: 0 1rem;">
           <h3 style="color: #3b82f6; font-size: 2rem; margin-bottom: 1.5rem; padding: 0 1rem;">Ready to Transform Your Future?</h3>
           <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 1rem; line-height: 1.8; padding: 0 1rem;">
-            Be among the first to experience our innovative AI and programming education platform. Master cutting-edge technology through our comprehensive, project-based learning approach.
+            Join StemLearn, a subsidiary of AI Labs, and be among the first to experience our innovative STEM, AI, and programming education platform. Learn cutting-edge technology through a fully project-based approach that combines coding, electronics, robotics, and artificial intelligence.
           </p>
           <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 0; line-height: 1.8; padding: 0 1rem;">
-            Our expert instructors guide you from visual programming basics to advanced AI development, preparing you for GCSE/A-Level success and future tech careers.
+            Our expert instructors guide students from visual programming and basic electronics to advanced coding with Python, robotics systems, and AI concepts, preparing them for GCSE/A-Level success and future careers in technology, engineering, and innovation.
           </p>
         </div>
       </div>
@@ -2214,14 +2272,13 @@ This email was sent from the STEM Learn website contact form.
               <label for="courseInterest">Course Interest *</label>
               <select id="courseInterest" name="courseInterest" required>
                 <option value="">Select Your Course Interest</option>
-                <option value="Scratch Juniors">Scratch Juniors (Ages 7-11)</option>
-                <option value="Young Coders">Young Coders (Ages 12-16)</option>
+                <option value="Foundation Certificate">Foundation Certificate (Ages 7-11)</option>
+                <option value="StemLearn Diploma Certificate">StemLearn Diploma Certificate (Ages 9-18)</option>
                 <option value="Career Guidance">Career Guidance</option>
                 <option value="11+ Grammar School Preparation">11+ Grammar School Preparation</option>
                 <option value="GCSE Computer Science Crash Course">GCSE Computer Science Crash Course</option>
                 <option value="Primary School Maths/Science/English">Primary School Maths/Science/English Classes</option>
                 <option value="Secondary School Maths/Science">Secondary School Maths/Science Classes</option>
-                <option value="Private Tuition">Private Tuition</option>
               </select>
             </div>
             
@@ -2289,7 +2346,8 @@ This email was sent from the STEM Learn website contact form.
           <!-- Email Contact Information -->
           <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333; text-align: center;">
             <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Direct Contact</p>
-            <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem; text-align: center; word-break: break-all;">stemlearn.co.uk@gmail.com</p>
+            <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 0.5rem; text-align: center; word-break: break-all;">stemlearn.co.uk@gmail.com</p>
+            <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem; text-align: center; word-break: break-all;">stemlearn@ai-labs-uk.com</p>
             <p class="contact-response-text" style="color: #ccc; font-size: 1rem; line-height: 1.5; text-align: center;">
               We typically respond within 24 hours and are here to answer all your questions about our programs.
             </p>
