@@ -22,6 +22,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`  ${base}/registration.html`);
   console.log(`  ${base}/success-stories.html`);
   console.log(`  ${base}/monthly-payment.html`);
+  console.log(`  ${base}/index.html#about`);
   console.log(`  ${base}/index.html#courses`);
   console.log(`  ${base}/index.html#registration`);
 });
