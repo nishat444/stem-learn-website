@@ -13,6 +13,16 @@ app.get('/', (req, res) => {
 
 // Listen on all network interfaces
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+  const base = `http://localhost:${PORT}`;
+  console.log(`Server running on ${base}`);
+  console.log('Open in browser:');
+  console.log(`  ${base}/local-pages.html  (all preview links)`);
+  console.log(`  ${base}/`);
+  console.log(`  ${base}/mentors.html`);
+  console.log(`  ${base}/registration.html`);
+  console.log(`  ${base}/success-stories.html`);
+  console.log(`  ${base}/monthly-payment.html`);
+  console.log(`  ${base}/index.html#courses`);
+  console.log(`  ${base}/index.html#registration`);
 });
 

@@ -152,11 +152,20 @@
     }
 
     .hero p {
-      font-size: 1.4rem;
+      font-size: 1.15rem;
       color: #e2e8f0;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.7;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.75;
+    }
+
+    .hero h1 + p {
+      margin-top: 0.5rem;
+    }
+
+    .hero p + p {
+      margin-top: 1.1rem;
     }
 
     .back {
@@ -733,7 +742,6 @@
           <div class="dropdown-content">
             <a href="index.html#about">About Us</a>
             <a href="mentors.html">Our Experts</a>
-            <a href="success-stories.html">Success Stories</a>
           </div>
         </li>
         <li class="dropdown">
@@ -741,11 +749,18 @@
           <div class="dropdown-content">
             <a href="index.html#courses">STEM Programs</a>
             <a href="career-counselling.html">Career Counselling</a>
-            <a href="private-tuition.html">Private Tuition</a>
             <a href="online-assessment.html">Online Assessment</a>
           </div>
         </li>
-        <li><a href="index.html#contact">Contact Us</a></li>
+        <li class="dropdown">
+          <a href="success-stories.html">Success Stories</a>
+          <div class="dropdown-content">
+            <a href="success-stories.html">All Success Stories</a>
+            <a href="success-stories.html#awards">Award &amp; Recognition</a>
+          </div>
+        </li>
+        <li><a href="index.html#registration">Contact Us</a></li>
+        <li><a href="monthly-payment.html" style="color: #00fff7;">Payments</a></li>
       </ul>
     </nav>
   </header>
@@ -756,7 +771,6 @@
         <a class="back" href="index.html">← Back to Home</a>
       </div>
       <h1>Our Experts</h1>
-      <p>Meet our world-class team of experts in science, mathematics, programming, and AI, supported by visionary education leaders dedicated to guiding students on their journey toward scientific and technological excellence.</p>
       <p>At STEMLearn, our growing network includes experts from diverse backgrounds, bringing a wide range of perspectives and real-world insights to the learning experience.</p>
       <p>They mentor students at every stage—guiding projects, clarifying concepts, and helping them develop a deeper understanding of real-world applications.</p>
       <p>Beyond academics, our experts provide career guidance, helping students explore future pathways and define clear goals. Selected students also have the opportunity for one-on-one mentoring sessions, gaining personalised insights and direction.</p>
@@ -774,11 +788,9 @@
         <h3 class="founder-name">Nishat Akhter</h3>
          <p class="founder-title">Founder, STEMLearn</p>
         <div class="founder-message-text">
-          <p>"With nearly two decades of experience in software development, automation, CI, and DevOps, I founded STEM Learn as a passionate advocate for STEM education and AI innovation. Our mission is to democratize access to cutting-edge technology education and empower the next generation of innovators, researchers, and technology leaders through comprehensive, project-based learning experiences."</p>
-          
-          <p>"Having witnessed firsthand the transformative power of AI and programming in solving real-world challenges, I believe every student deserves the opportunity to master these essential skills. Our dedicated team of mentors combines decades of industry experience and academic excellence to guide learners from their first lines of code to advanced AI applications."</p>
-          
-          <p>"At STEM Learn, we don't just teach programming — we nurture critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. Join us on this inspiring journey of discovery, innovation, and limitless possibilities."</p>
+          <p>STEM Learn was founded with a deep commitment to advancing STEM education and AI-driven learning, with a strong focus on modern technologies that are shaping the future. Our mission is to make cutting-edge technology education accessible and to empower the next generation of innovators, researchers, and technology leaders through structured, project-based learning experiences.</p>
+          <p>Having seen firsthand the transformative impact of intelligent systems in solving real-world challenges, I strongly believe every student should have the opportunity to develop these essential skills. At STEM Learn, our mentors bring together extensive industry experience and academic expertise to guide learners from foundational concepts to advanced applications across software, hardware, and AI technologies.</p>
+          <p>At STEM Learn, we go beyond traditional instruction. We focus on developing critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. We invite you to join us on this journey of discovery, innovation, and meaningful impact.</p>
         </div>
       </div>
     </div>
@@ -812,8 +824,8 @@
 
         <div class="mentor-card">
           <div class="mentor-avatar">
-            <img src="abdellatif.jpeg" alt="abdellatif" class="mentor-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="mentor-initials" style="display: none;">IJ</div>
+            <img src="abdellatif.jpeg" alt="Abdellatif Salah" class="mentor-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="mentor-initials" style="display: none;">AS</div>
           </div>
           <h3 class="mentor-name">Abdellatif Salah</h3>
           <p class="mentor-title">Technical Lead, Google PhD in Wireless Communication.</p>
@@ -829,6 +841,26 @@
           <p class="mentor-title">Wireless Communications Engineer - PhD University of Surrey</p>
           <p class="mentor-expertise">Wireless Communications • Mobile Systems (3G/4G/5G) • C/C++ • Layer 2/3 Software • Modelling & Simulation</p>
           <p class="mentor-bio">Holds a PhD in Mobile Communications from University of Surrey, UK. Working in the area of Wireless Communications Layer 2 and Layer 3 software for a number of years. Expert in Mobile Communication systems (3G, 4G, 5G) with a focus on modelling and simulation. Mainly used C/C++ for implementation.</p>
+        </div>
+
+        <div class="mentor-card">
+          <div class="mentor-avatar">
+            <div class="mentor-initials">SA</div>
+          </div>
+          <h3 class="mentor-name">Dr. Saifullah Amir</h3>
+          <p class="mentor-title">Senior Staff Analog Engineer, Qualcomm UK · PhD Integrated Circuit Design, University of Twente</p>
+          <p class="mentor-expertise">Power Management · Mixed-Signal Design · Ultra-Low-Power Systems · Semiconductor ICs · DC/DC &amp; PMIC · Automotive · IoT · Medical Electronics</p>
+          <p class="mentor-bio">Dr. Saifullah Amir is a Senior Staff Analog Engineer at Qualcomm, UK, with over 15 years of industry experience in power management, mixed-signal design, and ultra-low-power systems. He holds a PhD in Integrated Circuit Design from the University of Twente and has published research in IEEE JSSC and IEEE Transactions on Power Electronics. His career spans leading semiconductor companies including Qualcomm, Microchip Technology, and Infineon Technologies, where he has taken products from concept through to silicon—covering DC/DC converters, gate drivers, and power management ICs for automotive, IoT, and medical applications. An experienced educator, Dr. Amir has supervised MSc theses, delivered university lectures on IC design, and spoken at international conferences on the future of the semiconductor industry. He brings both deep technical expertise and a passion for mentoring the next generation of electronics engineers.</p>
+        </div>
+
+        <div class="mentor-card">
+          <div class="mentor-avatar">
+            <div class="mentor-initials">AK</div>
+          </div>
+          <h3 class="mentor-name">Azim Khan</h3>
+          <p class="mentor-title">Senior Member of Technical Staff, Nutanix, Cambridge</p>
+          <p class="mentor-expertise">Embedded Systems · Software Engineering · System Architecture · Test Automation · Performance Engineering · Rust</p>
+          <p class="mentor-bio">Azim Khan is a senior technology professional currently working as a Senior Member of Technical Staff at Nutanix, Cambridge. He has extensive experience in embedded systems, software engineering, and large-scale system development across leading companies including Arm, NVIDIA, Cambridge Consultants, and Tata Consultancy Services. His expertise spans embedded software, system architecture, test automation, and performance engineering, with strong experience in modern systems programming such as Rust. Azim is passionate about building reliable, high-performance systems and guiding the next generation of engineers to think with clarity, precision, and strong engineering fundamentals.</p>
         </div>
 
       </div>
