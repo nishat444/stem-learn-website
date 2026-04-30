@@ -19,6 +19,7 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`  ${base}/local-pages.html  (all preview links)`);
   console.log(`  ${base}/`);
   console.log(`  ${base}/mentors.html`);
+  console.log(`  ${base}/mentors.html#expert-team`);
   console.log(`  ${base}/registration.html`);
   console.log(`  ${base}/success-stories.html`);
   console.log(`  ${base}/monthly-payment.html`);
