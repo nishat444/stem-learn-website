@@ -40,8 +40,12 @@
     }
 
     .container {
-      width: 70%;
+      width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      box-sizing: border-box;
     }
 
     header {
@@ -211,9 +215,17 @@
 
     .mentors-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 2rem;
       margin-top: 3rem;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    @media (min-width: 1100px) {
+      .mentors-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     .mentor-card {
@@ -286,19 +298,20 @@
       color: #0b0c1a;
     }
 
-    /* Founder uses same card chrome as team; full row, readable bio column */
+    /* Founder: full grid width so edges line up with the columns below */
     .mentor-card--founder {
       grid-column: 1 / -1;
-      max-width: 680px;
       width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      justify-self: center;
+      max-width: none;
+      justify-self: stretch;
     }
 
     .mentor-bio--founder {
       text-align: left;
       margin-top: 0.35rem;
+      max-width: 58rem;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .mentor-bio--founder p {
@@ -456,9 +469,11 @@
       /* Container adjustments */
       .container {
         width: 100% !important;
-        padding: 0 !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         max-width: 100% !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
       }
 
       body {
@@ -489,9 +504,11 @@
       /* Better mobile padding */
       .container {
         width: 100% !important;
-        padding: 0 !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
         max-width: 100% !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
       }
 
       body {
@@ -548,9 +565,11 @@
     @media (max-width: 360px) {
       .container {
         width: 100% !important;
-        padding: 0 !important;
+        padding-left: 0.65rem !important;
+        padding-right: 0.65rem !important;
         max-width: 100% !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
       }
 
       body {
