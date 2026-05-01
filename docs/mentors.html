@@ -215,11 +215,18 @@
 
     .mentors-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2rem;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
       margin-top: 3rem;
       width: 100%;
       align-items: stretch;
+    }
+
+    @media (min-width: 769px) {
+      .mentors-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
     }
 
     @media (min-width: 1100px) {
@@ -242,6 +249,59 @@
 
     .mentor-card > .mentor-avatar {
       align-self: center;
+    }
+
+    /* Same cell height in each row; founder excluded (full-width, natural height) */
+    .mentor-card:not(.mentor-card--founder) {
+      height: 100%;
+      min-height: 0;
+    }
+
+    .mentor-card:not(.mentor-card--founder) .mentor-bio {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .mentor-card:not(.mentor-card--founder) .mentor-bio > .mentor-more {
+      margin-top: auto;
+    }
+
+    /* Experts: same visible teaser height (no inner scroll), same read-more control */
+    .mentor-card:not(.mentor-card--founder) .mentor-bio > p:first-of-type {
+      margin: 0 0 0.65rem 0;
+      line-height: 1.75;
+      color: #cbd5e1;
+      flex-shrink: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5;
+      line-clamp: 5;
+      overflow: hidden;
+      min-height: 9.2rem;
+      max-height: 9.2rem;
+    }
+
+    .mentor-card:not(.mentor-card--founder) .mentor-more {
+      margin-top: 0.35rem;
+    }
+
+    .mentor-card:not(.mentor-card--founder) .mentor-more summary {
+      width: 100%;
+      box-sizing: border-box;
+      justify-content: center;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      background: rgba(0, 255, 247, 0.07);
+      border: 1px solid rgba(0, 255, 247, 0.22);
+      font-size: 0.9rem;
+    }
+
+    .mentor-card:not(.mentor-card--founder) .mentor-more-content {
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(0, 255, 247, 0.18);
     }
 
     .mentor-card .mentor-name,
@@ -533,6 +593,10 @@
         box-sizing: border-box;
       }
 
+      .mentor-card > .mentor-avatar {
+        margin: 0 auto 1.5rem auto !important;
+      }
+
       .mentor-card--founder {
         max-width: 100%;
       }
@@ -543,6 +607,13 @@
 
       .mentor-card h3 {
         font-size: 1.3rem;
+      }
+
+      .mentor-card:not(.mentor-card--founder) .mentor-bio > p:first-of-type {
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        min-height: 7.35rem;
+        max-height: 7.35rem;
       }
 
       /* Container adjustments */
@@ -795,16 +866,8 @@
           <p class="mentor-title">Founder, STEM Learn</p>
           <div class="mentor-bio mentor-bio--founder">
             <p>STEM Learn was founded with a deep commitment to advancing STEM education and AI-driven learning, with a strong focus on modern technologies that are shaping the future. Our mission is to make cutting-edge technology education accessible and to empower the next generation of innovators, researchers, and technology leaders through structured, project-based learning experiences.</p>
-            <details class="mentor-more">
-              <summary>
-                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
-                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
-              </summary>
-              <div class="mentor-more-content">
-                <p>Having seen firsthand the transformative impact of intelligent systems in solving real-world challenges, I strongly believe every student should have the opportunity to develop these essential skills. At STEM Learn, our mentors bring together extensive industry experience and academic expertise to guide learners from foundational concepts to advanced applications across software, hardware, and AI technologies.</p>
-                <p>At STEM Learn, we go beyond traditional instruction. We focus on developing critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. We invite you to join us on this journey of discovery, innovation, and meaningful impact.</p>
-              </div>
-            </details>
+            <p>Having seen firsthand the transformative impact of intelligent systems in solving real-world challenges, I strongly believe every student should have the opportunity to develop these essential skills. At STEM Learn, our mentors bring together extensive industry experience and academic expertise to guide learners from foundational concepts to advanced applications across software, hardware, and AI technologies.</p>
+            <p>At STEM Learn, we go beyond traditional instruction. We focus on developing critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. We invite you to join us on this journey of discovery, innovation, and meaningful impact.</p>
           </div>
         </div>
 
@@ -838,7 +901,16 @@
           <p class="mentor-title">Founding Engineer at Sqwish AI MPhil Cambridge University</p>
           <p class="mentor-expertise">AI Coding • Next.js • Kubernetes • Docker • React • Cambridge MPhil</p>
           <div class="mentor-bio">
-            <p>Founding Engineer at Sqwish AI and a self-taught Full-stack Engineer. He holds a Master's of Philosophy in Biological Sciences from the University of Cambridge. Nikhil has expertise in AI coding, and experience in technologies including Next.js, Kubernetes, Docker and React.</p>
+            <p>Founding Engineer at Sqwish AI and a self-taught Full-stack Engineer.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>He holds a Master's of Philosophy in Biological Sciences from the University of Cambridge. Nikhil has expertise in AI coding, and experience in technologies including Next.js, Kubernetes, Docker and React.</p>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -894,7 +966,16 @@
           <p class="mentor-title">Wireless Communications Engineer - PhD University of Surrey</p>
           <p class="mentor-expertise">Wireless Communications • Mobile Systems (3G/4G/5G) • C/C++ • Layer 2/3 Software • Modelling &amp; Simulation</p>
           <div class="mentor-bio">
-            <p>Holds a PhD in Mobile Communications from University of Surrey, UK. Working in the area of Wireless Communications Layer 2 and Layer 3 software for a number of years. Expert in Mobile Communication systems (3G, 4G, 5G) with a focus on modelling and simulation. Mainly used C/C++ for implementation.</p>
+            <p>Holds a PhD in Mobile Communications from University of Surrey, UK. Working in the area of Wireless Communications Layer 2 and Layer 3 software for a number of years.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>Expert in Mobile Communication systems (3G, 4G, 5G) with a focus on modelling and simulation. Mainly used C/C++ for implementation.</p>
+              </div>
+            </details>
           </div>
         </div>
 
