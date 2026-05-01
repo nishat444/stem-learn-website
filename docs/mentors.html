@@ -233,8 +233,21 @@
       border: 1px solid #00fff7;
       border-radius: 15px;
       padding: 2rem;
-      text-align: center;
+      text-align: left;
       transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .mentor-card > .mentor-avatar {
+      align-self: center;
+    }
+
+    .mentor-card .mentor-name,
+    .mentor-card .mentor-title,
+    .mentor-card .mentor-expertise {
+      text-align: left;
     }
 
     .mentor-card:hover {
@@ -265,19 +278,87 @@
     .mentor-title {
       font-size: 1.1rem;
       color: #3b82f6;
-      margin-bottom: 1rem;
+      margin-bottom: 0.65rem;
     }
 
     .mentor-expertise {
       font-size: 0.9rem;
       color: #ccc;
-      margin-bottom: 1rem;
+      margin-bottom: 0.35rem;
+      line-height: 1.5;
     }
 
     .mentor-bio {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #cbd5e1;
-      line-height: 1.8;
+      line-height: 1.75;
+      margin-top: 0.25rem;
+    }
+
+    .mentor-bio > p {
+      margin: 0 0 0.85rem 0;
+    }
+
+    .mentor-bio > p:last-child {
+      margin-bottom: 0;
+    }
+
+    .mentor-more {
+      margin-top: 0.5rem;
+      border: none;
+      padding: 0;
+    }
+
+    .mentor-more summary {
+      list-style: none;
+      cursor: pointer;
+      color: #00fff7;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin: 0;
+      padding: 0.35rem 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      user-select: none;
+      transition: color 0.2s, opacity 0.2s;
+    }
+
+    .mentor-more summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mentor-more summary:hover {
+      color: #7ffdf9;
+    }
+
+    .mentor-more-label--collapse {
+      display: none;
+    }
+
+    .mentor-more[open] .mentor-more-label--expand {
+      display: none;
+    }
+
+    .mentor-more[open] .mentor-more-label--collapse {
+      display: inline;
+    }
+
+    .mentor-more-content {
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(0, 255, 247, 0.2);
+    }
+
+    .mentor-more-content p {
+      margin: 0 0 0.85rem 0;
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      line-height: 1.75;
+    }
+
+    .mentor-more-content p:last-child {
+      margin-bottom: 0;
     }
 
     .mentor-photo {
@@ -309,19 +390,17 @@
     .mentor-bio--founder {
       text-align: left;
       margin-top: 0.35rem;
-      max-width: 58rem;
-      margin-left: auto;
-      margin-right: auto;
+      width: 100%;
     }
 
-    .mentor-bio--founder p {
-      margin: 0 0 1.1rem 0;
+    .mentor-bio--founder > p {
+      margin: 0 0 0.85rem 0;
       font-size: 1.05rem;
-      line-height: 1.8;
+      line-height: 1.75;
       color: #cbd5e1;
     }
 
-    .mentor-bio--founder p:last-child {
+    .mentor-bio--founder > p:last-child {
       margin-bottom: 0;
     }
 
@@ -716,8 +795,16 @@
           <p class="mentor-title">Founder, STEM Learn</p>
           <div class="mentor-bio mentor-bio--founder">
             <p>STEM Learn was founded with a deep commitment to advancing STEM education and AI-driven learning, with a strong focus on modern technologies that are shaping the future. Our mission is to make cutting-edge technology education accessible and to empower the next generation of innovators, researchers, and technology leaders through structured, project-based learning experiences.</p>
-            <p>Having seen firsthand the transformative impact of intelligent systems in solving real-world challenges, I strongly believe every student should have the opportunity to develop these essential skills. At STEM Learn, our mentors bring together extensive industry experience and academic expertise to guide learners from foundational concepts to advanced applications across software, hardware, and AI technologies.</p>
-            <p>At STEM Learn, we go beyond traditional instruction. We focus on developing critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. We invite you to join us on this journey of discovery, innovation, and meaningful impact.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>Having seen firsthand the transformative impact of intelligent systems in solving real-world challenges, I strongly believe every student should have the opportunity to develop these essential skills. At STEM Learn, our mentors bring together extensive industry experience and academic expertise to guide learners from foundational concepts to advanced applications across software, hardware, and AI technologies.</p>
+                <p>At STEM Learn, we go beyond traditional instruction. We focus on developing critical thinking, creativity, and problem-solving abilities that prepare students to thrive in an AI-driven world. We invite you to join us on this journey of discovery, innovation, and meaningful impact.</p>
+              </div>
+            </details>
           </div>
         </div>
 
@@ -728,7 +815,18 @@
           <h3 class="mentor-name">Mohamed El-Masry</h3>
           <p class="mentor-title">Founder &amp; CEO, Tactful AI | Engineer-Turned-Entrepreneur | AI Infrastructure Innovator</p>
           <p class="mentor-expertise">Artificial Intelligence · Enterprise Systems · Semiconductor Engineering · AI Infrastructure · Intelligent Automation · Entrepreneurship</p>
-          <p class="mentor-bio">An engineer-turned-entrepreneur, Mohamed El-Masry is the Founder &amp; CEO of Tactful AI, bringing world-class expertise in artificial intelligence, enterprise systems, and technology innovation to the STEM Learn ecosystem. His journey spans from building early-stage technology solutions in Upper Egypt to working on advanced semiconductor engineering and contributing to global technology environments such as ARM Holdings in Cambridge. With a deep understanding of infrastructure systems, he went on to build Tactful AI, a powerful platform designed to transform how organisations manage customer experience through intelligent automation. Having successfully scaled, exited, and later reacquired his company, Mohamed represents a rare combination of technical depth, entrepreneurial resilience, and global vision. Today, he continues to lead innovation in AI-driven platforms, driving rapid growth and redefining modern customer experience systems.</p>
+          <div class="mentor-bio">
+            <p>An engineer-turned-entrepreneur, Mohamed El-Masry is the Founder &amp; CEO of Tactful AI, bringing world-class expertise in artificial intelligence, enterprise systems, and technology innovation to the STEM Learn ecosystem.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>His journey spans from building early-stage technology solutions in Upper Egypt to working on advanced semiconductor engineering and contributing to global technology environments such as ARM Holdings in Cambridge. With a deep understanding of infrastructure systems, he went on to build Tactful AI, a powerful platform designed to transform how organisations manage customer experience through intelligent automation. Having successfully scaled, exited, and later reacquired his company, Mohamed represents a rare combination of technical depth, entrepreneurial resilience, and global vision. Today, he continues to lead innovation in AI-driven platforms, driving rapid growth and redefining modern customer experience systems.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -739,7 +837,9 @@
           <h3 class="mentor-name">Nikhil Parmar</h3>
           <p class="mentor-title">Founding Engineer at Sqwish AI MPhil Cambridge University</p>
           <p class="mentor-expertise">AI Coding • Next.js • Kubernetes • Docker • React • Cambridge MPhil</p>
-          <p class="mentor-bio">Founding Engineer at Sqwish AI and a self-taught Full-stack Engineer. He holds a Master's of Philosophy in Biological Sciences from the University of Cambridge. Nikhil has expertise in AI coding, and experience in technologies including Next.js, Kubernetes, Docker and React.</p>
+          <div class="mentor-bio">
+            <p>Founding Engineer at Sqwish AI and a self-taught Full-stack Engineer. He holds a Master's of Philosophy in Biological Sciences from the University of Cambridge. Nikhil has expertise in AI coding, and experience in technologies including Next.js, Kubernetes, Docker and React.</p>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -748,9 +848,20 @@
             <div class="mentor-initials" style="display: none;">IJ</div>
           </div>
           <h3 class="mentor-name">Imran Jafri</h3>
-          <p class="mentor-title">Android Developer & Digital Marketing Expert - MBA, MSc.</p>
+          <p class="mentor-title">Android Developer &amp; Digital Marketing Expert - MBA, MSc.</p>
           <p class="mentor-expertise">Android Development • Kotlin • Java • Digital Marketing • App Store Optimization • Business Strategy</p>
-          <p class="mentor-bio">Holds an MBA from Cardiff University and Master's in Computer Science from Staffordshire University. Experienced Android developer with expertise in Kotlin, Java, and mobile app development. Specializes in digital marketing strategies and app store optimization. Has launched multiple successful mobile applications and helped businesses grow through effective digital marketing campaigns, combining technical excellence with business acumen.</p>
+          <div class="mentor-bio">
+            <p>Holds an MBA from Cardiff University and Master's in Computer Science from Staffordshire University. Experienced Android developer with expertise in Kotlin, Java, and mobile app development.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>He specializes in digital marketing strategies and app store optimization. He has launched multiple successful mobile applications and helped businesses grow through effective digital marketing campaigns, combining technical excellence with business acumen.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -760,8 +871,19 @@
           </div>
           <h3 class="mentor-name">Abdellatif Salah</h3>
           <p class="mentor-title">Technical Lead, Google PhD in Wireless Communication.</p>
-          <p class="mentor-expertise">3GPP Standards · 5G & 6G R&D</p>
-          <p class="mentor-bio">Technical Lead at Google within the Platforms & Devices division, which includes Android, focusing on 3GPP standardization and 5G/6G research. With over a decade of experience in DSP algorithms, RF systems design, and telecommunications standards, he has played a key role in product architecture and contributed to multiple 3GPP releases. He holds a Ph.D. from Telecom Paris (France), where his research centered on MIMO channel estimation and MIMO decoding for wireless communication systems.</p>
+          <p class="mentor-expertise">3GPP Standards · 5G &amp; 6G R&amp;D</p>
+          <div class="mentor-bio">
+            <p>Technical Lead at Google within the Platforms &amp; Devices division, which includes Android, focusing on 3GPP standardization and 5G/6G research.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>With over a decade of experience in DSP algorithms, RF systems design, and telecommunications standards, he has played a key role in product architecture and contributed to multiple 3GPP releases. He holds a Ph.D. from Telecom Paris (France), where his research centered on MIMO channel estimation and MIMO decoding for wireless communication systems.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -770,8 +892,10 @@
           </div>
           <h3 class="mentor-name">Hassaan Touheed</h3>
           <p class="mentor-title">Wireless Communications Engineer - PhD University of Surrey</p>
-          <p class="mentor-expertise">Wireless Communications • Mobile Systems (3G/4G/5G) • C/C++ • Layer 2/3 Software • Modelling & Simulation</p>
-          <p class="mentor-bio">Holds a PhD in Mobile Communications from University of Surrey, UK. Working in the area of Wireless Communications Layer 2 and Layer 3 software for a number of years. Expert in Mobile Communication systems (3G, 4G, 5G) with a focus on modelling and simulation. Mainly used C/C++ for implementation.</p>
+          <p class="mentor-expertise">Wireless Communications • Mobile Systems (3G/4G/5G) • C/C++ • Layer 2/3 Software • Modelling &amp; Simulation</p>
+          <div class="mentor-bio">
+            <p>Holds a PhD in Mobile Communications from University of Surrey, UK. Working in the area of Wireless Communications Layer 2 and Layer 3 software for a number of years. Expert in Mobile Communication systems (3G, 4G, 5G) with a focus on modelling and simulation. Mainly used C/C++ for implementation.</p>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -781,7 +905,18 @@
           <h3 class="mentor-name">Dr. Saifullah Amir</h3>
           <p class="mentor-title">Senior Staff Analog Engineer, Qualcomm UK · PhD Integrated Circuit Design, University of Twente</p>
           <p class="mentor-expertise">Power Management · Mixed-Signal Design · Ultra-Low-Power Systems · Semiconductor ICs · DC/DC &amp; PMIC · Automotive · IoT · Medical Electronics</p>
-          <p class="mentor-bio">Dr. Saifullah Amir is a Senior Staff Analog Engineer at Qualcomm, UK, with over 15 years of industry experience in power management, mixed-signal design, and ultra-low-power systems. He holds a PhD in Integrated Circuit Design from the University of Twente and has published research in IEEE JSSC and IEEE Transactions on Power Electronics. His career spans leading semiconductor companies including Qualcomm, Microchip Technology, and Infineon Technologies, where he has taken products from concept through to silicon—covering DC/DC converters, gate drivers, and power management ICs for automotive, IoT, and medical applications. An experienced educator, Dr. Amir has supervised MSc theses, delivered university lectures on IC design, and spoken at international conferences on the future of the semiconductor industry. He brings both deep technical expertise and a passion for mentoring the next generation of electronics engineers.</p>
+          <div class="mentor-bio">
+            <p>Dr. Saifullah Amir is a Senior Staff Analog Engineer at Qualcomm, UK, with over 15 years of industry experience in power management, mixed-signal design, and ultra-low-power systems. He holds a PhD in Integrated Circuit Design from the University of Twente and has published research in IEEE JSSC and IEEE Transactions on Power Electronics.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>His career spans leading semiconductor companies including Qualcomm, Microchip Technology, and Infineon Technologies, where he has taken products from concept through to silicon—covering DC/DC converters, gate drivers, and power management ICs for automotive, IoT, and medical applications. An experienced educator, Dr. Amir has supervised MSc theses, delivered university lectures on IC design, and spoken at international conferences on the future of the semiconductor industry. He brings both deep technical expertise and a passion for mentoring the next generation of electronics engineers.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -791,7 +926,18 @@
           <h3 class="mentor-name">Azim Khan</h3>
           <p class="mentor-title">Senior Member of Technical Staff, Nutanix, Cambridge</p>
           <p class="mentor-expertise">Embedded Systems · Software Engineering · System Architecture · Test Automation · Performance Engineering · Rust</p>
-          <p class="mentor-bio">Azim Khan is a senior technology professional currently working as a Senior Member of Technical Staff at Nutanix, Cambridge. He has extensive experience in embedded systems, software engineering, and large-scale system development across leading companies including Arm, NVIDIA, Cambridge Consultants, and Tata Consultancy Services. His expertise spans embedded software, system architecture, test automation, and performance engineering, with strong experience in modern systems programming such as Rust. Azim is passionate about building reliable, high-performance systems and guiding the next generation of engineers to think with clarity, precision, and strong engineering fundamentals.</p>
+          <div class="mentor-bio">
+            <p>Azim Khan is a senior technology professional currently working as a Senior Member of Technical Staff at Nutanix, Cambridge. He has extensive experience in embedded systems, software engineering, and large-scale system development across leading companies including Arm, NVIDIA, Cambridge Consultants, and Tata Consultancy Services.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>His expertise spans embedded software, system architecture, test automation, and performance engineering, with strong experience in modern systems programming such as Rust. Azim is passionate about building reliable, high-performance systems and guiding the next generation of engineers to think with clarity, precision, and strong engineering fundamentals.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
         <div class="mentor-card">
@@ -801,7 +947,18 @@
           <h3 class="mentor-name">Yasin Qadir</h3>
           <p class="mentor-title">Strategic Accounts Director | Industry Mentor | STEM Learn Contributor</p>
           <p class="mentor-expertise">Software Industry · Consultative Solution Selling · Complex Technology Systems · Business Strategy · Partnerships · Educational Governance</p>
-          <p class="mentor-bio">With nearly two decades of experience in the software industry, Yasin Qadir brings deep expertise in technology, business strategy, and real-world problem solving to the STEM Learn ecosystem. A specialist in consultative solution selling and complex technology systems, Yasin has worked at senior levels building trusted partnerships and delivering high-value solutions across industries. His ability to translate complex technical ideas into clear, practical outcomes makes him a valuable mentor for developing students’ understanding of how technology is applied in the real world. Beyond his professional career, Yasin serves as a Governor within a UK school trust, contributing to educational leadership and student development. He is also a former British Army Reservist, where he developed strong skills in leadership, resilience, and decision-making under pressure—qualities he brings into mentoring young learners.</p>
+          <div class="mentor-bio">
+            <p>With nearly two decades of experience in the software industry, Yasin Qadir brings deep expertise in technology, business strategy, and real-world problem solving to the STEM Learn ecosystem. A specialist in consultative solution selling and complex technology systems, Yasin has worked at senior levels building trusted partnerships and delivering high-value solutions across industries.</p>
+            <details class="mentor-more">
+              <summary>
+                <span class="mentor-more-label mentor-more-label--expand">Read more</span>
+                <span class="mentor-more-label mentor-more-label--collapse">Read less</span>
+              </summary>
+              <div class="mentor-more-content">
+                <p>His ability to translate complex technical ideas into clear, practical outcomes makes him a valuable mentor for developing students’ understanding of how technology is applied in the real world. Beyond his professional career, Yasin serves as a Governor within a UK school trust, contributing to educational leadership and student development. He is also a former British Army Reservist, where he developed strong skills in leadership, resilience, and decision-making under pressure—qualities he brings into mentoring young learners.</p>
+              </div>
+            </details>
+          </div>
         </div>
 
       </div>
