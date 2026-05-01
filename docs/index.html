@@ -299,11 +299,58 @@
       }
     }
 
+    @keyframes glow-mobile {
+      0% {
+        filter: brightness(1) drop-shadow(0 0 10px #00fff7);
+      }
+      100% {
+        filter: brightness(1.1) drop-shadow(0 0 16px #3b82f6);
+      }
+    }
+
     .hero h1 {
-      font-size: 3rem;
-      color: #00fff7;
       margin-bottom: 1rem;
-      text-shadow: 0 0 10px #00fff7;
+    }
+
+    .hero-tagline {
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2rem;
+      color: #ffffff;
+      text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 3px 6px rgba(0, 0, 0, 0.8);
+      animation: glow 2s ease-in-out infinite alternate;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      column-gap: 0.35em;
+      row-gap: 0.2em;
+      text-align: center;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: 0 0.25rem;
+      line-height: 1.15;
+    }
+
+    .hero-tagline-line {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .hero-tagline-line:not(:last-child)::after {
+      content: '•';
+      margin-left: 0.35em;
+      font-weight: 900;
+      opacity: 0.95;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tagline {
+        animation: none;
+      }
     }
 
     .hero p {
@@ -760,16 +807,18 @@
         font-size: 1.5rem;
       }
 
-      .hero h1 {
-        font-size: 2rem;
+      .hero-tagline {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 0.06em;
+        font-size: clamp(1.05rem, 5.2vw, 1.65rem);
+        letter-spacing: 0.12em;
+        line-height: 1.2;
+        animation: glow-mobile 2.5s ease-in-out infinite alternate;
       }
 
-      .hero-content h1 {
-        font-size: clamp(1.35rem, 6.5vw, 2.15rem) !important;
-        letter-spacing: 0.1em !important;
-        line-height: 1.15 !important;
-        word-break: break-word;
-        hyphens: auto;
+      .hero-tagline-line:not(:last-child)::after {
+        content: none;
       }
 
       .hero p {
@@ -1012,13 +1061,10 @@
         font-size: 1.2rem;
       }
 
-      .hero h1 {
-        font-size: 1.7rem;
-      }
-
-      .hero-content h1 {
-        font-size: clamp(1.15rem, 7vw, 1.75rem) !important;
-        letter-spacing: 0.07em !important;
+      .hero-tagline {
+        font-size: clamp(0.98rem, 5.8vw, 1.42rem);
+        letter-spacing: 0.1em;
+        padding: 0 0.35rem;
       }
 
       .hero {
@@ -2194,7 +2240,7 @@ This email was sent from the STEM Learn website contact form.
       </div>
     </div>
     <div class="hero-content">
-      <h1 style="font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2rem; color: #ffffff; text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7, 0 3px 6px rgba(0, 0, 0, 0.8); animation: glow 2s ease-in-out infinite alternate;">LEARN • INNOVATE • EXCEL</h1>
+      <h1 class="hero-tagline"><span class="hero-tagline-line">LEARN</span><span class="hero-tagline-line">INNOVATE</span><span class="hero-tagline-line">EXCEL</span></h1>
       <p>Nurturing future innovators. Inspiring bold ideas. Building real-world solutions.</p>
       <p>We empower students to think beyond limits, develop critical problem-solving skills, and turn ideas into AI-powered, real-world innovations—supported by expert mentors and a pathway from learning to launching.</p>
       <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
