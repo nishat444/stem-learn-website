@@ -599,6 +599,7 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 2rem;
+      align-items: stretch;
     }
 
     .card {
@@ -630,21 +631,134 @@
       display: flex;
       flex-direction: column;
       height: 100%;
+      text-align: left;
     }
 
     .course-cards .card h3 {
-      line-height: 1.4;
+      line-height: 1.35;
       font-size: 1.35rem;
       word-break: break-word;
+      margin: 0 0 0.75rem 0;
     }
 
-    .course-cards .card p {
-      flex-grow: 1;
+    /* Shared strapline (Foundation + Advance) */
+    .course-cards .program-strapline {
+      flex-grow: 0;
+      text-align: left;
+      color: #00d9ff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin: 0 0 0.75rem 0;
+    }
+
+    /* Main copy column grows so Learn More pins to the bottom on both cards */
+    .course-cards .program-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      text-align: left;
+    }
+
+    .course-cards .program-body p {
+      flex-grow: 0;
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 0.98rem;
+      line-height: 1.65;
     }
 
     .course-cards .card .btn {
       margin-top: auto;
       align-self: flex-start;
+    }
+
+    /* Advance Certificate — structured programme detail */
+    .course-cards .card--advance .advance-program p {
+      flex-grow: 0;
+    }
+
+    .advance-program {
+      flex: 1 1 auto;
+      text-align: left;
+      min-height: 0;
+    }
+
+    .advance-program .program-lead {
+      color: #cbd5e1;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      margin: 0 0 1rem 0;
+    }
+
+    .course-cards .program-prelude {
+      flex-grow: 0;
+      text-align: left;
+      margin: 0 0 0.85rem 0;
+    }
+
+    .course-cards .program-prelude p {
+      flex-grow: 0;
+      color: #cbd5e1;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      margin: 0 0 0.6rem 0;
+    }
+
+    .course-cards .program-prelude p:last-child {
+      margin-bottom: 0;
+    }
+
+    .advance-program .program-rule {
+      border: none;
+      height: 1px;
+      margin: 1.15rem 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 247, 0.35) 20%,
+        rgba(59, 130, 246, 0.35) 80%,
+        transparent
+      );
+    }
+
+    .advance-program .program-pillars {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: pillar;
+    }
+
+    .advance-program .program-pillars li {
+      counter-increment: pillar;
+      margin: 0 0 1.05rem 0;
+      padding: 0 0 0 2rem;
+      position: relative;
+      color: #cbd5e1;
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .advance-program .program-pillars li:last-child {
+      margin-bottom: 0;
+    }
+
+    .advance-program .program-pillars li::before {
+      content: counter(pillar) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #00fff7;
+      font-weight: 700;
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .advance-program .program-pillars strong {
+      display: block;
+      color: #f1f5f9;
+      font-size: 0.98rem;
+      margin-bottom: 0.35rem;
+      font-weight: 700;
     }
 
     .contact {
@@ -1007,6 +1121,19 @@
 
       .course-cards .card h3 {
         font-size: 1.2rem;
+      }
+
+      .course-cards .program-strapline {
+        font-size: 1rem;
+      }
+
+      .course-cards .program-body p,
+      .course-cards .program-prelude p,
+      .advance-program .program-lead,
+      .advance-program .program-pillars li,
+      .advance-program .program-pillars li::before,
+      .advance-program .program-pillars strong {
+        font-size: 0.95rem;
       }
 
       .card p {
@@ -2413,56 +2540,64 @@ This email was sent from the STEM Learn website contact form.
   <section class="about" id="about">
     <h2>About STEM Learn</h2>
     <div class="about-prose">
-    <p>StemLearn is a forward-thinking STEM education initiative and a subsidiary of AI Labs, dedicated to developing the next generation of scientists, innovators, and technology leaders.</p>
-    <p>We provide a structured, hands-on learning experience that takes students from foundational computing and electronics to advanced Artificial Intelligence, Machine Learning, Robotics, and Software Engineering.</p>
-    <p><strong>Our mission is simple:</strong> Turn learners into creators of technology, not just users of it.</p>
+    <p>StemLearn is a forward-thinking STEM education initiative and a subsidiary of AI Labs, dedicated to developing the next generation of innovators, inventors, and technology leaders.</p>
 
     <h3>Our Vision</h3>
-    <p>We aim to bridge the gap between traditional education and the future of technology by equipping students with:</p>
+    <p>We aim to bridge the gap between education and real-world innovation by equipping students with:</p>
     <ul>
-      <li>Computational thinking</li>
-      <li>Engineering confidence</li>
-      <li>Problem-solving ability</li>
-      <li>Real-world technical skills</li>
-      <li>Innovation</li>
-      <li>Patent awareness</li>
-      <li>Entrepreneurial mindset</li>
+      <li>Innovation and invention mindset</li>
+      <li>Patent awareness and intellectual property thinking</li>
+      <li>Advanced problem-solving and critical thinking</li>
+      <li>Engineering and technical confidence</li>
+      <li>Research and development skills</li>
+      <li>Entrepreneurial leadership</li>
+      <li>Real-world application and impact</li>
     </ul>
-    <p>By combining theory with practical innovation, we prepare students for a world driven by AI, automation, and digital systems.</p>
+    <p>By combining technical learning with innovation strategy, we prepare students to not just enter the future—but build it.</p>
 
-    <h3>Learning Approach</h3>
-    <p>StemLearn uses a project-first, hands-on learning model where students:</p>
+    <h3>Our Learning Approach</h3>
+    <p>At StemLearn, students learn through innovation-led, hands-on experiences.</p>
+    <p>Our approach enables students to:</p>
     <ul>
-      <li>Build real working systems</li>
-      <li>Learn through experimentation</li>
-      <li>Solve real-world engineering challenges</li>
-      <li>Develop logical and creative thinking</li>
-      <li>Work like real engineers and developers</li>
+      <li>Design and build original solutions to real-world problems</li>
+      <li>Develop ideas into prototypes, products, and patentable concepts</li>
+      <li>Think like engineers, researchers, and founders</li>
+      <li>Work on challenges that simulate real startup and R&amp;D environments</li>
+      <li>Combine hardware and software to create complete systems</li>
     </ul>
-    <p>Each stage reinforces practical skills in both hardware and software development.</p>
+    <p>Every stage focuses on turning ideas into tangible outcomes.</p>
 
     <h3>Our Organisation</h3>
-    <p>StemLearn operates as a subsidiary of AI Labs, an innovation-driven organisation working across advanced technology research, university-level projects, startup incubation, industry-focused internships, and real-world engineering solutions.</p>
-    <p>This connection ensures our students gain exposure to real industry practices and innovation pathways.</p>
+    <p>StemLearn operates as a subsidiary of AI Labs—an innovation-driven organisation working across advanced technology research, startup incubation, university-level projects, and real-world engineering solutions.</p>
+    <p>This ecosystem gives students exposure to:</p>
+    <ul>
+      <li>Innovation pipelines</li>
+      <li>Startup development processes</li>
+      <li>Research and patent pathways</li>
+      <li>Industry-level thinking and execution</li>
+    </ul>
 
     <h3>Our Goal</h3>
+    <p>We develop students who are:</p>
     <ul>
-      <li>Technically skilled</li>
-      <li>Creatively confident</li>
-      <li>Industry-ready</li>
+      <li>Innovation-driven</li>
+      <li>Technically advanced</li>
+      <li>Research-capable</li>
       <li>Entrepreneurially minded</li>
+      <li>Leadership-oriented</li>
       <li>Future-focused</li>
     </ul>
 
     <h3>The StemLearn Difference</h3>
+    <p>What makes StemLearn unique:</p>
     <ul>
-      <li>Learning by building</li>
-      <li>Thinking through problem-solving</li>
-      <li>Hands-on robotics and AI systems</li>
-      <li>Real-world applications</li>
-      <li>Progressive skill development</li>
+      <li>Focus on innovation, not just learning</li>
+      <li>Early exposure to patents and intellectual property</li>
+      <li>Hands-on creation of real, working systems</li>
+      <li>Integration of technology + entrepreneurship</li>
+      <li>Structured pathway from idea → prototype → potential venture</li>
     </ul>
-    <p><strong>Students do not just study technology, they create it.</strong></p>
+    <p><strong>Students don't just learn technology—they invent, build, and lead with it.</strong></p>
     </div>
   </section>
 
@@ -2470,25 +2605,56 @@ This email was sent from the STEM Learn website contact form.
     <h2>Our Programs</h2>
     <div class="container course-cards">
       <div class="card">
-        <h3>STEMLearn Foundation Certificate</h3>
-        <p><strong>STEM, Coding, Electronics, Robotics &amp; AI for Young Beginners</strong><br><br>
-           <strong>12-Month Tech &amp; Innovation Programme introducing software, hardware, robotics, AI, and basic problem-solving</strong><br><br>
-           A perfect first step into the world of technology for primary school learners with no prior computing experience required.<br><br>
-           This programme introduces children to the fundamentals of coding, electronics, robotics, and problem-solving in a fun, hands-on way. Using visual tools like Scratch, the BBC micro:bit, and beginner-friendly electronics kits, students learn by building exciting projects from day one.<br><br>
-           Learners explore how simple devices work, how code controls actions, and how technology can be used to solve everyday problems in creative ways, developing confidence in basic problem-solving skills.<br><br>
-           Alongside technical knowledge, students also build essential soft skills including creativity, teamwork, communication, confidence, and logical thinking through collaborative, project-based activities.<br><br>
-           A structured introduction that builds curiosity, confidence, and strong digital foundations, preparing students for the next level of STEM and technology learning.</p>
+        <h3>STEMLearn Foundation Certificate (Age 6 to 9)</h3>
+        <p class="program-strapline">12-Month Tech Programme in STEM</p>
+        <div class="program-prelude">
+          <p>A welcoming, age-appropriate pathway for primary learners—no prior coding or electronics experience needed.</p>
+          <p>Playful, hands-on projects from day one using tools like Scratch, the BBC micro:bit, and beginner-friendly kits.</p>
+          <p>Builds confidence with code, simple circuits, and creative builds while keeping lessons clear, structured, and fun.</p>
+          <p>Develops curiosity, teamwork, communication, and logical thinking through collaborative challenges.</p>
+          <p>Establishes strong digital foundations and prepares students to progress confidently toward the STEMLearn Advance Certificate (Age 9+ to 18).</p>
+        </div>
+        <div class="program-body">
+          <p>A perfect first step into the world of technology for primary school learners with no prior computing experience required.<br><br>
+             This programme introduces children to the fundamentals of coding, electronics, robotics, and problem-solving in a fun, hands-on way. Using visual tools like Scratch, the BBC micro:bit, and beginner-friendly electronics kits, students learn by building exciting projects from day one.<br><br>
+             Learners explore how simple devices work, how code controls actions, and how technology can be used to solve everyday problems in creative ways, developing confidence in basic problem-solving skills.<br><br>
+             Alongside technical knowledge, students also build essential soft skills including creativity, teamwork, communication, confidence, and logical thinking through collaborative, project-based activities.<br><br>
+             A structured introduction that builds curiosity, confidence, and strong digital foundations, preparing students for the next level of STEM and technology learning.</p>
+        </div>
         <a class="btn" href="courses/foundation-certificate.html">Learn More</a>
       </div>
-      <div class="card">
-        <h3>STEMLearn Advance Certificate</h3>
-        <p><strong>STEM, Coding, Electronics, Robotics &amp; AI for Advanced Innovators</strong><br><br>
-           <strong>12-Month Tech &amp; Innovation Program | 65 sessions covering software, hardware, robotics, AI, and advanced problem-solving</strong><br><br>
-           An immersive, project-based programme where students build real-world technology while developing confidence, creativity, communication, and presentation skills.<br><br>
-           Includes hands-on engineering projects, internal competitions, and innovation challenges, encouraging students to design original solutions with potential for innovation and patent development.<br><br>
-           Students also develop essential soft skills including teamwork, leadership, communication, presentation, pitching ideas, and entrepreneurship fundamentals such as start-up thinking and basic financial literacy.<br><br>
-           A structured progression from foundational computing to advanced programming, electronics, and artificial intelligence, building strong computational thinking and engineering logic.<br><br>
-           Prepares students for GCSE, A-Level Computer Science, and future STEM, innovation, and entrepreneurship careers.</p>
+      <div class="card card--advance">
+        <h3>STEMLearn Advance Certificate (Age 9+ to 18)</h3>
+        <p class="program-strapline">12-Month Programme in Tech, Innovation and Leadership</p>
+        <div class="program-prelude">
+          <p>An elite, immersive program designed to develop critical thinking, innovation, problem-solving, research, and leadership skills alongside an entrepreneurial mindset.</p>
+          <p>A parallel learning pathway that goes beyond traditional education with real-world, hands-on experiences.</p>
+          <p>Students create innovations, conduct research, and build startups that bring ideas to life.</p>
+          <p>Focused on developing confident, future-ready leaders with practical achievements and impact.</p>
+          <p>Strengthens university and career profiles for top-tier future opportunities.</p>
+        </div>
+        <div class="advance-program">
+          <p class="program-lead">A project-based programme built around four core pillars, combining technical expertise with innovation, entrepreneurship, and leadership.</p>
+          <hr class="program-rule" aria-hidden="true">
+          <ol class="program-pillars">
+            <li>
+              <strong>Technical Skills</strong>
+              Build strong foundations in coding, electronics, robotics, and AI through practical, real-world projects.
+            </li>
+            <li>
+              <strong>Innovation</strong>
+              Develop creative thinking, explore research techniques, and design original solutions with potential for innovation and patents.
+            </li>
+            <li>
+              <strong>Entrepreneurship</strong>
+              Turn ideas into business concepts, learn startup fundamentals, and pitch solutions through team-based challenges.
+            </li>
+            <li>
+              <strong>Leadership</strong>
+              Strengthen communication, teamwork, problem-solving, and confidence through presentations and collaborative projects.
+            </li>
+          </ol>
+        </div>
         <a class="btn" href="courses/advance-certificate.html">Learn More</a>
       </div>
     </div>
@@ -2568,8 +2734,8 @@ This email was sent from the STEM Learn website contact form.
               <label for="courseInterest">Course Interest *</label>
               <select id="courseInterest" name="courseInterest" required>
                 <option value="">Select Your Course Interest</option>
-                <option value="Foundation Certificate">Foundation Certificate (Ages 7-11)</option>
-                <option value="STEMLearn Advance Certificate">STEMLearn Advance Certificate (Ages 9-18)</option>
+                <option value="Foundation Certificate">STEMLearn Foundation Certificate (Age 6 to 9)</option>
+                <option value="STEMLearn Advance Certificate">STEMLearn Advance Certificate (Age 9+ to 18)</option>
                 <option value="Career Guidance">Career Guidance</option>
                 <option value="11+ Grammar School Preparation">11+ Grammar School Preparation</option>
                 <option value="GCSE Computer Science Crash Course">GCSE Computer Science Crash Course</option>
