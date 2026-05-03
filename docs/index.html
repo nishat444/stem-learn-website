@@ -667,27 +667,16 @@
       line-height: 1.65;
     }
 
-    .course-cards .card .btn {
+    .course-cards .program-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
       margin-top: auto;
       align-self: flex-start;
     }
 
-    /* Advance Certificate — structured programme detail */
-    .course-cards .card--advance .advance-program p {
-      flex-grow: 0;
-    }
-
-    .advance-program {
-      flex: 1 1 auto;
-      text-align: left;
-      min-height: 0;
-    }
-
-    .advance-program .program-lead {
-      color: #cbd5e1;
-      font-size: 0.98rem;
-      line-height: 1.65;
-      margin: 0 0 1rem 0;
+    .course-cards .program-card-actions .btn {
+      margin-top: 0;
     }
 
     .course-cards .program-prelude {
@@ -706,59 +695,6 @@
 
     .course-cards .program-prelude p:last-child {
       margin-bottom: 0;
-    }
-
-    .advance-program .program-rule {
-      border: none;
-      height: 1px;
-      margin: 1.15rem 0;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0, 255, 247, 0.35) 20%,
-        rgba(59, 130, 246, 0.35) 80%,
-        transparent
-      );
-    }
-
-    .advance-program .program-pillars {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      counter-reset: pillar;
-    }
-
-    .advance-program .program-pillars li {
-      counter-increment: pillar;
-      margin: 0 0 1.05rem 0;
-      padding: 0 0 0 2rem;
-      position: relative;
-      color: #cbd5e1;
-      font-size: 0.98rem;
-      line-height: 1.65;
-    }
-
-    .advance-program .program-pillars li:last-child {
-      margin-bottom: 0;
-    }
-
-    .advance-program .program-pillars li::before {
-      content: counter(pillar) ".";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: #00fff7;
-      font-weight: 700;
-      font-size: 0.98rem;
-      line-height: 1.65;
-    }
-
-    .advance-program .program-pillars strong {
-      display: block;
-      color: #f1f5f9;
-      font-size: 0.98rem;
-      margin-bottom: 0.35rem;
-      font-weight: 700;
     }
 
     .contact {
@@ -1128,11 +1064,7 @@
       }
 
       .course-cards .program-body p,
-      .course-cards .program-prelude p,
-      .advance-program .program-lead,
-      .advance-program .program-pillars li,
-      .advance-program .program-pillars li::before,
-      .advance-program .program-pillars strong {
+      .course-cards .program-prelude p {
         font-size: 0.95rem;
       }
 
@@ -1950,6 +1882,10 @@
       
       const form = document.getElementById('contactForm');
       const trialType = formData.get('trialType') || 'Regular Registration';
+      if (!form) {
+        console.warn('contactForm removed; registration is via Google Forms.');
+        return;
+      }
       
       // Create user registration data
       const userData = {
@@ -2003,8 +1939,8 @@
           
           // Reset form
           form.reset();
-          // Reset trial type back to default
-          document.getElementById('trialType').value = 'Regular Registration';
+          const trialTypeInput = document.getElementById('trialType');
+          if (trialTypeInput) trialTypeInput.value = 'Regular Registration';
           // Hide trial banner
           const trialBanner = document.getElementById('trialBanner');
           if (trialBanner) {
@@ -2144,9 +2080,16 @@ This email was sent from the STEM Learn website contact form.
       `;
       message.textContent = text;
       
-      // Insert message after form
       const form = document.getElementById('contactForm');
-      form.parentNode.insertBefore(message, form.nextSibling);
+      const mount = document.getElementById('registrationMessageMount');
+      if (form && form.parentNode) {
+        form.parentNode.insertBefore(message, form.nextSibling);
+      } else if (mount && mount.parentNode) {
+        mount.parentNode.insertBefore(message, mount.nextSibling);
+      } else {
+        const contactBox = document.querySelector('.contact .container');
+        (contactBox || document.body).appendChild(message);
+      }
       
       // Auto-remove message after 5 seconds
       setTimeout(() => {
@@ -2171,6 +2114,11 @@ This email was sent from the STEM Learn website contact form.
       }
 
       try {
+        const cardMount = document.getElementById('card-element');
+        if (!cardMount) {
+          console.warn('Stripe card mount not present on this page.');
+          return false;
+        }
         // Your actual Stripe publishable key
         stripe = Stripe('pk_test_51SECfERo1WoPgABEtOzmAhPrJlaCEmM4cX8updZEYSs1w8x6DrAZixHHBlx41Wqbgxx1ZtJmmrnXaL1wSTxxBcYk00GtS6MPzZ');
         
@@ -2214,6 +2162,10 @@ This email was sent from the STEM Learn website contact form.
       
       // Show selected course info
       const courseInfo = document.getElementById('courseInfo');
+      if (!courseInfo) {
+        console.warn('Course selection UI not present (use Google Forms to register).');
+        return;
+      }
       const selectedCourseDiv = document.getElementById('selectedCourse');
       const paymentSection = document.getElementById('paymentSection');
       const totalAmount = document.getElementById('totalAmount');
@@ -2272,10 +2224,16 @@ This email was sent from the STEM Learn website contact form.
       }
 
       const form = document.getElementById('contactForm');
+      if (!form) {
+        showMessage('Registration is completed through the Google Forms on this page.', 'error');
+        return;
+      }
       const formData = new FormData(form);
       
-      // Show loading state
       const submitBtn = document.getElementById('submitBtn');
+      if (!submitBtn) {
+        return;
+      }
       const originalText = submitBtn.textContent;
       submitBtn.textContent = 'Processing Payment...';
       submitBtn.disabled = true;
@@ -2608,54 +2566,39 @@ This email was sent from the STEM Learn website contact form.
         <h3>STEMLearn Foundation Certificate (Age 6 to 9)</h3>
         <p class="program-strapline">12-Month Tech Programme in STEM</p>
         <div class="program-prelude">
-          <p>A welcoming, age-appropriate pathway for primary learners—no prior coding or electronics experience needed.</p>
-          <p>Playful, hands-on projects from day one using tools like Scratch, the BBC micro:bit, and beginner-friendly kits.</p>
-          <p>Builds confidence with code, simple circuits, and creative builds while keeping lessons clear, structured, and fun.</p>
-          <p>Develops curiosity, teamwork, communication, and logical thinking through collaborative challenges.</p>
-          <p>Establishes strong digital foundations and prepares students to progress confidently toward the STEMLearn Advance Certificate (Age 9+ to 18).</p>
+          <p>A welcoming, age-appropriate STEM pathway for primary learners with no prior coding or electronics experience required.</p>
+          <p>Students learn through playful, hands-on projects using Scratch, BBC micro:bit, and beginner-friendly electronics kits from day one.</p>
+          <p>The programme builds confidence in coding, simple circuits, and creative builds within a clear, structured, and engaging environment.</p>
+          <p>Learners develop curiosity, logical thinking, and problem-solving skills through interactive, collaborative challenges.</p>
+          <p>Alongside technical learning, students strengthen communication, teamwork, creativity, and confidence.</p>
+          <p>This programme builds strong digital foundations and prepares progression into the STEMLearn Advance Certificate.</p>
         </div>
         <div class="program-body">
-          <p>A perfect first step into the world of technology for primary school learners with no prior computing experience required.<br><br>
-             This programme introduces children to the fundamentals of coding, electronics, robotics, and problem-solving in a fun, hands-on way. Using visual tools like Scratch, the BBC micro:bit, and beginner-friendly electronics kits, students learn by building exciting projects from day one.<br><br>
-             Learners explore how simple devices work, how code controls actions, and how technology can be used to solve everyday problems in creative ways, developing confidence in basic problem-solving skills.<br><br>
-             Alongside technical knowledge, students also build essential soft skills including creativity, teamwork, communication, confidence, and logical thinking through collaborative, project-based activities.<br><br>
-             A structured introduction that builds curiosity, confidence, and strong digital foundations, preparing students for the next level of STEM and technology learning.</p>
+          <p>👉 A perfect first step into coding, robotics, and creative technology learning.</p>
         </div>
-        <a class="btn" href="courses/foundation-certificate.html">Learn More</a>
+        <div class="program-card-actions">
+          <a class="btn" href="courses/foundation-certificate.html">Learn More</a>
+          <a class="btn" href="https://docs.google.com/forms/d/1LVJpej8gza2__zv-Wy8t7IK18B9g8zAuE5i5mK_uEV0/viewform" target="_blank" rel="noopener noreferrer">Register</a>
+        </div>
       </div>
       <div class="card card--advance">
         <h3>STEMLearn Advance Certificate (Age 9+ to 18)</h3>
         <p class="program-strapline">12-Month Programme in Tech, Innovation and Leadership</p>
         <div class="program-prelude">
-          <p>An elite, immersive program designed to develop critical thinking, innovation, problem-solving, research, and leadership skills alongside an entrepreneurial mindset.</p>
-          <p>A parallel learning pathway that goes beyond traditional education with real-world, hands-on experiences.</p>
-          <p>Students create innovations, conduct research, and build startups that bring ideas to life.</p>
-          <p>Focused on developing confident, future-ready leaders with practical achievements and impact.</p>
-          <p>Strengthens university and career profiles for top-tier future opportunities.</p>
+          <p>An elite, hands-on programme developing critical thinking, innovation, problem-solving, leadership, and entrepreneurial skills.</p>
+          <p>A real-world learning pathway that goes beyond traditional education through project-based experiences.</p>
+          <p>Students create innovations, conduct research, and build startup ideas that solve real problems.</p>
+          <p>The focus is on developing confident, future-ready learners with measurable skills, achievement, and impact.</p>
+          <p>The programme supports progression to top universities and competitive career pathways.</p>
+          <p>It is structured around four core pillars: technical skills, innovation, entrepreneurship, and leadership.</p>
         </div>
-        <div class="advance-program">
-          <p class="program-lead">A project-based programme built around four core pillars, combining technical expertise with innovation, entrepreneurship, and leadership.</p>
-          <hr class="program-rule" aria-hidden="true">
-          <ol class="program-pillars">
-            <li>
-              <strong>Technical Skills</strong>
-              Build strong foundations in coding, electronics, robotics, and AI through practical, real-world projects.
-            </li>
-            <li>
-              <strong>Innovation</strong>
-              Develop creative thinking, explore research techniques, and design original solutions with potential for innovation and patents.
-            </li>
-            <li>
-              <strong>Entrepreneurship</strong>
-              Turn ideas into business concepts, learn startup fundamentals, and pitch solutions through team-based challenges.
-            </li>
-            <li>
-              <strong>Leadership</strong>
-              Strengthen communication, teamwork, problem-solving, and confidence through presentations and collaborative projects.
-            </li>
-          </ol>
+        <div class="program-body">
+          <p>👉 A powerful pathway into real-world innovation, startups, and future tech leadership.</p>
         </div>
-        <a class="btn" href="courses/advance-certificate.html">Learn More</a>
+        <div class="program-card-actions">
+          <a class="btn" href="courses/advance-certificate.html">Learn More</a>
+          <a class="btn" href="https://docs.google.com/forms/d/13pygB24z3JHdW5kANbtA-MW4Y5ED9tFxA-OuBBtVBIc/viewform" target="_blank" rel="noopener noreferrer">Register</a>
+        </div>
       </div>
     </div>
   </section>
@@ -2687,135 +2630,30 @@ This email was sent from the STEM Learn website contact form.
         </div>
       </div>
       
-      <!-- Registration Form Section - Middle -->
+      <!-- Registration via Google Forms -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
         <div id="registration" class="registration-container" style="grid-column: 1 / -1;">
           <div class="registration-form-wrapper">
-          <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">Contact Us</h3>
-           <!-- Free Trial Banner -->
-           
-           <!-- Course Selection Display -->
-           <div id="selectedCourse" style="display: none; background-color: #13172e; padding: 1rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #3b82f6;">
-             <h4 style="color: #3b82f6; margin-bottom: 0.5rem;">Selected Course</h4>
-             <p id="courseInfo" style="color: #ccc; margin: 0;"></p>
-           </div>
-
-           <form id="contactForm" onsubmit="handleFormSubmit(event); return false;">
-            <!-- Hidden field for trial type -->
-            <input type="hidden" id="trialType" name="trialType" value="Regular Registration">
-            
-            <div class="form-group">
-              <label for="studentName">Student's Name *</label>
-              <input type="text" id="studentName" name="studentName" required>
+            <h3 style="color: #00d9ff; font-size: 1.8rem; margin-bottom: 1rem; text-align: center;">Register for a programme</h3>
+            <p style="color: #ccc; text-align: center; max-width: 640px; margin: 0 auto 1.5rem; line-height: 1.65;">Enquire or register now via the official Google Form for your chosen course (opens in a new tab). For any other questions, please contact us via email below</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+              <a class="btn get-started-btn" href="https://docs.google.com/forms/d/1LVJpej8gza2__zv-Wy8t7IK18B9g8zAuE5i5mK_uEV0/viewform" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">STEMLearn Foundation Certificate — Register</a>
+              <a class="btn get-started-btn" href="https://docs.google.com/forms/d/13pygB24z3JHdW5kANbtA-MW4Y5ED9tFxA-OuBBtVBIc/viewform" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(45deg, #00fff7, #3b82f6); color: #0b0c1a; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block;">STEMLearn Advance Certificate — Register</a>
             </div>
-            
-            <div class="form-group">
-              <label for="grade">Grade *</label>
-              <select id="grade" name="grade" required>
-                <option value="">Select Your Grade</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="Undergraduate">Undergraduate</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="courseInterest">Course Interest *</label>
-              <select id="courseInterest" name="courseInterest" required>
-                <option value="">Select Your Course Interest</option>
-                <option value="Foundation Certificate">STEMLearn Foundation Certificate (Age 6 to 9)</option>
-                <option value="STEMLearn Advance Certificate">STEMLearn Advance Certificate (Age 9+ to 18)</option>
-                <option value="Career Guidance">Career Guidance</option>
-                <option value="11+ Grammar School Preparation">11+ Grammar School Preparation</option>
-                <option value="GCSE Computer Science Crash Course">GCSE Computer Science Crash Course</option>
-                <option value="Primary School Maths/Science/English">Primary School Maths/Science/English Classes</option>
-                <option value="Secondary School Maths/Science">Secondary School Maths/Science Classes</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="city">Which city do you live in? *</label>
-              <input type="text" id="city" name="city" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="country">Which country do you live in? *</label>
-              <input type="text" id="country" name="country" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="parentName">Parent's/Guardian's Name *</label>
-              <input type="text" id="parentName" name="parentName" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="email">Email *</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone">
-            </div>
-            
-            <div class="form-group">
-              <label for="hearAbout">How did you hear about us?</label>
-              <input type="text" id="hearAbout" name="hearAbout">
-            </div>
-            
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" placeholder="Tell us about your interest in our programs..."></textarea>
-            </div>
-            
-            <!-- Payment Section -->
-            <div id="paymentSection" style="display: none; background-color: #13172e; padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border: 1px solid #3b82f6;">
-              <h4 style="color: #3b82f6; margin-bottom: 1rem;">Registration Payment</h4>
-              <p style="color: #ccc; margin-bottom: 1rem; font-size: 0.9rem;">Submit your details to contact us. Monthly payments will be set up separately after registration.</p>
-              
-              <!-- Stripe Elements will be inserted here -->
-              <div id="card-element" style="background-color: #262b4f; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
-                <!-- Stripe Elements will create form elements here -->
-              </div>
-              
-              <!-- Display any errors -->
-              <div id="card-errors" role="alert" style="color: #ff4444; margin-bottom: 1rem;"></div>
-              
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <span style="color: #ccc;">Total Amount:</span>
-                <span id="totalAmount" style="color: #3b82f6; font-size: 1.2rem; font-weight: bold;">£0</span>
-              </div>
-            </div>
-            
-             <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
-          </form>
-          
-          <p style="color: #aaa; font-size: 0.9rem; margin-top: 1rem; text-align: center;">
-            <strong>Privacy Note:</strong> We do not sell or share your contact details with anyone, EVER.
-          </p>
-          
-          <!-- Email Contact Information -->
-          <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333; text-align: center;">
-            <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Direct Contact</p>
-            <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 0.5rem; text-align: center; word-break: break-all;">stemlearn.co.uk@gmail.com</p>
-            <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem; text-align: center; word-break: break-all;">stemlearn@ai-labs-uk.com</p>
-            <p class="contact-response-text" style="color: #ccc; font-size: 1rem; line-height: 1.5; text-align: center;">
-              We typically respond within 24 hours and are here to answer all your questions about our programs.
+            <div id="registrationMessageMount" aria-live="polite"></div>
+            <p style="color: #aaa; font-size: 0.9rem; margin-top: 1rem; text-align: center;">
+              <strong>Privacy Note:</strong> We do not sell or share your contact details with anyone, EVER.
             </p>
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #333; text-align: center;">
+              <p style="color: #00fff7; font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem;">Direct Contact</p>
+              <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 0.5rem; text-align: center; word-break: break-all;">stemlearn.co.uk@gmail.com</p>
+              <p class="email" style="color: #3b82f6; font-weight: bold; font-size: 1.3rem; margin-bottom: 1rem; text-align: center; word-break: break-all;">stemlearn@ai-labs-uk.com</p>
+              <p class="contact-response-text" style="color: #ccc; font-size: 1rem; line-height: 1.5; text-align: center;">
+                We typically respond within 24 hours and are here to answer all your questions about our programs.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </section>
