@@ -369,7 +369,6 @@
                         <li>AI concepts for young learners</li>
                         <li>Weekly 1 hr session</li>
                     </ul>
-                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none;">Payments</a>
                 </div>
 
                 <!-- Young Coders Card -->
@@ -385,7 +384,6 @@
                         <li>AI & machine learning projects</li>
                         <li>Weekly 1-hour sessions</li>
                     </ul>
-                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none;">Payments</a>
                 </div>
 
                 <!-- Private Tuition Card -->
@@ -401,7 +399,6 @@
                         <li>Secondary School Maths/Science</li>
                         <li>Flexible scheduling</li>
                     </ul>
-                    <a href="monthly-payment.html" class="select-btn" style="display: inline-block; text-align: center; text-decoration: none; background: linear-gradient(45deg, #ff6b35, #ff8c42); color: #0b0c1a; border: none; cursor: pointer; margin-top: 5rem;">Payments</a>
                 </div>
             </div>
 
@@ -621,12 +618,7 @@
                 } else if (paymentIntent.status === 'succeeded') {
                     // Save registration to Firebase
                     await saveRegistration(formData);
-                    showMessage(`Registration successful! Free registration completed. You will receive an email with instructions to set up your monthly payment of £${selectedPrice}. Welcome to STEM Learn!`, 'success');
-                    
-                    // Redirect to monthly payment setup after 3 seconds
-                    setTimeout(() => {
-                        window.location.href = `monthly-payment.html?course=${selectedCourse}&price=${selectedPrice}`;
-                    }, 3000);
+                    showMessage(`Registration successful! Free registration completed. Welcome to STEM Learn!`, 'success');
                 }
             } catch (error) {
                 console.error('Registration error:', error);
